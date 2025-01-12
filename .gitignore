@@ -398,9 +398,10 @@ FodyWeavers.xsd
 
 vcpkg_installed/
 
-CavesBasic/Intermediate/
-CavesBasic/Saved/
-CavesBasic/Binaries/
-CavesBasic/Build/
-CavesBasic/CavesBasic.sln
-CavesBasic/Content/
+Intermediate/
+Saved/
+Binaries/
+Build/
+CavesBasic.sln
+Content/
+
