@@ -1,5 +1,5 @@
 # CavesBasic ( 개발 : 원재민 )
-[ 프로젝트 소개 ]
+# [ 프로젝트 소개 ]
 
 - 장르 : 판타지 분위기의 동굴 속에서 진행되는 탑뷰 RPG 게임
 
@@ -28,35 +28,26 @@
         - 플레이어 사망 시 리스폰창 출력
         <br></br></h3>
 
----
-<h2>[ 세부 사항 ]</h2>
-<h3>
-
+# [ 세부 사항 ]
 - Player
-  - Player의 데이터는 언리얼 엔진 에디터상에서 데이터 테이블로 세팅 가능
-          <br></br>
+  - ***Player의 데이터***는 언리얼 엔진 에디터상에서 데이터 테이블로 세팅 가능
           <br></br>
   ![alt text](README_content/pawndata.png "Title Text")
-  <br></br>
-  <br></br>
-  <br></br>
-  
-  * 무기의 데이터는 언리얼 엔진 에디터상에서 데이터 테이블로 세팅 가능
+          <br></br>
+	  
+  * ***무기의 데이터***는 언리얼 엔진 에디터상에서 데이터 테이블로 세팅 가능
     <br></br>
-</h3>
-<br>
-	　　　　　　< 무기 데이터 테이블 >에서는 해당 무기가 보유할 Skill을 세팅해 줄 수 있음.<br>
-	　　　　　　< Skill 데이터 테이블 >에서는 해당 Skill 사용 시 발사되는 Projectile을 세팅해 줄 수 있음.<br>
-	　　　　　　< Projectile 데이터 테이블 >에서는 해당 Projectile이 발사되면 발생하는 효과음과 Effect를 세팅해 줄 수 있음.
-
+***무기 데이터 테이블***에서는 해당 무기가 보유할 Skill을 세팅해 줄 수 있음.<br>
+***Skill 데이터 테이블***에서는 해당 Skill 사용 시 발사되는 Projectile을 세팅해 줄 수 있음.<br>
+***Projectile 데이터 테이***에서는 해당 Projectile이 발사되면 발생하는 효과음과 Effect를 세팅해 줄 수 있음.
  <br></br>
-  　　　　　　![alt text](README_content/WeaponTable.png "Title Text")<br>  　　　　　　  　　　　　　  　　　　　　  　　**↑ < 무기 데이터 테이블 >**<br><br>
+![alt text](README_content/WeaponTable.png "Title Text")<br> <h1 style="color: red">text</h1> <span style="background-color:gray">무기 데이터 테이블</span><br> $${\color{red}[abc\]\(https://google.fr)}$$
 </br>
-  　　　　　　![alt text](README_content/SkillTable.png "Title Text")<br>  　　　　　　  　　　　　　  　　　　　　  　　**↑ < Skill 데이터 테이블 >**<br><br>
+![alt text](README_content/SkillTable.png "Title Text")<br>  　　　　　　  　　　　　　  　　　　　　  　　**↑ < Skill 데이터 테이블 >**<br><br>
 </br>
-  　　　　　　![alt text](README_content/ProjectileTable.png "Title Text")<br>   　　　　　　  　　　　　　  　　　　　　  　　**↑ < Projectile 데이터 테이블 >**<br><br>
+![alt text](README_content/ProjectileTable.png "Title Text")<br>   　　　　　　  　　　　　　  　　　　　　  　　**↑ < Projectile 데이터 테이블 >**<br><br>
        </br>
-  　　　　　　![alt text](README_content/EffectTable.png "Title Text")<br>  　　　　　　  　　　　　　  　　　　　　  　　**↑ < Effect 데이터 테이블 >**<br><br>
+![alt text](README_content/EffectTable.png "Title Text")<br>  　　　　　　  　　　　　　  　　　　　　  　　**↑ < Effect 데이터 테이블 >**<br><br>
 
 
 <details>
