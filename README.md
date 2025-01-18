@@ -1,8 +1,6 @@
 # CavesBasic ( 개발 : 원재민 )
 # [ 프로젝트 소개 ]
 
-- 장르 : 판타지 분위기의 동굴 속에서 진행되는 탑뷰 RPG 게임
-
 ![alt text](README_content/main2.png "Title Text")
 ![alt text](README_content/main.png "Title Text")
 
@@ -46,11 +44,14 @@
 ![alt text](README_content/ProjectileTable.png "Title Text")<br>  　　　　　　  　　　　　　  **`Projectile 데이터 테이블`**<br><br><br>
 ![alt text](README_content/EffectTable.png "Title Text")<br>  　　　　　　  　　　　　　  **`Effect 데이터 테이블`**<br><br><br>
 
-<div style="margin-left: 20px;">
+* Weapon을 습득한 Player는 Skill 사용 가능
   <details>
     <summary>Skill 관련 코드</summary>
+    
+     
 
-```cpp
+    
+   ```cpp
 	void AWeaponBase::OnSkill(const FInputActionInstance& Instance)
 	{
 	    ACharacter* OwningCharacter = Cast<ACharacter>(OwningPawn);
@@ -109,13 +110,13 @@
 		}
 	    }
 	}
-```	
+   ```
   </details>
-</div>
+
+<br><br><br><br>
 
 
 <h3>
-<br><br><br><br>
    * Ground Projectile을 사용하도록 설정된 스킬의 동작
 <br></br>
 <br></br>
