@@ -10,7 +10,7 @@
   * Player
     - 키 입력을 받아 기본적인 움직임 수행
      + 움직임에 맞는 애니메이션 적용
-     + 무기 습득 후 스킬 사용 가능
+     + Weapon 습득 후 Skill 사용 가능
      + 피격 시 무적 시간 동안 깜빡임 적용
      + 사망 처리 적용
      + 부활 기능 구현
@@ -35,22 +35,22 @@
   ![alt text](README_content/pawndata.png "Title Text")
           <br></br>
 	  
-  * ***무기의 데이터***는 언리얼 엔진 에디터상에서 데이터 테이블로 세팅 가능
+  * ***Weapon의 데이터***는 언리얼 엔진 에디터상에서 데이터 테이블로 세팅 가능
     <br></br>
-***무기 데이터 테이블***에서는 해당 무기가 보유할 Skill을 세팅해 줄 수 있음.<br>
+***Weapon 데이터 테이블***에서는 해당 Weapon이 보유할 Skill을 세팅해 줄 수 있음.<br>
 ***Skill 데이터 테이블***에서는 해당 Skill 사용 시 발사되는 Projectile을 세팅해 줄 수 있음.<br>
 ***Projectile 데이터 테이블***에서는 해당 Projectile이 발사되면 발생하는 효과음과 Effect를 세팅해 줄 수 있음.
  <br></br>
-![alt text](README_content/WeaponTable.png "Title Text")<br>  　　　　　　  　　　　　　  **`무기 데이터 테이블`**<br><br><br>
+![alt text](README_content/WeaponTable.png "Title Text")<br>  　　　　　　  　　　　　　  **`Weapon 데이터 테이블`**<br><br><br>
 ![alt text](README_content/SkillTable.png "Title Text")<br>  　　　　　　  　　　　　　  **`Skill 데이터 테이블`**<br><br><br>
 ![alt text](README_content/ProjectileTable.png "Title Text")<br>  　　　　　　  　　　　　　  **`Projectile 데이터 테이블`**<br><br><br>
 ![alt text](README_content/EffectTable.png "Title Text")<br>  　　　　　　  　　　　　　  **`Effect 데이터 테이블`**<br><br><br>
 
-  　　　　　　  　　　　　　  <div style="margin-left: 20px;">
+<div style="margin-left: 20px;">
   <details>
-    <summary>스킬 관련 코드</summary>
+    <summary>Skill 관련 코드</summary>
 
-    ```cpp
+```cpp
 	void AWeaponBase::OnSkill(const FInputActionInstance& Instance)
 	{
 	    ACharacter* OwningCharacter = Cast<ACharacter>(OwningPawn);
@@ -109,13 +109,13 @@
 		}
 	    }
 	}
-    ```
+```	
   </details>
 </div>
 
 
 <h3>
-
+<br><br><br><br>
    * Ground Projectile을 사용하도록 설정된 스킬의 동작
 <br></br>
 <br></br>
