@@ -41,12 +41,9 @@
 ***Skill 데이터 테이블***에서는 해당 Skill 사용 시 발사되는 Projectile을 세팅해 줄 수 있음.<br>
 ***Projectile 데이터 테이***에서는 해당 Projectile이 발사되면 발생하는 효과음과 Effect를 세팅해 줄 수 있음.
  <br></br>
-![alt text](README_content/WeaponTable.png "Title Text")<br> <h1 style="color: red">text</h1> <span style="background-color:gray">무기 데이터 테이블</span><br> $${\color{red}[abc\]\(https://google.fr)}$$
-</br>
+![alt text](README_content/WeaponTable.png "Title Text")<br> **↑ < 무기 데이터 테이블 >**<br><br>
 ![alt text](README_content/SkillTable.png "Title Text")<br>  　　　　　　  　　　　　　  　　　　　　  　　**↑ < Skill 데이터 테이블 >**<br><br>
-</br>
 ![alt text](README_content/ProjectileTable.png "Title Text")<br>   　　　　　　  　　　　　　  　　　　　　  　　**↑ < Projectile 데이터 테이블 >**<br><br>
-       </br>
 ![alt text](README_content/EffectTable.png "Title Text")<br>  　　　　　　  　　　　　　  　　　　　　  　　**↑ < Effect 데이터 테이블 >**<br><br>
 
 
