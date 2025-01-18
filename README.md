@@ -45,207 +45,75 @@
 ![alt text](README_content/SkillTable.png "Title Text")<br>  　　　　　　  　　　　　　  **`Skill 데이터 테이블`**<br><br><br>
 ![alt text](README_content/ProjectileTable.png "Title Text")<br>  　　　　　　  　　　　　　  **`Projectile 데이터 테이블`**<br><br><br>
 ![alt text](README_content/EffectTable.png "Title Text")<br>  　　　　　　  　　　　　　  **`Effect 데이터 테이블`**<br><br><br>
-  　　　　　　  　　　　　　  <details>
-  　　　　　　  　　　　　　  <summary> 코드 펼치기 </summary>
-void AWeaponBase::OnSkill(const FInputActionInstance& Instance)
-				{
-				    ACharacter* OwningCharacter = Cast<ACharacter>(OwningPawn);
-				    if (!OwningCharacter->bIsCrouched)
-				    {
-				        // 호출된 InputAction을 통해 어떤 키가 입력되었는지 확인
-				        const UInputAction* TriggeredAction = Instance.GetSourceAction();
-				        FString ActionName = TriggeredAction->GetName();
-				        // 스킬 번호만 남김
-				        ActionName.RemoveFromStart(TEXT("IA_Skill"));
-				        int32 ExecutedSkillNum = FCString::Atoi(*ActionName);
-				
-				        // 어떤 키가 입력되었느냐에 따라 다른 스킬을 실행함
-				        const FString Skill_Number = TEXT("Skill") + FString::FromInt(ExecutedSkillNum);
-				
-				        if (SkillRowHandleNum >= ExecutedSkillNum)
-				        {
-				            FSkillTableRow* SkillRow = WeaponTableRow->SkillRowHandle[ExecutedSkillNum - 1].GetRow<FSkillTableRow>(Skill_Number);
-				
-				            if (!SkillRow) { ensure(false); return; }
-				
-				            UAnimMontage* CurrentMontage = BasicAnimInstance->GetCurrentActiveMontage();
-				
-				            // 현재 몽타주가 재생 중이지 않을 때
-				            if (nullptr == CurrentMontage)
-				            {
-				                if (ABasicPlayer* WeaponOwner = Cast<ABasicPlayer>(OwningCharacter))
-				                {
-				                    UStatusComponent* StatusComponent = WeaponOwner->GetComponentByClass<UStatusComponent>();
-				                    if (StatusComponent->IsPlayer())
-				                    {
-				                        UAnimMontage* PlayingMontage = WeaponOwner->GetPlayingMontage();
-				                        if (PlayingMontage)
-				                        {
-				                            WeaponOwner->SetPlayingMontage(nullptr);
-				                        }
-				
-				                        // 스킬 데이터 테이블에 있는 몽타주를 재생
-				                        WeaponOwner->SetPlayingMontage(SkillRow->SkillMotionMontage);
-				                    }
-				                    else
-				                    {
-				                        if (ADefaultMonster* WeaponOwnerIsMonster = Cast<ADefaultMonster>(OwningCharacter))
-				                        {
-				                            UAnimMontage* PlayingMontage = WeaponOwnerIsMonster->GetPlayingMontage();
-				                            if (PlayingMontage)
-				                            {
-				                                WeaponOwnerIsMonster->SetPlayingMontage(nullptr);
-				                            }
-				                            WeaponOwnerIsMonster->SetPlayingMontage(SkillRow->SkillMotionMontage);
-				                        }
-				                    }
-				                }
-				                BasicAnimInstance->Montage_Play(SkillRow->SkillMotionMontage);
-				            }
-				        }
-				    }
-				}
-  　　　　　　  　　　　　　  </details>
-			  
 
+  　　　　　　  　　　　　　  <div style="margin-left: 20px;">
+  <details>
+    <summary>스킬 관련 코드</summary>
 
-* 	
-  - 스킬 관련 코드
-                                <br></br>
-
-    <details>
-    <summary> 코드 </summary>
-	<pre><code>```cpp 
+    ```cpp
 	void AWeaponBase::OnSkill(const FInputActionInstance& Instance)
 	{
-	ACharacter* OwningCharacter = Cast<ACharacter>(OwningPawn);
-	if(!OwningCharacter->bIsCrouched)
-	{
+	    ACharacter* OwningCharacter = Cast<ACharacter>(OwningPawn);
+	    if (!OwningCharacter->bIsCrouched)
+	    {
 		// 호출된 InputAction을 통해 어떤 키가 입력되었는지 확인
 		const UInputAction* TriggeredAction = Instance.GetSourceAction();
 		FString ActionName = TriggeredAction->GetName();
 		// 스킬 번호만 남김
 		ActionName.RemoveFromStart(TEXT("IA_Skill"));
 		int32 ExecutedSkillNum = FCString::Atoi(*ActionName);
-
+	
 		// 어떤 키가 입력되었느냐에 따라 다른 스킬을 실행함
 		const FString Skill_Number = TEXT("Skill") + FString::FromInt(ExecutedSkillNum);
-
+	
 		if (SkillRowHandleNum >= ExecutedSkillNum)
 		{
-			FSkillTableRow* SkillRow = WeaponTableRow->SkillRowHandle[ExecutedSkillNum - 1].GetRow<FSkillTableRow>(Skill_Number);
-
-			if (!SkillRow) { ensure(false); return; }
-
-			UAnimMontage* CurrentMontage = BasicAnimInstance->GetCurrentActiveMontage();
-
-			// 현재 몽타주가 재생 중이지 않을 때
-			if (nullptr == CurrentMontage)
+		    FSkillTableRow* SkillRow = WeaponTableRow->SkillRowHandle[ExecutedSkillNum - 1].GetRow<FSkillTableRow>(Skill_Number);
+	
+		    if (!SkillRow) { ensure(false); return; }
+	
+		    UAnimMontage* CurrentMontage = BasicAnimInstance->GetCurrentActiveMontage();
+	
+		    // 현재 몽타주가 재생 중이지 않을 때
+		    if (nullptr == CurrentMontage)
+		    {
+			if (ABasicPlayer* WeaponOwner = Cast<ABasicPlayer>(OwningCharacter))
 			{
-				if (ABasicPlayer* WeaponOwner = Cast<ABasicPlayer>(OwningCharacter))
+			    UStatusComponent* StatusComponent = WeaponOwner->GetComponentByClass<UStatusComponent>();
+			    if (StatusComponent->IsPlayer())
+			    {
+				UAnimMontage* PlayingMontage = WeaponOwner->GetPlayingMontage();
+				if (PlayingMontage)
 				{
-					UStatusComponent* StatusComponent = WeaponOwner->GetComponentByClass<UStatusComponent>();
-					if (StatusComponent->IsPlayer())
-					{
-						UAnimMontage* PlayingMontage = WeaponOwner->GetPlayingMontage();
-						if (PlayingMontage)
-						{
-							WeaponOwner->SetPlayingMontage(nullptr);
-						}
-						
-            // 스킬 데이터 테이블에 있는 몽타주를 재생
-						WeaponOwner->SetPlayingMontage(SkillRow->SkillMotionMontage);
-					}
-					else
-					{
-						if (ADefaultMonster* WeaponOwnerIsMonster = Cast<ADefaultMonster>(OwningCharacter))
-						{
-							UAnimMontage* PlayingMontage = WeaponOwnerIsMonster->GetPlayingMontage();
-							if (PlayingMontage)
-							{
-								WeaponOwnerIsMonster->SetPlayingMontage(nullptr);
-							}
-							WeaponOwnerIsMonster->SetPlayingMontage(SkillRow->SkillMotionMontage);
-						}
-					}
+				    WeaponOwner->SetPlayingMontage(nullptr);
 				}
-				BasicAnimInstance->Montage_Play(SkillRow->SkillMotionMontage);
-			}
-		}
-	}
-}
-```</code></pre>
-
-<h3>
-<p>
-<details>
-
-```cpp
-void AWeaponBase::OnSkill(const FInputActionInstance& Instance)
-{
-	ACharacter* OwningCharacter = Cast<ACharacter>(OwningPawn);
-	if(!OwningCharacter->bIsCrouched)
-	{
-		// 호출된 InputAction을 통해 어떤 키가 입력되었는지 확인
-		const UInputAction* TriggeredAction = Instance.GetSourceAction();
-		FString ActionName = TriggeredAction->GetName();
-		// 스킬 번호만 남김
-		ActionName.RemoveFromStart(TEXT("IA_Skill"));
-		int32 ExecutedSkillNum = FCString::Atoi(*ActionName);
-
-		// 어떤 키가 입력되었느냐에 따라 다른 스킬을 실행함
-		const FString Skill_Number = TEXT("Skill") + FString::FromInt(ExecutedSkillNum);
-
-		if (SkillRowHandleNum >= ExecutedSkillNum)
-		{
-			FSkillTableRow* SkillRow = WeaponTableRow->SkillRowHandle[ExecutedSkillNum - 1].GetRow<FSkillTableRow>(Skill_Number);
-
-			if (!SkillRow) { ensure(false); return; }
-
-			UAnimMontage* CurrentMontage = BasicAnimInstance->GetCurrentActiveMontage();
-
-			// 현재 몽타주가 재생 중이지 않을 때
-			if (nullptr == CurrentMontage)
-			{
-				if (ABasicPlayer* WeaponOwner = Cast<ABasicPlayer>(OwningCharacter))
+	
+				// 스킬 데이터 테이블에 있는 몽타주를 재생
+				WeaponOwner->SetPlayingMontage(SkillRow->SkillMotionMontage);
+			    }
+			    else
+			    {
+				if (ADefaultMonster* WeaponOwnerIsMonster = Cast<ADefaultMonster>(OwningCharacter))
 				{
-					UStatusComponent* StatusComponent = WeaponOwner->GetComponentByClass<UStatusComponent>();
-					if (StatusComponent->IsPlayer())
-					{
-						UAnimMontage* PlayingMontage = WeaponOwner->GetPlayingMontage();
-						if (PlayingMontage)
-						{
-							WeaponOwner->SetPlayingMontage(nullptr);
-						}
-						
-            // 스킬 데이터 테이블에 있는 몽타주를 재생
-						WeaponOwner->SetPlayingMontage(SkillRow->SkillMotionMontage);
-					}
-					else
-					{
-						if (ADefaultMonster* WeaponOwnerIsMonster = Cast<ADefaultMonster>(OwningCharacter))
-						{
-							UAnimMontage* PlayingMontage = WeaponOwnerIsMonster->GetPlayingMontage();
-							if (PlayingMontage)
-							{
-								WeaponOwnerIsMonster->SetPlayingMontage(nullptr);
-							}
-							WeaponOwnerIsMonster->SetPlayingMontage(SkillRow->SkillMotionMontage);
-						}
-					}
+				    UAnimMontage* PlayingMontage = WeaponOwnerIsMonster->GetPlayingMontage();
+				    if (PlayingMontage)
+				    {
+					WeaponOwnerIsMonster->SetPlayingMontage(nullptr);
+				    }
+				    WeaponOwnerIsMonster->SetPlayingMontage(SkillRow->SkillMotionMontage);
 				}
-				BasicAnimInstance->Montage_Play(SkillRow->SkillMotionMontage);
+			    }
 			}
+			BasicAnimInstance->Montage_Play(SkillRow->SkillMotionMontage);
+		    }
 		}
+	    }
 	}
-}
-```
+    ```
+  </details>
+</div>
 
-</details>
-</p>
-</h3>
-<br></br>
-<br></br>
+
 <h3>
 
    * Ground Projectile을 사용하도록 설정된 스킬의 동작
