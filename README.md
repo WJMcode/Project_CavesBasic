@@ -48,7 +48,7 @@
   - Weapon을 습득한 Player는 Skill 사용 가능
     
       <details>
-        <summary>Skill 실행 코드</summary>
+        <summary> OnSkill 함수 코드 ( Skill 실행 코드 )</summary>
     
      
 
