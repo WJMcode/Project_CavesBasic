@@ -46,14 +46,14 @@
 
 
   - Weapon을 습득한 Player는 Skill 사용 가능
-
-  <details>
-    <summary>Skill 관련 코드</summary>
+    
+      <details>
+        <summary>Skill 관련 코드</summary>
     
      
 
     
-   ```cpp
+       ```cpp
 	void AWeaponBase::OnSkill(const FInputActionInstance& Instance)
 	{
 	    ACharacter* OwningCharacter = Cast<ACharacter>(OwningPawn);
@@ -112,8 +112,8 @@
 		}
 	    }
 	}
-   ```
-  </details>
+       ```
+      </details>
 
 <br><br><br><br>
 
