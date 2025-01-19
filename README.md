@@ -58,7 +58,8 @@
         * 기본적으로 Player가 웅크리지 않은 상태에서만 OnSkill 함수가 실행됩니다.
         * Weapon은 에디터 내에 존재하는 Weapon 전용 InputMappingContext를 통해
         * Skill InputAction들을 바인딩하고 있습니다.
-        * OnSkill 함수이 호출되는 시점에 어떤 Skill InputAction이 들어왔는지 체크합니다. ( 이때 InputAction 파일의 이름 규칙은 "IA_Skill*"이며 *은 1부터 시작하는 Skill 번호입니다. )
+        * OnSkill 함수가 호출되는 시점에 어떤 Skill InputAction이 들어왔는지 체크합니다.
+        * ( 이때 InputAction 파일의 이름 규칙은 "IA_Skill*"이며 *은 1부터 시작하는 Skill 번호입니다. )
         * 체크한 Skill InputAction의 번호를 통해 Weapon 데이터 테이블이 저장하고 있는
         * Skill 데이터 테이블의 행에 접근합니다.
         * Skill 데이터 테이블에는 *번 스킬이 실행될 때 재생되는 몽타주가 저장되어 있어 해당 몽타주를 재생합니다.
