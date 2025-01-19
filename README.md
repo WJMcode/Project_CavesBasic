@@ -6,18 +6,18 @@
 
 - 개발 목록
   * Player
-    - 키 입력을 받아 기본적인 움직임 수행
+    - 키 입력을 받아 앞, 뒤, 아래, 위와 점프, 웅크리기 가능
      + 움직임에 맞는 애니메이션 적용
      + Weapon 습득 후 Skill 사용 가능
-     + 피격 시 무적 시간 동안 깜빡임 적용
+     + 피격 시 무적 시간 동안 캐릭터 깜빡임 적용
      + 사망 처리 적용
      + 부활 기능 구현
      <br></br>
      
    * Monster
-        - 기본적인 움직임 수행
-        - AI 움직임 적용
-        - 사망 시 점점 투명해지도록 구현
+        - 앞, 뒤, 아래, 위 움직임 수행
+        - 레벨에 NavMeshBoundsVolume을 배치하여 Monster AI 움직임 적용
+        - 사망 시 점점 투명해지며 사라지도록 구현
         <br></br>
 	
    * UI
@@ -43,6 +43,80 @@
 ![alt text](README_content/SkillTable.png "Title Text")<br>  　　　　　　  　　　　　　  **`Skill 데이터 테이블`**<br><br><br>
 ![alt text](README_content/ProjectileTable.png "Title Text")<br>  　　　　　　  　　　　　　  **`Projectile 데이터 테이블`**<br><br><br>
 ![alt text](README_content/EffectTable.png "Title Text")<br>  　　　　　　  　　　　　　  **`Effect 데이터 테이블`**<br><br><br>
+
+
+  - Weapon을 습득한 Player는 Skill 사용 가능
+
+  <details>
+    <summary>Skill 관련 코드</summary>
+    
+     
+
+    
+   ```cpp
+	void AWeaponBase::OnSkill(const FInputActionInstance& Instance)
+	{
+	    ACharacter* OwningCharacter = Cast<ACharacter>(OwningPawn);
+	    if (!OwningCharacter->bIsCrouched)
+	    {
+		// 호출된 InputAction을 통해 어떤 키가 입력되었는지 확인
+		const UInputAction* TriggeredAction = Instance.GetSourceAction();
+		FString ActionName = TriggeredAction->GetName();
+		// 스킬 번호만 남김
+		ActionName.RemoveFromStart(TEXT("IA_Skill"));
+		int32 ExecutedSkillNum = FCString::Atoi(*ActionName);
+	
+		// 어떤 키가 입력되었느냐에 따라 다른 스킬을 실행함
+		const FString Skill_Number = TEXT("Skill") + FString::FromInt(ExecutedSkillNum);
+	
+		if (SkillRowHandleNum >= ExecutedSkillNum)
+		{
+		    FSkillTableRow* SkillRow = WeaponTableRow->SkillRowHandle[ExecutedSkillNum - 1].GetRow<FSkillTableRow>(Skill_Number);
+	
+		    if (!SkillRow) { ensure(false); return; }
+	
+		    UAnimMontage* CurrentMontage = BasicAnimInstance->GetCurrentActiveMontage();
+	
+		    // 현재 몽타주가 재생 중이지 않을 때
+		    if (nullptr == CurrentMontage)
+		    {
+			if (ABasicPlayer* WeaponOwner = Cast<ABasicPlayer>(OwningCharacter))
+			{
+			    UStatusComponent* StatusComponent = WeaponOwner->GetComponentByClass<UStatusComponent>();
+			    if (StatusComponent->IsPlayer())
+			    {
+				UAnimMontage* PlayingMontage = WeaponOwner->GetPlayingMontage();
+				if (PlayingMontage)
+				{
+				    WeaponOwner->SetPlayingMontage(nullptr);
+				}
+	
+				// 스킬 데이터 테이블에 있는 몽타주를 재생
+				WeaponOwner->SetPlayingMontage(SkillRow->SkillMotionMontage);
+			    }
+			    else
+			    {
+				if (ADefaultMonster* WeaponOwnerIsMonster = Cast<ADefaultMonster>(OwningCharacter))
+				{
+				    UAnimMontage* PlayingMontage = WeaponOwnerIsMonster->GetPlayingMontage();
+				    if (PlayingMontage)
+				    {
+					WeaponOwnerIsMonster->SetPlayingMontage(nullptr);
+				    }
+				    WeaponOwnerIsMonster->SetPlayingMontage(SkillRow->SkillMotionMontage);
+				}
+			    }
+			}
+			BasicAnimInstance->Montage_Play(SkillRow->SkillMotionMontage);
+		    }
+		}
+	    }
+	}
+   ```
+  </details>
+
+<br><br><br><br>
+
 
 * Weapon을 습득한 Player는 Skill 사용 가능
   <details>
@@ -112,6 +186,7 @@
 	}
    ```
   </details>
+
 
 <br><br><br><br>
 
