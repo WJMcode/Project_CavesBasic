@@ -48,15 +48,25 @@
   - Weapon을 습득한 Player는 Skill 사용 가능
     
       <details>
-        <summary>Skill 관련 코드</summary>
+        <summary>Skill 실행 코드</summary>
     
      
 
     
        ```cpp
+       /* Player가 키 입력을 통해 Skill을 사용하면 OnSkill 함수가 호출됩니다.
+        * 기본적으로 Player가 웅크리지 않은 상태에서만 OnSkill 함수가 실행됩니다.
+        * Weapon은 에디터 내에 존재하는 Weapon 전용 InputMappingContext를 통해
+        * Skill InputAction들을 바인딩하고 있습니다.
+        * OnSkill 함수이 호출되는 시점에 어떤 Skill InputAction이 들어왔는지 체크합니다. ( 이때 InputAction 파일의 이름 규칙은 "IA_Skill*"이며 *은 1부터 시작하는 Skill 번호입니다. )
+        * 체크한 Skill InputAction의 번호를 통해 Weapon 데이터 테이블이 저장하고 있는
+        * Skill 데이터 테이블의 행에 접근합니다.
+        * Skill 데이터 테이블에는 *번 스킬이 실행될 때 재생되는 몽타주가 저장되어 있어 해당 몽타주를 재생합니다.
+        */
 	void AWeaponBase::OnSkill(const FInputActionInstance& Instance)
 	{
 	    ACharacter* OwningCharacter = Cast<ACharacter>(OwningPawn);
+       	    // 캐릭터가 웅크리지 않은 상태라면
 	    if (!OwningCharacter->bIsCrouched)
 	    {
 		// 호출된 InputAction을 통해 어떤 키가 입력되었는지 확인
@@ -116,80 +126,6 @@
       </details>
 
 <br><br><br><br>
-
-
-* Weapon을 습득한 Player는 Skill 사용 가능
-  <details>
-    <summary>Skill 관련 코드</summary>
-    
-     
-
-    
-   ```cpp
-	void AWeaponBase::OnSkill(const FInputActionInstance& Instance)
-	{
-	    ACharacter* OwningCharacter = Cast<ACharacter>(OwningPawn);
-	    if (!OwningCharacter->bIsCrouched)
-	    {
-		// 호출된 InputAction을 통해 어떤 키가 입력되었는지 확인
-		const UInputAction* TriggeredAction = Instance.GetSourceAction();
-		FString ActionName = TriggeredAction->GetName();
-		// 스킬 번호만 남김
-		ActionName.RemoveFromStart(TEXT("IA_Skill"));
-		int32 ExecutedSkillNum = FCString::Atoi(*ActionName);
-	
-		// 어떤 키가 입력되었느냐에 따라 다른 스킬을 실행함
-		const FString Skill_Number = TEXT("Skill") + FString::FromInt(ExecutedSkillNum);
-	
-		if (SkillRowHandleNum >= ExecutedSkillNum)
-		{
-		    FSkillTableRow* SkillRow = WeaponTableRow->SkillRowHandle[ExecutedSkillNum - 1].GetRow<FSkillTableRow>(Skill_Number);
-	
-		    if (!SkillRow) { ensure(false); return; }
-	
-		    UAnimMontage* CurrentMontage = BasicAnimInstance->GetCurrentActiveMontage();
-	
-		    // 현재 몽타주가 재생 중이지 않을 때
-		    if (nullptr == CurrentMontage)
-		    {
-			if (ABasicPlayer* WeaponOwner = Cast<ABasicPlayer>(OwningCharacter))
-			{
-			    UStatusComponent* StatusComponent = WeaponOwner->GetComponentByClass<UStatusComponent>();
-			    if (StatusComponent->IsPlayer())
-			    {
-				UAnimMontage* PlayingMontage = WeaponOwner->GetPlayingMontage();
-				if (PlayingMontage)
-				{
-				    WeaponOwner->SetPlayingMontage(nullptr);
-				}
-	
-				// 스킬 데이터 테이블에 있는 몽타주를 재생
-				WeaponOwner->SetPlayingMontage(SkillRow->SkillMotionMontage);
-			    }
-			    else
-			    {
-				if (ADefaultMonster* WeaponOwnerIsMonster = Cast<ADefaultMonster>(OwningCharacter))
-				{
-				    UAnimMontage* PlayingMontage = WeaponOwnerIsMonster->GetPlayingMontage();
-				    if (PlayingMontage)
-				    {
-					WeaponOwnerIsMonster->SetPlayingMontage(nullptr);
-				    }
-				    WeaponOwnerIsMonster->SetPlayingMontage(SkillRow->SkillMotionMontage);
-				}
-			    }
-			}
-			BasicAnimInstance->Montage_Play(SkillRow->SkillMotionMontage);
-		    }
-		}
-	    }
-	}
-   ```
-  </details>
-
-
-<br><br><br><br>
-
 
 <h3>
    * Ground Projectile을 사용하도록 설정된 스킬의 동작
