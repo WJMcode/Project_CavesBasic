@@ -127,7 +127,7 @@
       </details><br>
 
 
-  - Ground Projectile을 사용하도록 설정된 스킬의 동작
+  - Projectile이 Ground Projectile로 설정된 Skill 사용 시
 <br></br>
 ![alt text](README_content/groundproject.gif "Title Text")
       <details>
@@ -139,7 +139,7 @@
        ```cpp
        /* Skill 데이터 테이블에서 Projectile 설정이 GroundProjectile로 설정된 Skill을 사용하면 GroundProjectile 객체가 생성됩니다.
         * GroundProjectile은 Player의 중심을 기준으로, Skill 데이터 테이블에서 설정한 Transform값을 포함한 위치에 생성됩니다.
-	* GroundProjectile이 생성되면 GroundProjectile 위치 기준, 아래 방향으로 LineTrace를 발사하여 오브젝트를 감지합니다.
+        * GroundProjectile이 생성되면 GroundProjectile 위치 기준, 아래 방향으로 LineTrace를 발사하여 오브젝트를 감지합니다.
         * Collision이 Floor로 설정된 오브젝트가 감지되었다면 감지된 오브젝트 위로 GroundProjectile을 옮깁니다.
         * 만약 Collision이 Floor로 설정된 오브젝트가 아닌, 다른 오브젝트가 감지되거나 아무것도 감지되지 않으면
         * 위쪽 방향으로 LineTrace를 발사하여 오브젝트를 감지합니다.
