@@ -131,12 +131,18 @@
 <br></br>
 ![alt text](README_content/groundproject.gif "Title Text")
       <details>
-        <summary> OnSkill 함수 코드 ( Skill 실행 코드 )</summary>
+        <summary> AGroundProjectile 클래스의 BeginPlay 함수 코드 ( GroundProjectile의 생성 위치를 설정 )</summary>
     
      
 
     
        ```cpp
+       /* Skill 데이터 테이블에서 Projectile 설정이 GroundProjectile로 설정된 Skill을 사용하면 GroundProjectile 객체가 생성됩니다.
+        * GroundProjectile은 Player의 중심을 기준으로 생성됩니다. 
+        * Player의 중심을 기준으로, Skill 데이터 테이블에서 설정한 Transform값을 포함한 위치에 생성됩니다.
+        * 
+        *                     
+        */
        // GroundProjectile은 캐릭터의 중앙을 기준으로 생성됨
 	void AGroundProjectile::BeginPlay()
 	{
