@@ -124,74 +124,72 @@
 	    }
 	}
        ```
-      </details>
+      </details><br>
 
-<br><br><br><br>
 
-<h3>
-   * Ground Projectile을 사용하도록 설정된 스킬의 동작
+  - Ground Projectile을 사용하도록 설정된 스킬의 동작
 <br></br>
-<br></br>
-![사진이름](groundproject.gif)
-<br></br>
-<br></br>
-<details>
-    <summary> 코드 </summary>
+![alt text](README_content/groundproject.gif "Title Text")
+      <details>
+        <summary> OnSkill 함수 코드 ( Skill 실행 코드 )</summary>
+    
+     
 
-```cpp
-// GroundProjectile은 캐릭터의 중앙을 기준으로 생성됨
-void AGroundProjectile::BeginPlay()
-{
-	Super::BeginPlay();
-
-	// GroundProjectile의 위치 얻어오기
-	FVector GroundProjectileLocation = GetActorLocation();
-
-	FHitResult DownHitResult;
+    
+       ```cpp
+       // GroundProjectile은 캐릭터의 중앙을 기준으로 생성됨
+	void AGroundProjectile::BeginPlay()
 	{
-		TArray<AActor*> IgnoreActors; IgnoreActors.Add(GetOwner());
-
-		// 해당 Trace는 FloorDetectTraceChannel로 발사되는 Trace이다. 
-		// 발사된 해당 Trace는 Collision이 Floor로 설정된 오브젝트를 감지한다.
-		// Floor로 설정된 오브젝트에만 GroundProjectile 스킬을 스폰시키는 것이 목적.
-		const ETraceTypeQuery TraceTypeQuery = UEngineTypes::ConvertToTraceType(ECollisionChannel::ECC_GameTraceChannel5);
-		const bool bHit = UKismetSystemLibrary::LineTraceSingle(GetWorld(),
-			GetActorLocation(), GetActorLocation() + FVector(0, 0, -350), TraceTypeQuery,
-			false, IgnoreActors, EDrawDebugTrace::ForDuration, DownHitResult, true);
-		// 만약 Hit가 발생했다면 그 위치로 GroundProjectile을 옮김
-		if (bHit)
-		{
-			GroundProjectileLocation.Z = DownHitResult.ImpactPoint.Z;
-			SetActorLocation(GroundProjectileLocation);
-
-			return;
-		}
-	}
-
-	FHitResult UpHitResult;
-	{
-		TArray<AActor*> IgnoreActors; IgnoreActors.Add(GetOwner());
-
-		const ETraceTypeQuery TraceTypeQuery = UEngineTypes::ConvertToTraceType(ECollisionChannel::ECC_GameTraceChannel5);
-		const bool bHit = UKismetSystemLibrary::LineTraceSingle(GetWorld(),
-			GetActorLocation(), GetActorLocation() + FVector(0, 0, 200), TraceTypeQuery,
-			false, IgnoreActors, EDrawDebugTrace::ForDuration, UpHitResult, true);
-
-		if (bHit)
-		{
-			GroundProjectileLocation.Z = UpHitResult.ImpactPoint.Z;
-			SetActorLocation(GroundProjectileLocation);
-			
-			return;
-		}
-	}
+		Super::BeginPlay();
 	
-	// Floor가 감지되지 않으면 GroundProjectile을 그냥 제거한다.
-	Destroy();
-}
-```
-</details>
- <br></br>   
+		// GroundProjectile의 위치 얻어오기
+		FVector GroundProjectileLocation = GetActorLocation();
+	
+		FHitResult DownHitResult;
+		{
+			TArray<AActor*> IgnoreActors; IgnoreActors.Add(GetOwner());
+	
+			// 해당 Trace는 FloorDetectTraceChannel로 발사되는 Trace이다. 
+			// 발사된 해당 Trace는 Collision이 Floor로 설정된 오브젝트를 감지한다.
+			// Floor로 설정된 오브젝트에만 GroundProjectile 스킬을 스폰시키는 것이 목적.
+			const ETraceTypeQuery TraceTypeQuery = UEngineTypes::ConvertToTraceType(ECollisionChannel::ECC_GameTraceChannel5);
+			const bool bHit = UKismetSystemLibrary::LineTraceSingle(GetWorld(),
+				GetActorLocation(), GetActorLocation() + FVector(0, 0, -350), TraceTypeQuery,
+				false, IgnoreActors, EDrawDebugTrace::ForDuration, DownHitResult, true);
+			// 만약 Hit가 발생했다면 그 위치로 GroundProjectile을 옮김
+			if (bHit)
+			{
+				GroundProjectileLocation.Z = DownHitResult.ImpactPoint.Z;
+				SetActorLocation(GroundProjectileLocation);
+	
+				return;
+			}
+		}
+	
+		FHitResult UpHitResult;
+		{
+			TArray<AActor*> IgnoreActors; IgnoreActors.Add(GetOwner());
+	
+			const ETraceTypeQuery TraceTypeQuery = UEngineTypes::ConvertToTraceType(ECollisionChannel::ECC_GameTraceChannel5);
+			const bool bHit = UKismetSystemLibrary::LineTraceSingle(GetWorld(),
+				GetActorLocation(), GetActorLocation() + FVector(0, 0, 200), TraceTypeQuery,
+				false, IgnoreActors, EDrawDebugTrace::ForDuration, UpHitResult, true);
+	
+			if (bHit)
+			{
+				GroundProjectileLocation.Z = UpHitResult.ImpactPoint.Z;
+				SetActorLocation(GroundProjectileLocation);
+				
+				return;
+			}
+		}
+		
+		// Floor가 감지되지 않으면 GroundProjectile을 그냥 제거한다.
+		Destroy();
+	}
+ 	```
+      </details><br>
+
  <br></br>
  
   <details>
