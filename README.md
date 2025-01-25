@@ -156,7 +156,7 @@ Player를 중심( 캐릭터의 배꼽 위치 )을 기준으로 바닥이 존재�
 	
 		// GroundProjectile의 위치 얻어오기
 		FVector GroundProjectileLocation = GetActorLocation();
-	
+		// 아래 방향으로 LineTrace를 발사
 		FHitResult DownHitResult;
 		{
 			TArray<AActor*> IgnoreActors; IgnoreActors.Add(GetOwner());
@@ -177,7 +177,7 @@ Player를 중심( 캐릭터의 배꼽 위치 )을 기준으로 바닥이 존재�
 				return;
 			}
 		}
-	
+		// 위쪽 방향으로 LineTrace를 발사
 		FHitResult UpHitResult;
 		{
 			TArray<AActor*> IgnoreActors; IgnoreActors.Add(GetOwner());
