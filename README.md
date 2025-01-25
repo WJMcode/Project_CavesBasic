@@ -127,7 +127,7 @@
       </details><br>
 
 
-  - Projectile이 Ground Projectile로 설정된 Skill 사용 시
+  - Projectile이 ***Ground Projectile***로 설정된 Skill 사용 시
 <br></br>
 ![alt text](README_content/groundproject.gif "Title Text")
       <details>
