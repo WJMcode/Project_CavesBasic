@@ -129,6 +129,10 @@
 
   - Projectile이 ***Ground Projectile***로 설정된 Skill 사용 시
 <br></br>
+***Ground Projectile***은 Player 앞에 땅이 있어야 생성되는 발사체입니다.<br>
+Player를 중심( 캐릭터의 배꼽 위치 )을 기준으로 바닥이 존재한다면 바닥에 생성되고,<br>
+바닥이 없다면 위에 있는 땅을 감지하여 생성됩니다. 아무것도 감지되지 않으면 생성되지 않습니다.
+<br></br>
 ![alt text](README_content/groundproject.gif "Title Text")
       <details>
         <summary> AGroundProjectile 클래스의 BeginPlay 함수 코드 ( GroundProjectile의 생성 위치를 설정 )</summary>
