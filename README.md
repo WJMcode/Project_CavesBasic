@@ -135,7 +135,7 @@ Player를 중심( 캐릭터의 배꼽 위치 )을 기준으로 바닥이 존재�
 <br></br>
 ![alt text](README_content/groundproject.gif "Title Text")
       <details>
-        <summary> AGroundProjectile 클래스의 BeginPlay 함수 코드 ( GroundProjectile의 생성 위치를 설정 )</summary>
+        <summary> AGroundProjectile 클래스의 BeginPlay 함수 코드 ( GroundProjectile의 생성 위치를 조정 )</summary>
     
      
 
@@ -202,63 +202,66 @@ Player를 중심( 캐릭터의 배꼽 위치 )을 기준으로 바닥이 존재�
  	```
       </details><br>
 
- <br></br>
  
-  <details>
-    <summary> 코드 </summary>
+      <details>
+        <summary> AGroundProjectile 클래스의 OnBeginOverlap 함수 코드 ( GroundProjectile이 다른 오브젝트과 접촉할 시 호출 )</summary>
+    
+     
 
-```cpp
-void AGroundProjectile::OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
-{
-	if (!IsValid(this)) { return; }
-	
-	FTransform NewTransform = GetActorTransform();
-	
-	// DecalEffect 출력
+    
+       ```cpp
+       /* GroundProjectile과 Collision이 Floor로 설정된 오브젝트가 접촉하면 Decal Effect를 생성합니다.
+        * 접촉했다면 BoxTrace를 발사하여 데미지를 적용할 수 있는 오브젝트가 있는지 체크합니다.
+        * 데미지를 적용할 수 있는 오브젝트가 존재한다면, UGameplayStatics의 ApplyDamage 함수를 호출하여 데미지를 적용합니다.
+        */
+	void AGroundProjectile::OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 	{
-		FProjectileTableRow* EffectTableRow = DataTableRowHandle.GetRow<FProjectileTableRow>(TEXT("Effect"));
-		FEffectDecalTableRow* DecalEffectTableRow = EffectTableRow->EffectTableRowHandle.GetRow<FEffectDecalTableRow>(TEXT("DecalEffect"));
-
-		AEffectWithDecal* DecalEffect = GetWorld()->SpawnActorDeferred<AEffectWithDecal>(DecalEffectTableRow->EffectWithDecalClass,
-			FTransform::Identity);
-
-		FDataTableRowHandle DecalTableRowHandle = EffectTableRow->EffectTableRowHandle;
-
-		DecalEffect->SetData(DecalTableRowHandle);
-		NewTransform.SetScale3D(DecalEffectTableRow->OverlapParticleTransform.GetScale3D());
-		DecalEffect->FinishSpawning(NewTransform);
-		// DecalEffect의 위치를 FinishSpawning 함수를 통해 조정하는 것일 뿐,
-		// Play 함수를 호출하면 원점에 무조건 DecalEffect가 출력된다.
-		DecalEffect->Play();
+		if (!IsValid(this)) { return; }
+		
+		FTransform NewTransform = GetActorTransform();
+		
+		// DecalEffect 출력
+		{
+			FProjectileTableRow* EffectTableRow = DataTableRowHandle.GetRow<FProjectileTableRow>(TEXT("Effect"));
+			FEffectDecalTableRow* DecalEffectTableRow = EffectTableRow->EffectTableRowHandle.GetRow<FEffectDecalTableRow>(TEXT("DecalEffect"));
+	
+			AEffectWithDecal* DecalEffect = GetWorld()->SpawnActorDeferred<AEffectWithDecal>(DecalEffectTableRow->EffectWithDecalClass,
+				FTransform::Identity);
+	
+			FDataTableRowHandle DecalTableRowHandle = EffectTableRow->EffectTableRowHandle;
+	
+			DecalEffect->SetData(DecalTableRowHandle);
+			NewTransform.SetScale3D(DecalEffectTableRow->OverlapParticleTransform.GetScale3D());
+			DecalEffect->FinishSpawning(NewTransform);
+			// DecalEffect의 위치를 FinishSpawning 함수를 통해 조정하는 것일 뿐,
+			// Play 함수를 호출하면 원점에 무조건 DecalEffect가 출력된다.
+			DecalEffect->Play();
+		}
+	
+		ABasicPlayer* OwningCharacter = Cast<ABasicPlayer>(GetOwner());
+		check(OwningCharacter);
+	
+		// Skill Data Table 얻어오기
+	  	// 스킬을 관리하는 배열에 접근하여 스킬 시전 애니메이션과
+	  	// 플레이어가 재생 중인 스킬 시전 애니메이션과 같은 것을 찾아냄.
+		// Notify를 발생시킨 애니메이션과 일치하는 애니메이션이 있는 스킬 배열의 인덱스를 저장하고 그 스킬 배열에 있는 데이터 테이블에 접근하여 반환
+		const FSkillTableRow* SkillTableRow = OwningCharacter->GetSkillTableRow();
+		ensure(SkillTableRow);
+	
+		// GroundProjectile이 Floor와 Overlap되면 
+		// BoxTrace를 이용해 데미지를 줄 타겟을 감지한다.
+		AActor* DetectActor = DetectDamageTarget();
+	
+		Destroy();
+	
+		// 타겟이 감지되었다면 데미지 주기
+		if(DetectActor)
+		{
+			UGameplayStatics::ApplyDamage(DetectActor, SkillTableRow->SkillDamage, GetInstigator()->GetController(), this, nullptr);
+		}
 	}
-
-	ABasicPlayer* OwningCharacter = Cast<ABasicPlayer>(GetOwner());
-	check(OwningCharacter);
-
-	// Skill Data Table 얻어오기
-  // 스킬을 관리하는 배열에 접근하여 스킬 시전 애니메이션과
-  // 플레이어가 재생 중인 스킬 시전 애니메이션과 같은 것을 찾아냄.
-	// Notify를 발생시킨 애니메이션과 일치하는 애니메이션이 있는 스킬 배열의 인덱스를 저장하고 그 스킬 배열에 있는 데이터 테이블에 접근하여 반환
-	const FSkillTableRow* SkillTableRow = OwningCharacter->GetSkillTableRow();
-	ensure(SkillTableRow);
-
-	// GroundProjectile이 Floor와 Overlap되면 
-	// BoxTrace를 이용해 데미지를 줄 타겟을 감지한다.
-	AActor* DetectActor = DetectDamageTarget();
-
-	Destroy();
-
-	// 타겟이 감지되었다면 데미지 주기
-	if(DetectActor)
-	{
-		UGameplayStatics::ApplyDamage(DetectActor, SkillTableRow->SkillDamage, GetInstigator()->GetController(), this, nullptr);
-	}
-}
-```
-</details>
- <br></br>   
- <br></br>
- <br></br>
+	```
+	</details><br>
       
   * Straight Projectile을 사용하도록 설정된 스킬의 동작
    <br></br>
