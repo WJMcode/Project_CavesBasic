@@ -135,7 +135,7 @@ Player를 중심( 캐릭터의 배꼽 위치 )을 기준으로 바닥이 존재�
 <br></br>
 ![alt text](README_content/groundproject.gif "Title Text")
       <details>
-        <summary> AGroundProjectile 클래스의 BeginPlay 함수 코드 ( GroundProjectile의 생성 위치를 조정 )</summary>
+        <summary> ***AGroundProjectile 클래스***의 BeginPlay 함수 코드 ( GroundProjectile의 생성 위치를 조정 )</summary>
     
      
 
@@ -204,7 +204,7 @@ Player를 중심( 캐릭터의 배꼽 위치 )을 기준으로 바닥이 존재�
 
  
       <details>
-        <summary> AGroundProjectile 클래스의 OnBeginOverlap 함수 코드 ( GroundProjectile이 다른 오브젝트과 접촉할 시 호출 )</summary>
+        <summary> ***AGroundProjectile 클래스***의 OnBeginOverlap 함수 코드 ( GroundProjectile이 다른 오브젝트과 접촉할 시 호출 )</summary>
     
      
 
