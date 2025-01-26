@@ -211,7 +211,7 @@ Player를 중심( 캐릭터의 배꼽 위치 )을 기준으로 바닥이 존재�
     
        ```cpp
        /* GroundProjectile과 Collision이 Floor로 설정된 오브젝트가 접촉하면 Decal Effect를 생성합니다.
-        * 접촉했다면 BoxTrace를 발사하여 데미지를 적용할 수 있는 오브젝트가 있는지 체크합니다.
+        * 접촉했다면 DetectDamageTarget 함수를 호출합니다. BoxTrace를 발사하여 데미지를 적용할 수 있는 오브젝트가 있는지 체크하는 함수입니다.
         * 데미지를 적용할 수 있는 오브젝트가 존재한다면, UGameplayStatics의 ApplyDamage 함수를 호출하여 데미지를 적용합니다.
         */
 	void AGroundProjectile::OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
