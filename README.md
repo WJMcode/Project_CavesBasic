@@ -346,8 +346,8 @@ Straight Projectile이 날아가는 동안 Projectile 주변에 몬스터가 있
 		return nullptr;
 	}
 	```
-	</details>
-<br></br>   
+	</details><br>
+<br>
       <details>
         <summary> AStraight Projectile 클래스의 Tick 함수와 FollowDamageTarget 함수 코드 ( Straight Projectile이, 감지한 몬스터 쪽으로 이동 ) </summary>
     
