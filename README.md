@@ -271,8 +271,7 @@ Straight Projectile이 날아가는 동안 Projectile 주변에 몬스터가 있
 몬스터가 감지되었다면 해당 몬스터쪽으로 날아감.
 <br></br>
 ![alt text](README_content/stra.gif "Title Text")
- <br></br>   
- <br></br>
+<br></br>
       <details>
         <summary> AStraight Projectile 클래스의 BeginPlay 함수 코드 ( 몬스터를 감지 ) </summary>
     
