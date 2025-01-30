@@ -274,12 +274,17 @@ Straight Projectile이 날아가는 동안 Projectile 주변에 몬스터가 있
 ![alt text](README_content/stra.gif "Title Text")
 <br></br>
       <details>
-        <summary> AStraight Projectile 클래스의 BeginPlay 함수 코드 ( 몬스터를 감지 ) </summary>
+        <summary> AStraight Projectile 클래스의 BeginPlay 함수 코드 ( Straight Projectile 생성 시, 범위 내 몬스터를 감지 ) </summary>
     
      
 
     
        ```cpp
+       /* Straight Projectile이 생성되면 BeginPlay 함수가 호출됩니다. BeginPlay 함수는 DetectDamageTarget 함수를 호출하여 반환값을 DetectActor에 저장합니다.
+        * DetectDamageTarget 함수는 감지된 몬스터를 반환하는 함수입니다.
+        * Straight Projectile의 이동 경로 근처에 Collision이 몬스터로 설정된 오브젝트가 있는지 Box Trace를 통해 감지합니다.
+        * 감지되었다면 해당 오브젝트를 가리키는 포인터를 반환하고 DetectDamageTarget 함수를 종료합니다.
+        */
 	void AStraightProjectile::BeginPlay()
 	{
 		Super::BeginPlay();
@@ -320,7 +325,7 @@ Straight Projectile이 날아가는 동안 Projectile 주변에 몬스터가 있
 			BoxExtent.Z += 150;
 			FVector DetectRange = BoxExtent;
 	
-		  //해당 Trace는 MonsterDetectTraceChannel로 발사되는 Trace이다. 
+		        //해당 Trace는 MonsterDetectTraceChannel로 발사되는 Trace이다. 
 			// 발사된 해당 Trace는 Collision이 Monster로 설정된 오브젝트가 감지한다.
 			const ETraceTypeQuery TraceTypeQuery = UEngineTypes::ConvertToTraceType(ECollisionChannel::ECC_GameTraceChannel8);
 			const bool bHit = UKismetSystemLibrary::BoxTraceSingle(GetWorld(),
@@ -342,7 +347,6 @@ Straight Projectile이 날아가는 동안 Projectile 주변에 몬스터가 있
 	```
 	</details>
 <br></br>   
- <br></br>
  <br></br>
 
  <details>
