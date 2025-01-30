@@ -264,10 +264,13 @@ Player를 중심( 캐릭터의 배꼽 위치 )을 기준으로 바닥이 존재�
 	```
 	</details><br><br>
       
-  * Straight Projectile을 사용하도록 설정된 스킬의 동작
-   <br></br>
- <br></br>
-![사진이름](stra.gif)
+  - Projectile이 ***Straight Projectile***로 설정된 Skill 사용 시
+<br></br>
+***Straight Projectile***은 Player를 중심으로 일직선으로 발사되는 Projectile임.<br>
+Straight Projectile이 날아가는 동안 Projectile 주변에 몬스터가 있는지 감지함.<br>
+있다면 해당 몬스터쪽으로 날아감.
+<br></br>
+![alt text](README_content/stra.gif "Title Text")
  <br></br>   
  <br></br>
  <details>
