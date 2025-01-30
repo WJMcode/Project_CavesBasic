@@ -268,77 +268,79 @@ Player를 중심( 캐릭터의 배꼽 위치 )을 기준으로 바닥이 존재�
 <br></br>
 ***Straight Projectile***은 Player를 중심으로 일직선으로 발사되는 Projectile임.<br>
 Straight Projectile이 날아가는 동안 Projectile 주변에 몬스터가 있는지 감지함.<br>
-있다면 해당 몬스터쪽으로 날아감.
+몬스터가 감지되었다면 해당 몬스터쪽으로 날아감.
 <br></br>
 ![alt text](README_content/stra.gif "Title Text")
  <br></br>   
  <br></br>
- <details>
-    <summary> 코드 </summary>
+      <details>
+        <summary> AStraight Projectile 클래스의 BeginPlay 함수 코드 ( 몬스터를 감지 ) </summary>
+    
+     
 
-```cpp
-void AStraightProjectile::BeginPlay()
-{
-	Super::BeginPlay();
-
-	DetectActor = DetectDamageTarget();
-}
-
-AActor* AStraightProjectile::DetectDamageTarget()
-{
-	FHitResult DetectResult;
+    
+       ```cpp
+	void AStraightProjectile::BeginPlay()
 	{
-	TArray<AActor*> IgnoreActors; IgnoreActors.Add(GetOwner());
-
-		FVector TraceStartLocation = GetActorLocation();  // Trace 시작 위치
-		FVector TraceDirection = GetActorForwardVector();  // 예: 전방 벡터 (정확한 방향은 상황에 따라 다를 수 있음)
-
-		// 새로운 위치 계산
-		FVector TraceEndLocation = TraceStartLocation + (TraceDirection * Distance);
-
-		// StraightProjectile의 크기를 얻어와서 
-		FVector Origin;
-		FVector BoxExtent;
-		GetActorBounds(false, Origin, BoxExtent);
-		
-		// Projectile의 자식으로 붙어있는 파티클 시스템의 크기는 빼준다.
-		if (ProjectileMeshEffectComponent)
+		Super::BeginPlay();
+	
+		DetectActor = DetectDamageTarget();
+	}
+	
+	AActor* AStraightProjectile::DetectDamageTarget()
+	{
+		FHitResult DetectResult;
 		{
-			// 파티클 시스템의 크기 계산
-			FBox ParticleBounds = ProjectileMeshEffectComponent->Bounds.GetBox();
-			FVector ParticleExtent = ParticleBounds.GetExtent();
-
-			// 파티클 시스템 크기를 반영하지 않으려면 BoxExtent에서 빼기
-			BoxExtent -= ParticleExtent;
-		}
-
-		// 감지 범위 조절
-		BoxExtent.Y += 50;
-		BoxExtent.Z += 150;
-		FVector DetectRange = BoxExtent;
-
-	  //해당 Trace는 MonsterDetectTraceChannel로 발사되는 Trace이다. 
-		// 발사된 해당 Trace는 Collision이 Monster로 설정된 오브젝트가 감지한다.
-		const ETraceTypeQuery TraceTypeQuery = UEngineTypes::ConvertToTraceType(ECollisionChannel::ECC_GameTraceChannel8);
-		const bool bHit = UKismetSystemLibrary::BoxTraceSingle(GetWorld(),
-			TraceStartLocation, TraceEndLocation, DetectRange, GetOwner()->GetActorRotation(), TraceTypeQuery,
-			false, IgnoreActors, EDrawDebugTrace::ForDuration, DetectResult, true);	
-
-		if (bHit)
-		{
-			AActor* TraceDetectActor = DetectResult.GetActor();
-
-			if (TraceDetectActor)
+		TArray<AActor*> IgnoreActors; IgnoreActors.Add(GetOwner());
+	
+			FVector TraceStartLocation = GetActorLocation();  // Trace 시작 위치
+			FVector TraceDirection = GetActorForwardVector();  // 예: 전방 벡터 (정확한 방향은 상황에 따라 다를 수 있음)
+	
+			// 새로운 위치 계산
+			FVector TraceEndLocation = TraceStartLocation + (TraceDirection * Distance);
+	
+			// StraightProjectile의 크기를 얻어와서 
+			FVector Origin;
+			FVector BoxExtent;
+			GetActorBounds(false, Origin, BoxExtent);
+			
+			// Projectile의 자식으로 붙어있는 파티클 시스템의 크기는 빼준다.
+			if (ProjectileMeshEffectComponent)
 			{
-				return TraceDetectActor;
+				// 파티클 시스템의 크기 계산
+				FBox ParticleBounds = ProjectileMeshEffectComponent->Bounds.GetBox();
+				FVector ParticleExtent = ParticleBounds.GetExtent();
+	
+				// 파티클 시스템 크기를 반영하지 않으려면 BoxExtent에서 빼기
+				BoxExtent -= ParticleExtent;
+			}
+	
+			// 감지 범위 조절
+			BoxExtent.Y += 50;
+			BoxExtent.Z += 150;
+			FVector DetectRange = BoxExtent;
+	
+		  //해당 Trace는 MonsterDetectTraceChannel로 발사되는 Trace이다. 
+			// 발사된 해당 Trace는 Collision이 Monster로 설정된 오브젝트가 감지한다.
+			const ETraceTypeQuery TraceTypeQuery = UEngineTypes::ConvertToTraceType(ECollisionChannel::ECC_GameTraceChannel8);
+			const bool bHit = UKismetSystemLibrary::BoxTraceSingle(GetWorld(),
+				TraceStartLocation, TraceEndLocation, DetectRange, GetOwner()->GetActorRotation(), TraceTypeQuery,
+				false, IgnoreActors, EDrawDebugTrace::ForDuration, DetectResult, true);	
+	
+			if (bHit)
+			{
+				AActor* TraceDetectActor = DetectResult.GetActor();
+	
+				if (TraceDetectActor)
+				{
+					return TraceDetectActor;
+				}
 			}
 		}
+		return nullptr;
 	}
-	return nullptr;
-}
-```
-
-</details>
+	```
+	</details>
 <br></br>   
  <br></br>
  <br></br>
