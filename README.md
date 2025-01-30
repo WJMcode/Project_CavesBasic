@@ -274,13 +274,14 @@ Straight Projectile이 날아가는 동안 Projectile 주변에 몬스터가 있
 ![alt text](README_content/stra.gif "Title Text")
 <br></br>
       <details>
-        <summary> AStraight Projectile 클래스의 BeginPlay 함수 코드 ( Straight Projectile 생성 시, 범위 내 몬스터를 감지 ) </summary>
+        <summary> AStraight Projectile 클래스의 BeginPlay 함수와 DetectDamageTarget 함수 코드 ( Straight Projectile 생성 시, 범위 내 몬스터를 감지 ) </summary>
     
      
 
     
        ```cpp
-       /* Straight Projectile이 생성되면 BeginPlay 함수가 호출됩니다. BeginPlay 함수는 DetectDamageTarget 함수를 호출하여 반환값을 DetectActor에 저장합니다.
+       /* Straight Projectile이 생성되면 AStraightProjectile 클래스의 BeginPlay 함수가 호출됩니다.
+        * BeginPlay 함수는 DetectDamageTarget 함수를 호출하여 반환값을 DetectActor에 저장합니다.
         * DetectDamageTarget 함수는 감지된 몬스터를 반환하는 함수입니다.
         * Straight Projectile의 이동 경로 근처에 Collision이 몬스터로 설정된 오브젝트가 있는지 Box Trace를 통해 감지합니다.
         * 감지되었다면 해당 오브젝트를 가리키는 포인터를 반환하고 DetectDamageTarget 함수를 종료합니다.
@@ -325,8 +326,8 @@ Straight Projectile이 날아가는 동안 Projectile 주변에 몬스터가 있
 			BoxExtent.Z += 150;
 			FVector DetectRange = BoxExtent;
 	
-		        //해당 Trace는 MonsterDetectTraceChannel로 발사되는 Trace이다. 
-			// 발사된 해당 Trace는 Collision이 Monster로 설정된 오브젝트가 감지한다.
+		     //해당 Trace는 MonsterDetectTraceChannel로 발사되는 Trace이다. 
+			// 발사된 해당 Trace는 Collision이 Monster로 설정된 오브젝트를 감지한다.
 			const ETraceTypeQuery TraceTypeQuery = UEngineTypes::ConvertToTraceType(ECollisionChannel::ECC_GameTraceChannel8);
 			const bool bHit = UKismetSystemLibrary::BoxTraceSingle(GetWorld(),
 				TraceStartLocation, TraceEndLocation, DetectRange, GetOwner()->GetActorRotation(), TraceTypeQuery,
@@ -347,37 +348,45 @@ Straight Projectile이 날아가는 동안 Projectile 주변에 몬스터가 있
 	```
 	</details>
 <br></br>   
- <br></br>
+      <details>
+        <summary> AStraight Projectile 클래스의 Tick 함수와 FollowDamageTarget 함수 코드 ( Straight Projectile이, 감지한 몬스터 쪽으로 이동 ) </summary>
+    
+     
 
- <details>
-    <summary> 코드 </summary>
-
-```cpp
-void AStraightProjectile::Tick(float DeltaTime)
-{
-	Super::Tick(DeltaTime);
-
-	if (DetectActor)
+    
+       ```cpp
+       /* Straight Projectile이 존재하는 동안 AStraightProjectile 클래스의 Tick 함수가 호출됩니다.
+        * Tick 함수에서는 멤버 포인터인 DetectActor가 가리키는 오브젝트가 존재한다면, FollowDamageTarget 함수를 호출합니다.
+	* FollowDamageTarget 함수는 인자로 받은 오브젝트(몬스터)를 Straight Projectile이 따라갈 수 있도록 하는 함수입니다.
+ 	* FollowDamageTarget 함수가 호출될 때마다 따라가야 하는 오브젝트가 어떤 방향에 존재하는지 계속 체크합니다.
+  	* 그리고 Straight Projectile을 해당 방향으로 회전시킵니다.
+	* Straight Projectile은 생성 시 일정한 방향으로 이동하고 속도(Velocity)도 이미 설정되어 있으므로, 
+ 	* FollowDamageTarget 함수에서 방향만 설정해주어도 발사체가 타겟으로 이동하게 됩니다.
+        */
+	void AStraightProjectile::Tick(float DeltaTime)
 	{
-		FollowDamageTarget(DetectActor);
+		Super::Tick(DeltaTime);
+	
+		if (DetectActor)
+		{
+			FollowDamageTarget(DetectActor);
+		}
 	}
-}
-
-void AStraightProjectile::FollowDamageTarget(AActor* TargetActor)
-{
-	// 감지된 Actor를 따라가는 함수
-	// 타겟 방향을 계산.
-	FVector DirectionToTarget = (TargetActor->GetActorLocation() - GetActorLocation()).GetSafeNormal();
-
-	// 발사체를 타겟 방향으로 회전시킴.
-	FRotator NewRotation = DirectionToTarget.Rotation();
-	SetActorRotation(NewRotation);
-
-	ProjectileMovementComponent->Velocity = DirectionToTarget * ProjectileData->InitialSpeed;
-}
-
-```
-</details>
+	
+	void AStraightProjectile::FollowDamageTarget(AActor* TargetActor)
+	{
+		// 감지된 Actor를 따라가는 함수
+		// 타겟 방향을 계산.
+		FVector DirectionToTarget = (TargetActor->GetActorLocation() - GetActorLocation()).GetSafeNormal();
+	
+		// 발사체를 타겟 방향으로 회전시킴.
+		FRotator NewRotation = DirectionToTarget.Rotation();
+		SetActorRotation(NewRotation);
+	
+		ProjectileMovementComponent->Velocity = DirectionToTarget * ProjectileData->InitialSpeed;
+	}
+	```
+	</details>
 <br></br>   
  <br></br>
  <br></br>
