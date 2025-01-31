@@ -395,18 +395,34 @@ Straight Projectile이 날아가는 동안 Projectile 주변에 몬스터가 있
 ![alt text](README_content/blinkCha.gif "Title Text")
 <br></br>
       <details>
-        <summary> AStraight Projectile 클래스의 BeginPlay 함수와 DetectDamageTarget 함수 코드 ( Straight Projectile 생성 시, 범위 내 몬스터를 감지 ) </summary>
+        <summary> UCharacterMeshEffect 클래스의 ApplyHitMaterial 함수 코드 ( Player의 메시에 효과를 주기 위한 클래스 ) </summary>
     
      
 
     
        ```cpp
+       /* Player의 메시는 오버레이 머티리얼을 가지고 있습니다.
+        * Player가 피격될 경우 오버레이 머티리얼의 HitOverlayOpacity라는 Parameter의 값을 변경합니다.
+        * 기본적으로 0인 상태에서 피격될 경우 0.6으로 값이 설정되어 Player의 메시가 보라색이 됩니다.
+        * 이후 HitOverlayOpacity의 값을 0으로, 그리고 0.6으로 설정하는 것을 반복하여 보라색으로 깜빡이는 효과를 줍니다.
+        * Player가 사망하거나, 일정 시간이 지나면 HitOverlayOpacity의 값을 0으로 설정함으로써 깜빡임을 멈춥니다.
+        */
 	void UCharacterMeshEffect::ApplyHitMaterial(const float Duration)
 	{
-	   ...
+	    if (!OwningPlayer || !TargetMeshComponent)
+	    {
+	        UE_LOG(LogTemp, Warning, TEXT("OwningPlayer or MeshComponent is nullptr."));
+	        return;
+	    }
 	
 	    // 1. Overlay Material을 가져오기
 	    OriginalOverlayMaterial = TargetMeshComponent->GetOverlayMaterial();
+	
+	    if (!OriginalOverlayMaterial)
+	    {
+	        UE_LOG(LogTemp, Warning, TEXT("OriginalOverlayMaterial is nullptr, 플레이어 Mesh에는 오버레이 머티리얼이 존재해야 합니다."));
+	        return;
+	    }
 	    
 	    // 2. Overlay Material을 동적 머티리얼 인스턴스로 변환
 	    UMaterialInstanceDynamic* DynOverlayMaterial = UMaterialInstanceDynamic::Create(OriginalOverlayMaterial, this);
@@ -432,7 +448,7 @@ Straight Projectile이 날아가는 동안 Projectile 주변에 몬스터가 있
 	            // OwningPlayer가 사망 상태라면 덜 깜빡임
 	            if (OwningPlayer && OwningPlayer->GetStatusComponent()->IsDie())
 	            {
-	                // Duration / x초 후에 타이머를 멈추고 원래 Material로 복원
+	                // Duration / x초 후에 타이머를 멈추도록 설정
 	                GetWorld()->GetTimerManager().SetTimer(RestoreTimerHandle, [this, DynOverlayMaterial]()
 	                    {
 	                        RestoreOriginalMaterial(DynOverlayMaterial);
@@ -462,6 +478,41 @@ Straight Projectile이 날아가는 동안 Projectile 주변에 몬스터가 있
 	            }
 	        }
 	    }
+	}
+	
+	void UCharacterMeshEffect::BlinkMaterial(UMaterialInstanceDynamic* OutDynOverlayMaterial)
+	{
+	    if (BlinkCount % 2 == 0)
+	    {
+	        // HitOverlayOpacity값을 0.0f로 설정, 기본 상태랑 같음
+	        OutDynOverlayMaterial->SetScalarParameterValue("HitOverlayOpacity", 0.0f);
+	    }
+	    else
+	    {
+	        // HitOverlayOpacity값을 0.6f로 설정, OverlayMaterial이 캐릭터에게 반투명 형태로 나타남
+	        OutDynOverlayMaterial->SetScalarParameterValue("HitOverlayOpacity", 0.6f);
+	    }
+	
+	    // 파라미터 변경 후 Overlay Material 재설정
+	    TargetMeshComponent->SetOverlayMaterial(OutDynOverlayMaterial);
+	
+	    // BlinkCount 증가
+	    ++BlinkCount;
+	}
+	
+	void UCharacterMeshEffect::RestoreOriginalMaterial(UMaterialInstanceDynamic* OutDynOverlayMaterial)
+	{
+	    TargetMeshComponent->SetOverlayMaterial(OriginalOverlayMaterial);
+	}
+	
+	void UCharacterMeshEffect::InitializeMembers()
+	{
+	
+	    OriginalOverlayMaterial = nullptr;
+	
+	    BlinkCount = 0;
+	    BlinkTimerHandle.Invalidate();
+	    RestoreTimerHandle.Invalidate(); 
 	}
 	```
 	</details><br></br>
