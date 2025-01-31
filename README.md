@@ -387,87 +387,84 @@ Straight Projectile이 날아가는 동안 Projectile 주변에 몬스터가 있
 		ProjectileMovementComponent->Velocity = DirectionToTarget * ProjectileData->InitialSpeed;
 	}
 	```
-	</details>
-<br></br>   
- <br></br>
- <br></br>
-           
- * Player 피격 시, Overlay Material의 Opacity 값을 조정하여 깜빡이는 효과 부여 
+	</details><br><br>
+
+      
+  - Player 피격 시, Overlay Material의 Opacity 값을 조정하여 깜빡이는 효과 부여 
 <br></br>
+![alt text](README_content/blinkCha.gif "Title Text")
 <br></br>
-![사진이름](blinkCha.gif)
-
-
-  <details>
-<summary> 코드 </summary>
- 
-```cpp
-void UCharacterMeshEffect::ApplyHitMaterial(const float Duration)
-{
-   ...
-
-    // 1. Overlay Material을 가져오기
-    OriginalOverlayMaterial = TargetMeshComponent->GetOverlayMaterial();
+      <details>
+        <summary> AStraight Projectile 클래스의 BeginPlay 함수와 DetectDamageTarget 함수 코드 ( Straight Projectile 생성 시, 범위 내 몬스터를 감지 ) </summary>
     
-    // 2. Overlay Material을 동적 머티리얼 인스턴스로 변환
-    UMaterialInstanceDynamic* DynOverlayMaterial = UMaterialInstanceDynamic::Create(OriginalOverlayMaterial, this);
+     
 
-    if (DynOverlayMaterial)
-    {
-        DynOverlayMaterial->SetScalarParameterValue("HitOverlayOpacity", 0.6f);
-        TargetMeshComponent->SetOverlayMaterial(DynOverlayMaterial);
-
-        // BlinkTimerHandle가 작동하고 있지 않을 때에만 아래 코드 실행
-        if (!GetWorld()->GetTimerManager().IsTimerActive(BlinkTimerHandle))
-        {
-            // (Duration / x.f)초마다 BlinkMaterial 함수를 호출함
-            GetWorld()->GetTimerManager().SetTimer(BlinkTimerHandle, [this, DynOverlayMaterial]()
-                {
-                    BlinkMaterial(DynOverlayMaterial);
-                }, Duration / 30.f, true);
-        }
-
-        // RestoreTimerHandle가 작동하고 있지 않을 때에만 아래 코드 실행
-        if (!GetWorld()->GetTimerManager().IsTimerActive(RestoreTimerHandle))
-        {
-            // OwningPlayer가 사망 상태라면 덜 깜빡임
-            if (OwningPlayer && OwningPlayer->GetStatusComponent()->IsDie())
-            {
-                // Duration / x초 후에 타이머를 멈추고 원래 Material로 복원
-                GetWorld()->GetTimerManager().SetTimer(RestoreTimerHandle, [this, DynOverlayMaterial]()
-                    {
-                        RestoreOriginalMaterial(DynOverlayMaterial);
-
-                        // 타이머 정지
-                        GetWorld()->GetTimerManager().ClearTimer(BlinkTimerHandle);
-                        GetWorld()->GetTimerManager().ClearTimer(RestoreTimerHandle);
-
-                        InitializeMembers();
-
-                    }, Duration / 3.f , false);
-            }
-            else
-            {
-                // Duration초 후에 타이머를 멈추도록 설정
-                GetWorld()->GetTimerManager().SetTimer(RestoreTimerHandle, [this, DynOverlayMaterial]()
-                    {
-                        RestoreOriginalMaterial(DynOverlayMaterial);
-
-                        // 타이머 정지
-                        GetWorld()->GetTimerManager().ClearTimer(BlinkTimerHandle);
-                        GetWorld()->GetTimerManager().ClearTimer(RestoreTimerHandle);
-
-                        InitializeMembers();
-
-                    }, Duration, false);
-            }
-        }
-    }
-}
-```
-
-</details>
-          <br></br>
+    
+       ```cpp
+	void UCharacterMeshEffect::ApplyHitMaterial(const float Duration)
+	{
+	   ...
+	
+	    // 1. Overlay Material을 가져오기
+	    OriginalOverlayMaterial = TargetMeshComponent->GetOverlayMaterial();
+	    
+	    // 2. Overlay Material을 동적 머티리얼 인스턴스로 변환
+	    UMaterialInstanceDynamic* DynOverlayMaterial = UMaterialInstanceDynamic::Create(OriginalOverlayMaterial, this);
+	
+	    if (DynOverlayMaterial)
+	    {
+	        DynOverlayMaterial->SetScalarParameterValue("HitOverlayOpacity", 0.6f);
+	        TargetMeshComponent->SetOverlayMaterial(DynOverlayMaterial);
+	
+	        // BlinkTimerHandle가 작동하고 있지 않을 때에만 아래 코드 실행
+	        if (!GetWorld()->GetTimerManager().IsTimerActive(BlinkTimerHandle))
+	        {
+	            // (Duration / x.f)초마다 BlinkMaterial 함수를 호출함
+	            GetWorld()->GetTimerManager().SetTimer(BlinkTimerHandle, [this, DynOverlayMaterial]()
+	                {
+	                    BlinkMaterial(DynOverlayMaterial);
+	                }, Duration / 30.f, true);
+	        }
+	
+	        // RestoreTimerHandle가 작동하고 있지 않을 때에만 아래 코드 실행
+	        if (!GetWorld()->GetTimerManager().IsTimerActive(RestoreTimerHandle))
+	        {
+	            // OwningPlayer가 사망 상태라면 덜 깜빡임
+	            if (OwningPlayer && OwningPlayer->GetStatusComponent()->IsDie())
+	            {
+	                // Duration / x초 후에 타이머를 멈추고 원래 Material로 복원
+	                GetWorld()->GetTimerManager().SetTimer(RestoreTimerHandle, [this, DynOverlayMaterial]()
+	                    {
+	                        RestoreOriginalMaterial(DynOverlayMaterial);
+	
+	                        // 타이머 정지
+	                        GetWorld()->GetTimerManager().ClearTimer(BlinkTimerHandle);
+	                        GetWorld()->GetTimerManager().ClearTimer(RestoreTimerHandle);
+	
+	                        InitializeMembers();
+	
+	                    }, Duration / 3.f , false);
+	            }
+	            else
+	            {
+	                // Duration초 후에 타이머를 멈추도록 설정
+	                GetWorld()->GetTimerManager().SetTimer(RestoreTimerHandle, [this, DynOverlayMaterial]()
+	                    {
+	                        RestoreOriginalMaterial(DynOverlayMaterial);
+	
+	                        // 타이머 정지
+	                        GetWorld()->GetTimerManager().ClearTimer(BlinkTimerHandle);
+	                        GetWorld()->GetTimerManager().ClearTimer(RestoreTimerHandle);
+	
+	                        InitializeMembers();
+	
+	                    }, Duration, false);
+	            }
+	        }
+	    }
+	}
+	```
+	</details><br></br>
                     <br></br>
                               <br></br>
                               <br></br>
