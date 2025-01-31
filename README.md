@@ -403,8 +403,8 @@ Straight Projectile이 날아가는 동안 Projectile 주변에 몬스터가 있
        ```cpp
        /* Player의 메시는 오버레이 머티리얼을 가지고 있습니다.
         * Player가 피격될 경우 오버레이 머티리얼의 HitOverlayOpacity라는 Parameter의 값을 변경합니다.
-        * 기본적으로 0인 상태에서 피격될 경우 0.6으로 값이 설정되어 Player의 메시가 보라색이 됩니다.
-        * 이후 HitOverlayOpacity의 값을 0으로, 그리고 0.6으로 설정하는 것을 반복하여 보라색으로 깜빡이는 효과를 줍니다.
+        * 기본적으로 HitOverlayOpacity의 값은 0이며, 피격될 경우 0.6으로 값이 설정되어 Player의 메시가 보라색이 됩니다.
+        * 이후 HitOverlayOpacity의 값을 다시 0으로, 그리고 0.6으로 설정하는 것을 반복하여 보라색으로 깜빡이는 효과를 줍니다.
         * Player가 사망하거나, 일정 시간이 지나면 HitOverlayOpacity의 값을 0으로 설정함으로써 깜빡임을 멈춥니다.
         */
 	void UCharacterMeshEffect::ApplyHitMaterial(const float Duration)
