@@ -130,7 +130,6 @@ Player를 중심( 캐릭터의 배꼽 위치 )을 기준으로 바닥이 존재�
 바닥이 없다면 위에 있는 땅을 감지하여 생성됨. 아무것도 감지되지 않으면 생성되지 않음.
 <br></br>
 ![alt text](README_content/groundproject.gif "Title Text")
-<br></br>
       <details>
         <summary> AGroundProjectile 클래스의 BeginPlay 함수 코드 ( GroundProjectile의 생성 위치를 조정 )</summary>
     
@@ -197,7 +196,7 @@ Player를 중심( 캐릭터의 배꼽 위치 )을 기준으로 바닥이 존재�
 		Destroy();
 	}
  	```
-      </details><br>
+      </details>
 
  
       <details>
@@ -268,7 +267,6 @@ Straight Projectile이 날아가는 동안 Projectile 주변에 몬스터가 있
 몬스터가 감지되었다면 해당 몬스터쪽으로 날아감.
 <br></br>
 ![alt text](README_content/stra.gif "Title Text")
-<br></br>
       <details>
         <summary> AStraight Projectile 클래스의 BeginPlay 함수와 DetectDamageTarget 함수 코드 ( Straight Projectile 생성 시, 범위 내 몬스터를 감지 ) </summary>
     
@@ -342,7 +340,7 @@ Straight Projectile이 날아가는 동안 Projectile 주변에 몬스터가 있
 		return nullptr;
 	}
 	```
-	</details><br>
+	</details>
 
  
       <details>
@@ -389,7 +387,6 @@ Straight Projectile이 날아가는 동안 Projectile 주변에 몬스터가 있
   - Player 피격 시, Overlay Material의 Opacity 값을 조정하여 깜빡이는 효과 부여 
 <br></br>
 ![alt text](README_content/blinkCha.gif "Title Text")
-<br></br>
       <details>
         <summary> UCharacterMeshEffect 클래스의 ApplyHitMaterial 함수 코드 ( Player의 메시에 효과를 주기 위한 클래스 ) </summary>
     
@@ -515,9 +512,8 @@ Straight Projectile이 날아가는 동안 Projectile 주변에 몬스터가 있
                     <br>
 * ### ***Monster***
   - Monster 사망 시, Material을 교체하고 Opacity 값을 수정
-                                <br></br>
-                              <br></br>
-![monsteropa](monsteropa.gif)
+                                <br><br>
+![monsteropa](README_content/monsteropa.gif)
                              <br></br>
                               <br></br>
   <details>
