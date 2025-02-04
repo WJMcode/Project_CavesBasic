@@ -1,5 +1,5 @@
 # CavesBasic ( 개발 : 원재민 )
-# [ 프로젝트 소개 ]
+## 프로젝트 소개
 
 ![alt text](README_content/main2.png "Title Text")
 ![alt text](README_content/main.png "Title Text")
@@ -24,25 +24,22 @@
         - 플레이어 체력바 구현
         - 몬스터 체력바 구현
         - 플레이어 사망 시 리스폰창 출력
-        <br></br></h3>
+        <br></br><br>
 
-# [ 세부 사항 ]
-- Player
+## 세부 사항
+- ### ***Player***
   - ***Player의 데이터***는 언리얼 엔진 에디터상에서 데이터 테이블로 세팅 가능
-          <br></br>
+          <br><br>
   ![alt text](README_content/pawndata.png "Title Text")
-          <br></br>
+          <br><br><br>
 	  
   * ***Weapon의 데이터***는 언리얼 엔진 에디터상에서 데이터 테이블로 세팅 가능
-    <br></br>
-***Weapon 데이터 테이블***에서는 해당 Weapon이 보유할 Skill을 세팅해 줄 수 있음.<br>
-***Skill 데이터 테이블***에서는 해당 Skill 사용 시 발사되는 Projectile을 세팅해 줄 수 있음.<br>
-***Projectile 데이터 테이블***에서는 해당 Projectile이 발사되면 발생하는 효과음과 Effect를 세팅해 줄 수 있음.
- <br></br>
+    <br><br>
+***Weapon 데이터 테이블***에서는 해당 Weapon이 보유할 Skill을 세팅해 줄 수 있음.<br><br>
 ![alt text](README_content/WeaponTable.png "Title Text")<br>  　　　　　　  　　　　　　  **`Weapon 데이터 테이블`**<br><br><br>
-![alt text](README_content/SkillTable.png "Title Text")<br>  　　　　　　  　　　　　　  **`Skill 데이터 테이블`**<br><br><br>
-![alt text](README_content/ProjectileTable.png "Title Text")<br>  　　　　　　  　　　　　　  **`Projectile 데이터 테이블`**<br><br><br>
-![alt text](README_content/EffectTable.png "Title Text")<br>  　　　　　　  　　　　　　  **`Effect 데이터 테이블`**<br><br><br>
+***Skill 데이터 테이블***에서는 해당 Skill 사용 시 발사되는 Projectile을 세팅해 줄 수 있음.<br><br> ![alt text](README_content/SkillTable.png "Title Text")<br>  　　　　　　  　　　　　　  **`Skill 데이터 테이블`**<br><br><br>
+***Projectile 데이터 테이블***에서는 해당 Projectile의 크기와 스폰 위치를 세팅해 줄 수 있음.<br><br> ![alt text](README_content/ProjectileTable.png "Title Text")<br>  　　　　　　  　　　　　　  **`Projectile 데이터 테이블`**<br><br><br>
+***Effect 데이터 테이블***에서는 Projectile의 효과음과 Effect를 세팅해 줄 수 있음.<br><br> ![alt text](README_content/EffectTable.png "Title Text")<br>  　　　　　　  　　　　　　  **`Effect 데이터 테이블`**<br><br><br>
 
 
   - Weapon을 습득한 Player는 Skill 사용 가능
@@ -518,10 +515,8 @@ Straight Projectile이 날아가는 동안 Projectile 주변에 몬스터가 있
 	</details><br></br>
                     <br></br>
                               <br></br>
-                              <br></br>
-                              <br></br>
-
-* Monster
+                             
+* ### ***Monster***
   - Monster 사망 시, Material을 교체하고 Opacity 값을 수정
                                 <br></br>
                               <br></br>
