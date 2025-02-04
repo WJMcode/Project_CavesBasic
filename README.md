@@ -514,52 +514,52 @@ Straight Projectile이 날아가는 동안 Projectile 주변에 몬스터가 있
   - Monster 사망 시, Material을 교체하고 Opacity 값을 수정
                                 <br><br>
 ![monsteropa](README_content/monsteropa.gif)
-                             <br></br>
-                              <br></br>
-  <details>
-    <summary> 코드 </summary>
+      <details>
+        <summary> ADefaultMonster 클래스의 BeginPlay 함수 코드 ( Straight Projectile이, 감지한 몬스터 쪽으로 이동 ) </summary>
+    
+     
 
-```cpp
-void ADefaultMonster::BeginPlay()
-{
-	Super::BeginPlay();
-	
-	SetData(DataTableRowHandle);
-
-	USkeletalMeshComponent* SkeletalMeshComponent = GetComponentByClass<USkeletalMeshComponent>();
-
-	// 1번 인덱스에 있는 Material이 BlendMode가 Translucent로 설정되어, Opcity를 수정할 수 있는 Material이다.
-	// MaterialInstanceDynamics는 1번 인덱스에 있는 Material을 가리키는 멤버 변수
-	MaterialInstanceDynamics = SkeletalMeshComponent->CreateAndSetMaterialInstanceDynamic(1);
-	ensureMsgf(MaterialInstanceDynamics->GetBlendMode() == EBlendMode::BLEND_Translucent && MaterialInstanceDynamics, TEXT("1번 인덱스에 존재하는 Material이 없거나, BlendMode가 Translucent가 아닙니다."));
-
-	if (DisappearCurve)	// DisappearCurve 값 세팅
+    
+       ```cpp
+	void ADefaultMonster::BeginPlay()
 	{
-		// 몬스터 사망 모션은 하나로 함
-		float DieMontagePlayLength = MonsterData->DieMontage->GetPlayLength();
+		Super::BeginPlay();
 		
-		// 키프레임 추가
-		FKeyHandle KeyHandle1 = DisappearCurve->FloatCurve.AddKey(0.0f, 1.0f);  // 시간 0에서 값 1
-		// 값이 점점 증가하는 Curve
-		FKeyHandle KeyHandle3 = DisappearCurve->FloatCurve.AddKey(DieMontagePlayLength, DieMontagePlayLength);  // 시간 DieMontagePlayLength에서 값 DieMontagePlayLength
-
-		DisappearCurve->FloatCurve.SetKeyInterpMode(KeyHandle1, RCIM_Cubic);  // 선형 보간
-		DisappearCurve->FloatCurve.SetKeyInterpMode(KeyHandle3, RCIM_Cubic);
+		SetData(DataTableRowHandle);
+	
+		USkeletalMeshComponent* SkeletalMeshComponent = GetComponentByClass<USkeletalMeshComponent>();
+	
+		// 1번 인덱스에 있는 Material이 BlendMode가 Translucent로 설정되어, Opcity를 수정할 수 있는 Material이다.
+		// MaterialInstanceDynamics는 1번 인덱스에 있는 Material을 가리키는 멤버 변수
+		MaterialInstanceDynamics = SkeletalMeshComponent->CreateAndSetMaterialInstanceDynamic(1);
+		ensureMsgf(MaterialInstanceDynamics->GetBlendMode() == EBlendMode::BLEND_Translucent && MaterialInstanceDynamics, TEXT("1번 인덱스에 존재하는 Material이 없거나, BlendMode가 Translucent가 아닙니다."));
+	
+		if (DisappearCurve)	// DisappearCurve 값 세팅
+		{
+			// 몬스터 사망 모션은 하나로 함
+			float DieMontagePlayLength = MonsterData->DieMontage->GetPlayLength();
+			
+			// 키프레임 추가
+			FKeyHandle KeyHandle1 = DisappearCurve->FloatCurve.AddKey(0.0f, 1.0f);  // 시간 0에서 값 1
+			// 값이 점점 증가하는 Curve
+			FKeyHandle KeyHandle3 = DisappearCurve->FloatCurve.AddKey(DieMontagePlayLength, DieMontagePlayLength);  // 시간 DieMontagePlayLength에서 값 DieMontagePlayLength
+	
+			DisappearCurve->FloatCurve.SetKeyInterpMode(KeyHandle1, RCIM_Cubic);  // 선형 보간
+			DisappearCurve->FloatCurve.SetKeyInterpMode(KeyHandle3, RCIM_Cubic);
+		}
+		FOnTimelineFloat Delegate;
+		Delegate.BindDynamic(this, &ThisClass::OnDisappearMesh);
+		// Delegate와 연동된, 즉 OnDisappearMesh 함수가 호출될 때 DisappearCurve를 인자로 넘긴다.
+		DisappearTimelineComponent->AddInterpFloat(DisappearCurve, Delegate);
+	
+		FOnTimelineEvent EndDelegate;
+		EndDelegate.BindDynamic(this, &ThisClass::OnDisappearMeshEnd);
+		DisappearTimelineComponent->SetTimelineFinishedFunc(EndDelegate);
+	
+		...
 	}
-	FOnTimelineFloat Delegate;
-	Delegate.BindDynamic(this, &ThisClass::OnDisappearMesh);
-	// Delegate와 연동된, 즉 OnDisappearMesh 함수가 호출될 때 DisappearCurve를 인자로 넘긴다.
-	DisappearTimelineComponent->AddInterpFloat(DisappearCurve, Delegate);
-
-	FOnTimelineEvent EndDelegate;
-	EndDelegate.BindDynamic(this, &ThisClass::OnDisappearMeshEnd);
-	DisappearTimelineComponent->SetTimelineFinishedFunc(EndDelegate);
-
-	...
-}
-```
-
-</details>
+	```
+	</details>
                               <br></br>
                               <br></br>
                               <br></br>
