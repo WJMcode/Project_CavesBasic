@@ -597,6 +597,6 @@ Straight Projectile이 날아가는 동안 Projectile 주변에 몬스터가 있
 * ### ***UI***
   - Player 사망 시 리스폰창 출력 및 리스폰 진행
                                 <br><br>
-![사진이름](README_content/resp.gif)
+![사진이름](README_content/respawn.gif)
                                 <br><br>
 ![사진이름](README_content/PlayerRespawn.gif)
