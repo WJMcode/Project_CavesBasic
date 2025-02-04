@@ -601,5 +601,6 @@ Straight Projectile이 날아가는 동안 Projectile 주변에 몬스터가 있
 
 
 * UI
-  - 플레이어 리스폰 진행
-
+  - Player 리스폰 진행
+                                <br><br>
+![사진이름](README_content/PlayerRespawn.gif)
