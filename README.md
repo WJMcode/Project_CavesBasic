@@ -592,65 +592,64 @@ Straight Projectile이 날아가는 동안 Projectile 주변에 몬스터가 있
 	}
 	```
 	</details>
-                              <br></br>
-                              <br></br>
-                              <br></br>
+                              <br><br>
                               
-* UI
+* ### ***UI***
   - 플레이어 사망 시 리스폰창 출력
                                 <br></br>
                               <br></br>
-![사진이름](resp.gif)
-                                <br></br>
-                              <br></br>
+![사진이름](README_content/resp.gif)
+      <details>
+        <summary> ABasicHUD 클래스의 BeginPlay 함수 코드 </summary>
+    
+     
 
-       <details>
-    <summary> 코드 </summary>                      
- ```cpp
-void ABasicHUD::BeginPlay()
-{
-	Super::BeginPlay();
-	
-  // 플레이어가 사망했을 때 Broadcast하는
-  // OnDie 델리게이트를 구독하는 함수
-	AddRespawnHUDDelegate();
-
-	// 블루프린트에서 UBasicHUDWidget 클래스로 만든 위젯 안에는 
-	// UHPBarWidgetBase와 URespawnPanelWidget가 있음
-	
-	// C++에서 UBasicHUDWidget 클래스 안에는
-	// UHPBarWidgetBase 와 URespawnPanelWidget 객체를 가리키는 포인터를 멤버로 들고 있다.
-	// 해당 멤버들은 블루프린트에 있는 위젯을 바인딩하고 있다.
-
-
-	UClass* WidgetClass = LoadClass<UBasicHUDWidget>(nullptr,
-		TEXT("/Script/UMGEditor.WidgetBlueprint'/Game/UI/UI_CavesBasic.UI_CavesBasic_C'"));
-	
-	if (!WidgetClass)
+    
+       ```cpp
+	void ABasicHUD::BeginPlay()
 	{
-		ensure(WidgetClass);
-		UE_LOG(LogTemp, Error, TEXT("Failed to load WidgetClass!"));
-		return;
+		Super::BeginPlay();
+		
+	  // 플레이어가 사망했을 때 Broadcast하는
+	  // OnDie 델리게이트를 구독하는 함수
+		AddRespawnHUDDelegate();
+	
+		// 블루프린트에서 UBasicHUDWidget 클래스로 만든 위젯 안에는 
+		// UHPBarWidgetBase와 URespawnPanelWidget가 있음
+		
+		// C++에서 UBasicHUDWidget 클래스 안에는
+		// UHPBarWidgetBase 와 URespawnPanelWidget 객체를 가리키는 포인터를 멤버로 들고 있다.
+		// 해당 멤버들은 블루프린트에 있는 위젯을 바인딩하고 있다.
+	
+	
+		UClass* WidgetClass = LoadClass<UBasicHUDWidget>(nullptr,
+			TEXT("/Script/UMGEditor.WidgetBlueprint'/Game/UI/UI_CavesBasic.UI_CavesBasic_C'"));
+		
+		if (!WidgetClass)
+		{
+			ensure(WidgetClass);
+			UE_LOG(LogTemp, Error, TEXT("Failed to load WidgetClass!"));
+			return;
+		}
+		
+		Widget = CreateWidget<UBasicHUDWidget>(GetWorld(), WidgetClass);
+	
+		// UBasicHUDWidget가 멤버로 들고 있는 위젯들의 초기화 작업 진행
+		Widget->InitializeWidgets(GetOwningPawn());
+		
+		...
+	
+		Widget->AddToViewport();
+	
 	}
 	
-	Widget = CreateWidget<UBasicHUDWidget>(GetWorld(), WidgetClass);
-
-	// UBasicHUDWidget가 멤버로 들고 있는 위젯들의 초기화 작업 진행
-	Widget->InitializeWidgets(GetOwningPawn());
+	void ABasicHUD::OnPlayerDeath()
+	{
+		Widget->HandlePlayerDeath();
+	}
 	
-	...
-
-	Widget->AddToViewport();
-
-}
-
-void ABasicHUD::OnPlayerDeath()
-{
-	Widget->HandlePlayerDeath();
-}
-
-```
-</details>
+	```
+	</details>
                                 <br></br>
                               <br></br>
           <details>
