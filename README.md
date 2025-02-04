@@ -388,7 +388,7 @@ Straight Projectile이 날아가는 동안 Projectile 주변에 몬스터가 있
 <br></br>
 ![alt text](README_content/blinkCha.gif "Title Text")
       <details>
-        <summary> UCharacterMeshEffect 클래스의 ApplyHitMaterial 함수 코드 ( Player의 메시에 효과를 주기 위한 클래스 ) </summary>
+        <summary> UCharacterMeshEffect 클래스의 ApplyHitMaterial 함수 코드 ( UCharacterMeshEffect는 Player의 메시에 효과를 주기 위한 클래스 ) </summary>
     
      
 
@@ -515,7 +515,7 @@ Straight Projectile이 날아가는 동안 Projectile 주변에 몬스터가 있
                                 <br><br>
 ![monsteropa](README_content/monsteropa.gif)
       <details>
-        <summary> ADefaultMonster 클래스의 BeginPlay 함수 코드 </summary>
+        <summary> ADefaultMonster 클래스의 BeginPlay와 OnDisappearMesh, OnDisappearMeshEnd 함수 코드 </summary>
     
      
 
@@ -595,227 +595,11 @@ Straight Projectile이 날아가는 동안 Projectile 주변에 몬스터가 있
                               <br><br>
                               
 * ### ***UI***
-  - 플레이어 사망 시 리스폰창 출력
-                                <br></br>
-                              <br></br>
+  - Player 사망 시 리스폰창 출력
+                                <br><br>
 ![사진이름](README_content/resp.gif)
-      <details>
-        <summary> ABasicHUD 클래스의 BeginPlay 함수 코드 </summary>
-    
-     
 
-    
-       ```cpp
-	void ABasicHUD::BeginPlay()
-	{
-		Super::BeginPlay();
-		
-	  // 플레이어가 사망했을 때 Broadcast하는
-	  // OnDie 델리게이트를 구독하는 함수
-		AddRespawnHUDDelegate();
-	
-		// 블루프린트에서 UBasicHUDWidget 클래스로 만든 위젯 안에는 
-		// UHPBarWidgetBase와 URespawnPanelWidget가 있음
-		
-		// C++에서 UBasicHUDWidget 클래스 안에는
-		// UHPBarWidgetBase 와 URespawnPanelWidget 객체를 가리키는 포인터를 멤버로 들고 있다.
-		// 해당 멤버들은 블루프린트에 있는 위젯을 바인딩하고 있다.
-	
-	
-		UClass* WidgetClass = LoadClass<UBasicHUDWidget>(nullptr,
-			TEXT("/Script/UMGEditor.WidgetBlueprint'/Game/UI/UI_CavesBasic.UI_CavesBasic_C'"));
-		
-		if (!WidgetClass)
-		{
-			ensure(WidgetClass);
-			UE_LOG(LogTemp, Error, TEXT("Failed to load WidgetClass!"));
-			return;
-		}
-		
-		Widget = CreateWidget<UBasicHUDWidget>(GetWorld(), WidgetClass);
-	
-		// UBasicHUDWidget가 멤버로 들고 있는 위젯들의 초기화 작업 진행
-		Widget->InitializeWidgets(GetOwningPawn());
-		
-		...
-	
-		Widget->AddToViewport();
-	
-	}
-	
-	void ABasicHUD::OnPlayerDeath()
-	{
-		Widget->HandlePlayerDeath();
-	}
-	
-	```
-	</details>
-                                <br></br>
-                              <br></br>
-          <details>
-    <summary> 코드 </summary>
-
-```cpp
-void UBasicHUDWidget::HandlePlayerDeath()
-{
-    UI_RespawnPanel->ShowRespawnPanel(true);
-}
-```
-
-</details>
-             <br></br>
-             <br></br>
-                <details>
-    <summary> 코드 </summary>
-
-```cpp
-void URespawnPanelWidget::ShowRespawnPanel(bool bShow)
-{
-	SetVisibility(bShow ? ESlateVisibility::Visible : ESlateVisibility::Hidden);
-}
-```
-
-</details>
-                              <br></br>
-                                                            <br></br>
 
 * UI
   - 플레이어 리스폰 진행
-                              <br></br>
-                                                            <br></br>
-    <details>
-    <summary> 코드 </summary>
 
-```cpp
-void AStageGameMode::RespawnPlayer(APlayerController* PlayerController)
-{
-    if (!PlayerController) return;
-
-    // 사망한 플레이어 Actor 제거
-    APawn* OldCharacter = PlayerController->GetPawn();
-    OldCharacter->Destroy();
-
-    // PlayerStart를 찾아 리스폰 위치 결정
-    AActor* PlayerStart = FindPlayerStart(PlayerController);
-    FVector SpawnLocation = PlayerStart->GetActorLocation();
-    FRotator SpawnRotation = PlayerStart->GetActorRotation();
-
-    // 새로운 플레이어 캐릭터 생성
-    ABasicPlayer* NewCharacter = GetWorld()->SpawnActor<ABasicPlayer>(DefaultPawnClass, SpawnLocation, SpawnRotation);
-    if (NewCharacter)
-    {
-        PlayerController->Possess(NewCharacter);  // 새로운 캐릭터를 빙의
-
-        // 캐릭터 상태 초기화, 체력을 1로 세팅한 후 리스폰
-        NewCharacter->ResetCharacterStatus();
-
-        // HUD 갱신
-        ABasicHUD* BasicHUD = Cast<ABasicHUD>(PlayerController->GetHUD());
-        if (BasicHUD)
-        {
-            APawn* OwningPawn = BasicHUD->GetOwningPawn();
-
-            if(OwningPawn)
-            {
-                if (!BasicHUD) { ensure(false); }
-                
-                // 델리게이트 구독 해제
-                BasicHUD->RemoveHUDDelegate();  // 기존에 구독한 델리게이트를 해제하는 함수
-                // 델리게이트 다시 구독
-                BasicHUD->AddRespawnHUDDelegate();  // 델리게이트 재구독
-
-                BasicHUD->ResetUI(OwningPawn);  // UI 갱신 
-            }
-            else
-            {
-                UE_LOG(LogTemp, Warning, TEXT("AStageGameMode::RespawnPlayer(APlayerController* PlayerController) : OwningPawn is nullptr"))
-            }
-        }
-    }
-}
-```
-
-</details>
-                              <br></br>
-                                                            <br></br>
-    <details>
-    <summary> ABasicHUD::ResetUI </summary>
-
-```cpp
-void ABasicHUD::ResetUI(APawn* InOwningPawn)
-{
-  // Widget은 체력바와 리스폰창을 멤버로 들고 있음
-	Widget->InitializeWidgets(InOwningPawn);
-	Widget->RefreshWidgetsForRespawn();
-}
-```
-
-</details>
-                              <br></br>
-                                                            <br></br>
-    <details>
-    <summary> UBasicHUDWidget::RefreshWidgetsForRespawn </summary>
-
-```cpp
-void UBasicHUDWidget::RefreshWidgetsForRespawn()
-{
-    // PlayerHPBar 관련
-    {
-        if (UI_PlayerHPBar)
-        {
-            // 델리게이트 구독 해제
-            UI_PlayerHPBar->RemoveHPBarDelegate();  // 이미 구독한 델리게이트를 해제하는 함수
-            // 델리게이트 다시 구독
-            UI_PlayerHPBar->AddHPBarDelegate();  // 델리게이트 재구독
-
-            UI_PlayerHPBar->RefreshHPBar();
-        }
-    }
-}
-```
-
-</details>
-                              <br></br>
-                                                            <br></br>
-    <details>
-    <summary> UHPBarWidgetBase::AddHPBarDelegate, RefreshHPBar </summary>
-
-```cpp
-void UHPBarWidgetBase::AddHPBarDelegate()
-{
-	if (OwningPawn)
-	{
-		UStatusComponent* StatusComponent = OwningPawn->GetComponentByClass<UStatusComponent>();
-		check(StatusComponent);
-		StatusComponent->OnHPChanged.AddDynamic(this, &ThisClass::OnHPChanged);
-		StatusComponent->OnDie.AddDynamic(this, &ThisClass::OnDie);
-	}
-	else
-	{
-		UE_LOG(LogTemp, Warning, TEXT("UHPBarWidgetBase::AddHPBarDelegate() : OwningPawn is nullptr"));
-	}
-}
-
-void UHPBarWidgetBase::RefreshHPBar()
-{
-	if (OwningPawn)
-	{
-		UStatusComponent* StatusComponent = OwningPawn->GetComponentByClass<UStatusComponent>();
-		check(StatusComponent);
-
-		// OwningPawn의 현재 체력 상태를 얻어와서 
-		// 계산 후에 화면에 띄워준다.
-		float PawnMaxHP = StatusComponent->GetMaxHP();
-		float PawnCurrentHP = StatusComponent->GetHP();
-
-		const float Percent = PawnCurrentHP / PawnMaxHP;
-		HPBar->SetPercent(Percent);
-	}
-	else
-	{
-		UE_LOG(LogTemp, Warning, TEXT("UHPBarWidgetBase::RefreshHPBar() : Pawn is nullptr"));
-	}
-}
-
-```
-</details>
