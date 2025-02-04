@@ -30,8 +30,7 @@
 - ### ***Player***
   - ***Player의 데이터***는 언리얼 엔진 에디터상에서 데이터 테이블로 세팅 가능
           <br><br>
-  ![alt text](README_content/pawndata.png "Title Text")
-          <br><br><br>
+  ![alt text](README_content/pawndata.png "Title Text")<br>  　　　　　　  　　　　　　    　　　　　　  　　　　　　  **`Player 데이터 테이블`**<br><br><br>
 	  
   * ***Weapon의 데이터***는 언리얼 엔진 에디터상에서 데이터 테이블로 세팅 가능
     <br><br>
@@ -39,7 +38,7 @@
 ![alt text](README_content/WeaponTable.png "Title Text")<br>  　　　　　　  　　　　　　  **`Weapon 데이터 테이블`**<br><br><br>
 ***Skill 데이터 테이블***에서는 해당 Skill 사용 시 발사되는 Projectile을 세팅해 줄 수 있음.<br><br> ![alt text](README_content/SkillTable.png "Title Text")<br>  　　　　　　  　　　　　　  **`Skill 데이터 테이블`**<br><br><br>
 ***Projectile 데이터 테이블***에서는 해당 Projectile의 크기와 스폰 위치를 세팅해 줄 수 있음.<br><br> ![alt text](README_content/ProjectileTable.png "Title Text")<br>  　　　　　　  　　　　　　  **`Projectile 데이터 테이블`**<br><br><br>
-***Effect 데이터 테이블***에서는 Projectile의 효과음과 Effect를 세팅해 줄 수 있음.<br><br> ![alt text](README_content/EffectTable.png "Title Text")<br>  　　　　　　  　　　　　　  **`Effect 데이터 테이블`**<br><br><br>
+***Effect 데이터 테이블***에서는 Projectile의 효과음과 Effect를 세팅해 줄 수 있음.<br><br> ![alt text](README_content/EffectTable.png "Title Text")<br>  　　　　　　  　　　　　　    　　　**`Effect 데이터 테이블`**<br><br><br>
 
 
   - Weapon을 습득한 Player는 Skill 사용 가능
@@ -512,10 +511,8 @@ Straight Projectile이 날아가는 동안 Projectile 주변에 몬스터가 있
 	    RestoreTimerHandle.Invalidate(); 
 	}
 	```
-	</details><br></br>
-                    <br></br>
-                              <br></br>
-                             
+	</details><br>
+                    <br>
 * ### ***Monster***
   - Monster 사망 시, Material을 교체하고 Opacity 값을 수정
                                 <br></br>
