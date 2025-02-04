@@ -515,12 +515,18 @@ Straight Projectile이 날아가는 동안 Projectile 주변에 몬스터가 있
                                 <br><br>
 ![monsteropa](README_content/monsteropa.gif)
       <details>
-        <summary> ADefaultMonster 클래스의 BeginPlay 함수 코드 ( Straight Projectile이, 감지한 몬스터 쪽으로 이동 ) </summary>
+        <summary> ADefaultMonster 클래스의 BeginPlay 함수 코드 </summary>
     
      
 
     
        ```cpp
+       /* 현재 Monster의 Opcity를 수정할 수 없는 메시로 설정되어 있습니다.
+        * ADefaultMonster 클래스의 BeginPlay 함수에서 멤버 변수 MaterialInstanceDynamics에 Opcity를 수정할 수 있는 Material을 저장하고,
+        * Monster 사망 시, OnDisappearMesh 함수를 호출하여 Monster의 메시를 MaterialInstanceDynamics에 저장된 Material로 교체하고 
+        * Opcity를 조정합니다. 이로써 Monster의 메시가 점점 투명해지도록 연출할 수 있게 됩니다.
+        * OnDisappearMesh 함수가 종료되면 OnDisappearMeshEnd 함수를 호출하여 Monster를 Destroy합니다.
+        */
 	void ADefaultMonster::BeginPlay()
 	{
 		Super::BeginPlay();
@@ -557,6 +563,32 @@ Straight Projectile이 날아가는 동안 Projectile 주변에 몬스터가 있
 		DisappearTimelineComponent->SetTimelineFinishedFunc(EndDelegate);
 	
 		...
+	}
+
+	void ADefaultMonster::OnDisappearMesh(float InDissolve)
+	{
+		if (MaterialInstanceDynamics)
+		{
+			USkeletalMeshComponent* SkeletalMeshComponent = GetComponentByClass<USkeletalMeshComponent>();
+			// MaterialInstanceDynamics가 가리키고 있는, BlendMode가 Translucent로 설정된
+			// Material을 Monster의 0번 Material로 설정해 준다.
+			SkeletalMeshComponent->SetMaterial(0, MaterialInstanceDynamics);
+	
+			// CurrentTransparency의 초깃값은 1이다.
+			float CurrentTransparency;
+			MaterialInstanceDynamics->GetScalarParameterValue(FName("Opacity"), CurrentTransparency);
+	
+			float SpeedMultiplier = 0.005f; // 낮을수록 투명도 감소 속도를 더 천천히 만듭니다.
+			
+			// CurrentTransparency의 값을 점점 감소시켜 몬스터가 점점 투명해지도록 한다.
+			float NewTransparency = FMath::Max(CurrentTransparency - InDissolve * SpeedMultiplier, 0.0f); // Max 함수는 첫 번째 인자의 값이 음수가 나오면 0.0f을 반환해 준다.
+			MaterialInstanceDynamics->SetScalarParameterValue(FName("Opacity"), NewTransparency);
+		}
+	}
+	
+	void ADefaultMonster::OnDisappearMeshEnd()
+	{
+		Destroy();
 	}
 	```
 	</details>
