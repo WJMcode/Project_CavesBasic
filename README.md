@@ -130,10 +130,6 @@ Player를 중심( 캐릭터의 배꼽 위치 )을 기준으로 바닥이 존재�
 바닥이 없다면 위에 있는 땅을 감지하여 생성됨. 아무것도 감지되지 않으면 생성되지 않음.
 <br></br>
 ![alt text](README_content/groundproject.gif "Title Text")
-![alt text](README_content/test2.gif "Title Text")
-![alt text](README_content/test3.gif "Title Text")
-![alt text](README_content/test4.gif "Title Text")
-![alt text](README_content/test5.gif "Title Text")
       <details>
         <summary> AGroundProjectile 클래스의 BeginPlay 함수 코드 ( GroundProjectile의 생성 위치를 조정 )</summary>
     
