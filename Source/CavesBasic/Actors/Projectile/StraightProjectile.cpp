@@ -75,7 +75,7 @@ AActor* AStraightProjectile::DetectDamageTarget()
 		}
 
 		// 감지 범위 조절
-		BoxExtent.Y += 50;
+		BoxExtent.Y += 150;
 		BoxExtent.Z += 150;
 		FVector DetectRange = BoxExtent;
 
