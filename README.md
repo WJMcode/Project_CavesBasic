@@ -1,4 +1,4 @@
-# CavesBasic ( 개발 : 원재민 )
+![deathAndRespawn](https://github.com/user-attachments/assets/6ab37dc7-2e68-4e1c-82c0-9a2a565c19f3)# CavesBasic ( 개발 : 원재민 )
 ## 프로젝트 소개
 
 ![alt text](README_content/main2.png "Title Text")
@@ -601,6 +601,5 @@ Straight Projectile이 날아가는 동안 Projectile 주변에 몬스터가 있
 * ### ***UI***
   - Player 사망 시 리스폰창 출력 및 리스폰 진행
                                 <br><br>
-![deathAndRespawn](https://github.com/user-attachments/assets/8698bc53-bce9-4ba6-94ba-b420d41f1d31)
-
+![deathAndRespawn](https://github.com/user-attachments/assets/cdaf6837-31ff-42c9-80a2-9c734eed9eaa)
 
