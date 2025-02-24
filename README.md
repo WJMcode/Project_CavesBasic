@@ -388,7 +388,7 @@ Straight Projectile이 날아가는 동안 Projectile 주변에 몬스터가 있
       
   - Player 피격 시, Overlay Material의 Opacity 값을 조정하여 깜빡이는 효과 부여 
 <br></br>
-![blinkCha2](https://github.com/user-attachments/assets/082ba4ee-9184-4cd7-80aa-c72a4bd43106)
+![blinkCha](https://github.com/user-attachments/assets/394c9701-0187-46b3-941f-3b93eed8dc8f)
 
       <details>
         <summary> UCharacterMeshEffect 클래스의 ApplyHitMaterial 함수 코드 ( UCharacterMeshEffect는 Player의 메시에 효과를 주기 위한 클래스 ) </summary>
@@ -601,5 +601,5 @@ Straight Projectile이 날아가는 동안 Projectile 주변에 몬스터가 있
 * ### ***UI***
   - Player 사망 시 리스폰창 출력 및 리스폰 진행
                                 <br><br>
-![deathAndRespawn](https://github.com/user-attachments/assets/cdaf6837-31ff-42c9-80a2-9c734eed9eaa)
+![deathAndRespawn](https://github.com/user-attachments/assets/fd8e3c06-0a7b-4a5b-a578-787bd4030d94)
 
