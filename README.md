@@ -1,4 +1,4 @@
-![deathAndRespawn](https://github.com/user-attachments/assets/6ab37dc7-2e68-4e1c-82c0-9a2a565c19f3)# CavesBasic ( 개발 : 원재민 )
+# CavesBasic ( 개발 : 원재민 )
 ## 프로젝트 소개
 
 ![alt text](README_content/main2.png "Title Text")
@@ -388,7 +388,7 @@ Straight Projectile이 날아가는 동안 Projectile 주변에 몬스터가 있
       
   - Player 피격 시, Overlay Material의 Opacity 값을 조정하여 깜빡이는 효과 부여 
 <br></br>
-![blinkCha](https://github.com/user-attachments/assets/f9f70cab-1f87-40a2-9b22-7d002e18e024)
+![blinkCha2](https://github.com/user-attachments/assets/082ba4ee-9184-4cd7-80aa-c72a4bd43106)
 
       <details>
         <summary> UCharacterMeshEffect 클래스의 ApplyHitMaterial 함수 코드 ( UCharacterMeshEffect는 Player의 메시에 효과를 주기 위한 클래스 ) </summary>
