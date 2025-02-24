@@ -129,7 +129,6 @@
 Player를 중심( 캐릭터의 배꼽 위치 )을 기준으로 바닥이 존재한다면 바닥에 생성되고,<br>
 바닥이 없다면 위에 있는 땅을 감지하여 생성됨. 아무것도 감지되지 않으면 생성되지 않음.
 <br></br>
-/*![alt text](README_content/groundproject.gif "Title Text")*/
 ![groundproject](https://github.com/user-attachments/assets/36e000cf-694d-49c4-94af-ed1080a55919)
 
       <details>
@@ -268,7 +267,6 @@ Player를 중심( 캐릭터의 배꼽 위치 )을 기준으로 바닥이 존재�
 Straight Projectile이 날아가는 동안 Projectile 주변에 몬스터가 있는지 감지함.<br>
 몬스터가 감지되었다면 해당 몬스터쪽으로 날아감.
 <br></br>
-/*![alt text](README_content/stra.gif "Title Text")*/
 ![stra](https://github.com/user-attachments/assets/fa9d8cb8-2b37-4320-853e-5277b883c955)
 
       <details>
@@ -390,7 +388,6 @@ Straight Projectile이 날아가는 동안 Projectile 주변에 몬스터가 있
       
   - Player 피격 시, Overlay Material의 Opacity 값을 조정하여 깜빡이는 효과 부여 
 <br></br>
-/*![alt text](README_content/blinkCha.gif "Title Text")*/
 ![blinkCha](https://github.com/user-attachments/assets/f9f70cab-1f87-40a2-9b22-7d002e18e024)
 
       <details>
@@ -519,7 +516,6 @@ Straight Projectile이 날아가는 동안 Projectile 주변에 몬스터가 있
 * ### ***Monster***
   - Monster 사망 시, Material을 교체하고 Opacity 값을 수정
                                 <br><br>
-/*![monsteropa](README_content/monsteropa.gif)*/
 ![monsteropa](https://github.com/user-attachments/assets/3a84ac96-a652-4355-9202-95e3382456a1)
 
       <details>
@@ -605,7 +601,6 @@ Straight Projectile이 날아가는 동안 Projectile 주변에 몬스터가 있
 * ### ***UI***
   - Player 사망 시 리스폰창 출력 및 리스폰 진행
                                 <br><br>
-/*![사진이름](README_content/deathAndRespawn.gif)*/
 ![deathAndRespawn](https://github.com/user-attachments/assets/c2bc7249-7ebf-459b-be3c-25021255f207)
 
 
