@@ -504,7 +504,7 @@ Straight Projectile이 날아가는 동안 Projectile 주변에 몬스터가 있
 
   * ***Player의 데이터***는 언리얼 엔진 에디터상에서 데이터 테이블로 세팅 가능
           <br><br>
-  ![alt text](README_content/pawndata.png "Title Text")<br>  　　　　　　  　　　　　　    　　　　　　  　　　　　　  **`Player 데이터 테이블`**<br><br><br>
+  ![alt text](README_content/pawndata.png "Title Text")<br>  　　　　　　  　　　　　　  **`Player 데이터 테이블`**<br><br><br>
 	  
   * ***Weapon의 데이터***는 언리얼 엔진 에디터상에서 데이터 테이블로 세팅 가능
     <br><br>
