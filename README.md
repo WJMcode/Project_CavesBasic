@@ -262,7 +262,7 @@ Straight Projectile이 날아가는 동안 Projectile 주변에 몬스터가 있
 ![stra](https://github.com/user-attachments/assets/fa9d8cb8-2b37-4320-853e-5277b883c955)
 
       <details>
-        <summary> AStraight Projectile 클래스의 BeginPlay 함수와 DetectDamageTarget 함수 코드 ( Straight Projectile 생성 시, 범위 내 몬스터를 감지 ) </summary>
+        <summary> AStraightProjectile 클래스의 BeginPlay 함수와 DetectDamageTarget 함수 코드 ( Straight Projectile 생성 시, 범위 내 몬스터를 감지 ) </summary>
     
      
 
@@ -338,7 +338,7 @@ Straight Projectile이 날아가는 동안 Projectile 주변에 몬스터가 있
 
  
       <details>
-        <summary> AStraight Projectile 클래스의 Tick 함수와 FollowDamageTarget 함수 코드 ( Straight Projectile이, 감지한 몬스터 쪽으로 이동 ) </summary>
+        <summary> AStraightProjectile 클래스의 Tick 함수와 FollowDamageTarget 함수 코드 ( Straight Projectile이, 감지한 몬스터 쪽으로 이동 ) </summary>
     
      
 
