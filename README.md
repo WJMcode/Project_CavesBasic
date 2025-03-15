@@ -24,8 +24,12 @@
         - 플레이어 체력바 구현
         - 몬스터 체력바 구현
         - 플레이어 사망 시 리스폰창 출력
-        <br></br><br>
+        <br></br>
 
+   * 기타
+        - Player와 Weapon, Skill,  Projectile, Effect의 데이터를 에디터상에서 간단하게 설정할 수 있도록 데이터 테이블 활용
+                <br></br><br>
+	
 ## 세부 사항
 - ### ***Player***
   
