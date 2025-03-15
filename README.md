@@ -1,4 +1,4 @@
-# CavesBasic ( 개발 : 원재민 )
+# CavesBasic 개인 프로젝트 ( 개발 : 원재민 )
 ## 프로젝트 소개
 - ***장르*** : 판타지 분위기의 동굴 속에서 진행되는 탑뷰 RPG 게임     <br></br>
 ![alt text](README_content/main2.png "Title Text")
@@ -597,7 +597,7 @@ Straight Projectile이 날아가는 동안 Projectile 주변에 몬스터가 있
   - Player 사망 시 리스폰창 출력 및 리스폰 진행
                                 <br><br>
 ![deathAndRespawn](https://github.com/user-attachments/assets/8f044cc1-90b6-4b21-a080-380afc884a2f)
- <br><br>><br>
+ <br><br><br><br>
  
 * ### ***기타***
   * ***Player의 데이터***는 언리얼 엔진 에디터상에서 데이터 테이블로 세팅 가능
