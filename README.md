@@ -119,7 +119,7 @@
 <br></br>
 ***Ground Projectile***은 Player 앞에 땅이 있어야 생성되는 발사체.<br>
 Player를 중심( 캐릭터의 배꼽 위치 )을 기준으로 전방에 바닥이 존재한다면<br>
-바닥에 생성되고, 바닥이 없다면 아무것도 감지되지 않으면 생성되지 않습니다.
+Ground Projectile이 생성되고, 바닥이 없다면 생성되지 않습니다.
 <br></br>
 ![groundproject](https://github.com/user-attachments/assets/36e000cf-694d-49c4-94af-ed1080a55919)
 
