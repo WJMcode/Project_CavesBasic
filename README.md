@@ -524,7 +524,8 @@ Straight Projectile이 날아가는 동안 Projectile 주변에 몬스터가 있
        /* 현재 Monster의 메시는 Opcity를 수정할 수 없는 메시로 설정되어 있습니다.
         * ADefaultMonster 클래스의 BeginPlay 함수에서
         * 멤버 변수 MaterialInstanceDynamics에 Opcity를 수정할 수 있는 Material을 저장합니다.
-        * Monster 사망 시, OnDisappearMesh 함수를 호출하여 Monster의 메시를 MaterialInstanceDynamics에 저장된 Material로 교체하고 
+        * Monster 사망 시, OnDisappearMesh 함수를 호출하여
+        * Monster의 메시를 MaterialInstanceDynamics에 저장된 Material로 교체하고 
         * Opcity를 조정합니다. 이로써 Monster의 메시가 점점 투명해지도록 연출할 수 있게 됩니다.
         * OnDisappearMesh 함수가 종료되면 OnDisappearMeshEnd 함수를 호출하여 Monster를 Destroy합니다.
         */
