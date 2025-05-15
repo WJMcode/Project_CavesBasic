@@ -1,34 +1,69 @@
-# CavesBasic 개인 프로젝트 ( 개발 : 원재민 )
-## 프로젝트 소개
-- ***장르*** : 판타지 분위기의 동굴 속에서 진행되는 탑뷰 RPG 게임     <br></br>
+# CavesBasic 개인 프로젝트
+## 🎮 프로젝트 개요
+- **장르** : 탑다운 시점의 판타지 RPG     
+- **컨셉** : 어두운 동굴 속에서 펼쳐지는 전투와 생존     
+- **목표** : C++과 언리얼 엔진을 활용한 전투/이동/스킬/UI 등 핵심 RPG 기능 구현     
+- **개발 기간** : 2024년 10월 15일 ~ 2024년 11월 15일    
+- **개발자** : 원재민     <br></br>
 ![alt text](README_content/main2.png "Title Text")
 ![alt text](README_content/main.png "Title Text") <br></br>
 
-- ***개발 목록***
-  * Player
-    - 키 입력을 받아 앞, 뒤, 아래, 위와 점프, 웅크리기 가능
-     + 움직임에 맞는 애니메이션 적용
-     + Weapon 습득 후 Skill 사용 가능
-     + 피격 시 무적 시간 동안 캐릭터 깜빡임 적용
-     + 사망 처리 적용
-     + 부활 기능 구현
-     <br></br>
+---
+
+## 🛠️ 기술 스택
+- **언어** : C++
+- **게임 엔진** : Unreal Engine 5.4
+- **버전 관리** : Sourcetree, GitHub
+- **기타 툴** : Visual Studio 2022
+
+---
+
+## ✨ 주요 기능
+
+### 🧍 Player
+- 4방향 이동, 점프, 웅크리기 등 기본 이동 구현
+- 키 입력 기반의 캐릭터 조작 및 애니메이션 적용
+- 무기 습득 및 `OnSkill()` 함수 기반의 스킬 발동
+- 피격 시 무적 시간 및 깜빡임 효과 구현
+- 사망 시 리스폰 처리
      
-   * Monster
-        - 앞, 뒤, 아래, 위 움직임 수행
-        - 레벨에 NavMeshBoundsVolume을 배치하여 Monster AI 움직임 적용
-        - 사망 시 점점 투명해지며 사라지도록 구현
+### 👾 Monster
+- 네 방향 랜덤 이동 AI
+- `NavMeshBoundsVolume`을 활용한 경로 탐색
+- 사망 후 투명 효과
         <br></br>
 	
-   * UI
-        - 플레이어 체력바 구현
-        - 몬스터 체력바 구현
-        - 플레이어 사망 시 리스폰창 출력
+### 🖥️ UI
+- 플레이어 체력바와 몬스터 체력바 위젯 구현
+- 사망 시 리스폰 UI 자동 출력
         <br></br>
 
-   * 기타
-        - Player와 Weapon, Skill,  Projectile, Effect의 데이터를 에디터상에서 간단하게 설정할 수 있도록 데이터 테이블 활용
-                <br></br><br>
+---
+
+## 🧠 프로젝트 구조 및 설계 특징
+
+- 캐릭터, 몬스터, 스킬 등의 정보를 Unreal Engine의 **DataTable**로 분리 관리
+- 코드 하드코딩을 지양하고, 데이터 중심의 구조로 확장성 강화
+- Blueprint와 C++을 혼용하여 직관적이면서도 성능을 고려한 구조로 설계
+
+---
+
+## 🗂 프로젝트 폴더 구조
+
+```
+Project_CavesBasic/
+├── Source/
+│   └── CavesBasic/
+│       ├── Actors/         # 플레이어, 몬스터 등 주요 액터 클래스
+│       ├── Components/     # 채굴, 체력 등 기능별 컴포넌트
+│       └── UI/             # 위젯, HUD 등 UI 관련 클래스
+│       └── GameframeWork/  # GameMode 클래스
+├── Config/
+├── Content/
+├── CavesBasic.uproject
+└── README.md
+```
+---
 	
 ## 세부 사항
 - ### ***Player***
