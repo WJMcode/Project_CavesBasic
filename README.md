@@ -1,10 +1,10 @@
 # CavesBasic 개인 프로젝트
 ## 🎮 프로젝트 개요
-- **장르** : 탑다운 시점의 판타지 RPG     
-- **컨셉** : 어두운 동굴 속에서 펼쳐지는 전투와 생존     
-- **목표** : C++과 언리얼 엔진을 활용한 전투/이동/스킬/UI 등 핵심 RPG 기능 구현     
-- **개발 기간** : 2024년 10월 15일 ~ 2024년 11월 15일    
-- **개발자** : 원재민     <br></br>
+- **장르** : 탑다운 시점 판타지 RPG  
+- **컨셉** : 어두운 동굴 속 전투와 생존  
+- **목표** : C++ & Unreal Engine 5.4 기반 핵심 RPG 시스템 구현  
+- **기간** : 2024.10.15 ~ 2024.11.15  
+- **개발자** : 원재민 <br></br>
 ![alt text](README_content/main2.png "Title Text")
 ![alt text](README_content/main.png "Title Text") <br></br>
 
@@ -14,50 +14,57 @@
 - **언어** : C++
 - **게임 엔진** : Unreal Engine 5.4
 - **버전 관리** : Sourcetree, GitHub
-- **기타 툴** : Visual Studio 2022
+- **IDE** : Visual Studio 2022
 
 ---
 
-## ✨ 주요 기능
+## ⚡ 빌드 및 실행 방법
 
-### 🧍 Player
-- 4방향 이동, 점프, 웅크리기 등 기본 이동 구현
-- 키 입력 기반의 캐릭터 조작 및 애니메이션 적용
-- 무기 습득 및 `OnSkill()` 함수 기반의 스킬 발동
-- 피격 시 무적 시간 및 깜빡임 효과 구현
-- 사망 시 리스폰 처리
-     
-### 👾 Monster
-- 네 방향 랜덤 이동 AI
-- `NavMeshBoundsVolume`을 활용한 경로 탐색
-- 사망 후 투명 효과
-        <br></br>
-	
-### 🖥️ UI
-- 플레이어 체력바와 몬스터 체력바 위젯 구현
-- 사망 시 리스폰 UI 자동 출력
-        <br></br>
+1. **필수 환경**
+   - Unreal Engine 5.4
+   - Visual Studio 2022
+   - Windows 10/11 64bit
 
----
+2. **프로젝트 다운로드**
+    ```bash
+    git clone https://github.com/WJMcode/Project_CavesBasic.git
+    ```
 
-## 🧠 프로젝트 구조 및 설계 특징
+3. **프로젝트 열기**
+   - `CavesBasic.uproject` 더블클릭 또는 언리얼 에디터에서 직접 열기
 
-- 캐릭터, 몬스터, 스킬 등의 정보를 Unreal Engine의 **DataTable**로 분리 관리
-- 코드 하드코딩을 지양하고, 데이터 중심의 구조로 확장성 강화
-- Blueprint와 C++을 혼용하여 직관적이면서도 성능을 고려한 구조로 설계
+4. **빌드**
+   - 언리얼 에디터 상단의 `Build` 클릭  
+   - 또는 `Generate Visual Studio Project files` 후, Visual Studio에서 빌드
+
+5. **실행**
+   - 언리얼 에디터에서 `Play` 클릭
 
 ---
 
-## 🗂 프로젝트 폴더 구조
+## ✨ 주요 기능 요약
 
-```
+- **Player**
+  - 4방향 이동, 점프, 웅크리기, 스킬 사용(무기별)
+  - 피격 시 무적 & 깜빡임, 사망 시 리스폰
+- **Monster**
+  - 랜덤 AI 움직임, 사망 시 투명화 및 제거
+- **UI**
+  - 플레이어/몬스터 체력바, 사망 리스폰 창
+- **DataTable 기반 데이터 관리**  
+  - 캐릭터, 무기, 스킬, 투사체, 이펙트 등
+
+---
+
+## 🧠 프로젝트 구조
+
+```text
 Project_CavesBasic/
-├── Source/
-│   └── CavesBasic/
-│       ├── Actors/         # 플레이어, 몬스터 등 주요 액터 클래스
-│       ├── Components/     # 채굴, 체력 등 기능별 컴포넌트
-│       └── UI/             # 위젯, HUD 등 UI 관련 클래스
-│       └── GameframeWork/  # GameMode 클래스
+├── Source/CavesBasic/
+│   ├── Actors/         # 플레이어, 몬스터 등 주요 액터
+│   ├── Components/     # 플레이어 상태 등 기능별 컴포넌트
+│   ├── UI/             # 위젯, HUD
+│   └── GameframeWork/  # GameMode 등
 ├── Config/
 ├── Content/
 ├── CavesBasic.uproject
