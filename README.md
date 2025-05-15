@@ -72,9 +72,10 @@ Project_CavesBasic/
 ```
 ---
 	
-## 세부 사항
-- ### ***Player***
-  
+## 🔎 세부 구현 (주요 코드/로직)
+
+### 🧍 Player
+
   - Weapon을 습득한 Player는 Skill 사용 가능
     
       <details>
@@ -294,7 +295,7 @@ Ground Projectile이 생성되고, 바닥이 없다면 생성되지 않습니다
 		}
 	}
 	```
-	</details><br><br>
+	</details><br>
       
   - Projectile이 ***Straight Projectile***로 설정된 Skill 사용 시
 <br></br>
@@ -418,7 +419,7 @@ Straight Projectile이 날아가는 동안 Projectile 주변에 몬스터가 있
 		ProjectileMovementComponent->Velocity = DirectionToTarget * ProjectileData->InitialSpeed;
 	}
 	```
-	</details><br><br>
+	</details><br>
 
       
   - Player 피격 시, Overlay Material의 Opacity 값을 조정하여 깜빡이는 효과 부여 
@@ -547,11 +548,11 @@ Straight Projectile이 날아가는 동안 Projectile 주변에 몬스터가 있
 	}
 	```
 	</details><br>
-                    <br>
+                    
 
 
 
-* ### ***Monster***
+### 👾 Monster
   - Monster 사망 시, Material을 교체하고 Opacity 값을 수정
                                 <br><br>
 ![monsteropa](https://github.com/user-attachments/assets/3a84ac96-a652-4355-9202-95e3382456a1)
@@ -636,15 +637,15 @@ Straight Projectile이 날아가는 동안 Projectile 주변에 몬스터가 있
 	}
 	```
 	</details>
-                              <br><br>
+                              <br>
                               
-* ### ***UI***
+### 🖥️ UI
   - Player 사망 시 리스폰창 출력 및 리스폰 진행
                                 <br><br>
 ![deathAndRespawn](https://github.com/user-attachments/assets/8f044cc1-90b6-4b21-a080-380afc884a2f)
- <br><br><br>
+ <br><br>
  
-* ### ***기타***
+### 📊 데이터 관리
   * ***Player의 데이터***는 언리얼 엔진 에디터상에서 데이터 테이블로 세팅 가능
           <br><br>
   ![alt text](README_content/pawndata.png "Title Text")<br>  　　　　　　  　　　　　　  　　　　　　　**`Player 데이터 테이블`**<br><br><br>
