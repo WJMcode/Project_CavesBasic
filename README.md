@@ -670,8 +670,8 @@ Straight Projectile이 날아가는 동안 Projectile 주변에 몬스터가 있
 
 ### ✉️ Contact
 
-- 이메일: [uoipoip@gmail.com]
-- GitHub: [https://github.com/WJMcode/Project_CavesBasic](https://github.com/WJMcode/Project_CavesBasic)
+- 이메일 : uoipoip@gmail.com
+- GitHub : [https://github.com/WJMcode/Project_CavesBasic](https://github.com/WJMcode/Project_CavesBasic)
 
 ---
 
