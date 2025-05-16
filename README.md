@@ -667,6 +667,11 @@ Straight Projectile이 날아가는 동안 Projectile 주변에 몬스터가 있
 
 ---
 
+## 📝 참고 사항
+- 빌드/실행 오류 발생 시 Content 경로 확인 필수
+  
+---
+
 ### ✉️ Contact
 
 - 이메일 : uoipoip@gmail.com
