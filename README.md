@@ -34,8 +34,7 @@
    - `CavesBasic.uproject` 더블클릭 또는 언리얼 에디터에서 직접 열기
 
 4. **빌드**
-   - 언리얼 에디터 상단의 `Build` 클릭  
-   - 또는 `Generate Visual Studio Project files` 후, Visual Studio에서 빌드
+   - `Generate Visual Studio Project files` 후, Visual Studio에서 빌드
 
 5. **실행**
    - 언리얼 에디터에서 `Play` 클릭
