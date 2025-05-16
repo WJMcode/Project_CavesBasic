@@ -56,6 +56,14 @@
 
 ---
 
+## 💡 설계 포인트
+
+- **데이터 기반 구조**로 설계하여 캐릭터/몬스터/스킬 등 데이터 확장 용이
+- **Blueprint & C++ 혼용**으로 직관성과 성능 모두 확보
+- **하드코딩 최소화**, **에디터 친화적 구조**
+
+---
+
 ## 🧠 프로젝트 구조
 
 ```text
@@ -657,3 +665,13 @@ Straight Projectile이 날아가는 동안 Projectile 주변에 몬스터가 있
 ***Skill 데이터 테이블***에서는 해당 Skill 사용 시 발사되는 Projectile을 세팅해 줄 수 있습니다.<br><br> ![alt text](README_content/SkillTable.png "Title Text")<br>  　　　　　　  　　　　　　  **`Skill 데이터 테이블`**<br><br><br>
 ***Projectile 데이터 테이블***에서는 해당 Projectile의 크기와 스폰 위치를 세팅해 줄 수 있습니다.<br><br> ![alt text](README_content/ProjectileTable.png "Title Text")<br>  　　　　　　  　　　　　　  **`Projectile 데이터 테이블`**<br><br><br>
 ***Effect 데이터 테이블***에서는 Projectile의 효과음과 Effect를 세팅해 줄 수 있습니다.<br><br> ![alt text](README_content/EffectTable.png "Title Text")<br>  　　　　　　  　　　　　　    　　　**`Effect 데이터 테이블`**<br>
+
+---
+
+### ✉️ Contact
+
+- 이메일: [uoipoip@gmail.com]
+- GitHub: [https://github.com/WJMcode/Project_CavesBasic](https://github.com/WJMcode/Project_CavesBasic)
+
+---
+
