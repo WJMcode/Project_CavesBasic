@@ -165,9 +165,9 @@ Project_CavesBasic/
       </details><br>
 
 
-  - Projectile이 ***Ground Projectile***로 설정된 Skill 사용 시
+  - Projectile이 **Ground Projectile**로 설정된 Skill 사용 시
 <br></br>
-***Ground Projectile***은 Player 앞에 땅이 있어야 생성되는 발사체.<br>
+**Ground Projectile**은 Player 앞에 땅이 있어야 생성되는 발사체.<br>
 Player를 중심( 캐릭터의 배꼽 위치 )을 기준으로 전방에 바닥이 존재한다면<br>
 Ground Projectile이 생성되고, 바닥이 없다면 생성되지 않습니다.
 <br></br>
@@ -304,9 +304,9 @@ Ground Projectile이 생성되고, 바닥이 없다면 생성되지 않습니다
 	```
 	</details><br>
       
-  - Projectile이 ***Straight Projectile***로 설정된 Skill 사용 시
+  - Projectile이 **Straight Projectile**로 설정된 Skill 사용 시
 <br></br>
-***Straight Projectile***은 Player를 중심으로 일직선으로 발사되는 Projectile.<br>
+**Straight Projectile**은 Player를 중심으로 일직선으로 발사되는 Projectile.<br>
 Straight Projectile이 날아가는 동안 Projectile 주변에 몬스터가 있는지 감지.<br>
 몬스터가 감지되었다면 해당 몬스터쪽으로 날아갑니다.
 <br></br>
@@ -653,17 +653,17 @@ Straight Projectile이 날아가는 동안 Projectile 주변에 몬스터가 있
  <br><br>
  
 ### 📊 데이터 관리
-  * ***Player의 데이터***는 언리얼 엔진 에디터상에서 데이터 테이블로 세팅 가능
+  * **Player의 데이터**는 언리얼 엔진 에디터상에서 데이터 테이블로 세팅 가능
           <br><br>
   ![alt text](README_content/pawndata.png "Title Text")<br>  　　　　　　  　　　　　　  　　　　　　　**`Player 데이터 테이블`**<br><br><br>
 	  
-  * ***Weapon의 데이터***는 언리얼 엔진 에디터상에서 데이터 테이블로 세팅 가능
+  * **Weapon의 데이터**는 언리얼 엔진 에디터상에서 데이터 테이블로 세팅 가능
     <br><br>
-***Weapon 데이터 테이블***에서는 해당 Weapon이 보유할 Skill을 세팅해 줄 수 있습니다.<br><br>
+**Weapon 데이터 테이블**에서는 해당 Weapon이 보유할 Skill을 세팅해 줄 수 있습니다.<br><br>
 ![alt text](README_content/WeaponTable.png "Title Text")<br>  　　　　　　  　　　　　　  **`Weapon 데이터 테이블`**<br><br><br>
-***Skill 데이터 테이블***에서는 해당 Skill 사용 시 발사되는 Projectile을 세팅해 줄 수 있습니다.<br><br> ![alt text](README_content/SkillTable.png "Title Text")<br>  　　　　　　  　　　　　　  **`Skill 데이터 테이블`**<br><br><br>
-***Projectile 데이터 테이블***에서는 해당 Projectile의 크기와 스폰 위치를 세팅해 줄 수 있습니다.<br><br> ![alt text](README_content/ProjectileTable.png "Title Text")<br>  　　　　　　  　　　　　　  **`Projectile 데이터 테이블`**<br><br><br>
-***Effect 데이터 테이블***에서는 Projectile의 효과음과 Effect를 세팅해 줄 수 있습니다.<br><br> ![alt text](README_content/EffectTable.png "Title Text")<br>  　　　　　　  　　　　　　    　　　**`Effect 데이터 테이블`**<br>
+**Skill 데이터 테이블**에서는 해당 Skill 사용 시 발사되는 Projectile을 세팅해 줄 수 있습니다.<br><br> ![alt text](README_content/SkillTable.png "Title Text")<br>  　　　　　　  　　　　　　  **`Skill 데이터 테이블`**<br><br><br>
+**Projectile 데이터 테이블**에서는 해당 Projectile의 크기와 스폰 위치를 세팅해 줄 수 있습니다.<br><br> ![alt text](README_content/ProjectileTable.png "Title Text")<br>  　　　　　　  　　　　　　  **`Projectile 데이터 테이블`**<br><br><br>
+**Effect 데이터 테이블**에서는 Projectile의 효과음과 Effect를 세팅해 줄 수 있습니다.<br><br> ![alt text](README_content/EffectTable.png "Title Text")<br>  　　　　　　  　　　　　　    　　　**`Effect 데이터 테이블`**<br>
 
 ---
 
