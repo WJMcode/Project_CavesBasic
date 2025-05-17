@@ -81,7 +81,7 @@ Project_CavesBasic/
 	
 ## 🔎 세부 구현 (주요 코드/로직)
 
-### 🧍 Player
+### 1. Player
 
   - Weapon을 습득한 Player는 Skill 사용 가능
     
@@ -559,7 +559,7 @@ Straight Projectile이 날아가는 동안 Projectile 주변에 몬스터가 있
 
 
 
-### 👾 Monster
+### 2. Monster
   - Monster 사망 시, Material을 교체하고 Opacity 값을 수정
                                 <br><br>
 ![monsteropa](https://github.com/user-attachments/assets/3a84ac96-a652-4355-9202-95e3382456a1)
@@ -644,25 +644,27 @@ Straight Projectile이 날아가는 동안 Projectile 주변에 몬스터가 있
 	}
 	```
 	</details>
-                              <br>
-                              
+
+---
+
 ### 🖥️ UI
   - Player 사망 시 리스폰창 출력 및 리스폰 진행
                                 <br><br>
 ![deathAndRespawn](https://github.com/user-attachments/assets/8f044cc1-90b6-4b21-a080-380afc884a2f)
- <br><br>
- 
+
+---
+
 ### 📊 데이터 관리
   * **Player의 데이터**는 언리얼 엔진 에디터상에서 데이터 테이블로 세팅 가능
           <br><br>
-  ![alt text](README_content/pawndata.png "Title Text")<br>  　　　　　　  　　　　　　  　　　　　　　**`Player 데이터 테이블`**<br><br><br>
+  ![alt text](README_content/pawndata.png "Title Text")<br>  　　　　　　  　　　　　　  　　　　　　　**`Player 데이터 테이블`**<br>
 	  
   * **Weapon의 데이터**는 언리얼 엔진 에디터상에서 데이터 테이블로 세팅 가능
-    <br><br>
+    <br>
 **Weapon 데이터 테이블**에서는 해당 Weapon이 보유할 Skill을 세팅해 줄 수 있습니다.<br><br>
 ![alt text](README_content/WeaponTable.png "Title Text")<br>  　　　　　　  　　　　　　  **`Weapon 데이터 테이블`**<br><br><br>
-**Skill 데이터 테이블**에서는 해당 Skill 사용 시 발사되는 Projectile을 세팅해 줄 수 있습니다.<br><br> ![alt text](README_content/SkillTable.png "Title Text")<br>  　　　　　　  　　　　　　  **`Skill 데이터 테이블`**<br><br><br>
-**Projectile 데이터 테이블**에서는 해당 Projectile의 크기와 스폰 위치를 세팅해 줄 수 있습니다.<br><br> ![alt text](README_content/ProjectileTable.png "Title Text")<br>  　　　　　　  　　　　　　  **`Projectile 데이터 테이블`**<br><br><br>
+**Skill 데이터 테이블**에서는 해당 Skill 사용 시 발사되는 Projectile을 세팅해 줄 수 있습니다.<br><br> ![alt text](README_content/SkillTable.png "Title Text")<br>  　　　　　　  　　　　　　  **`Skill 데이터 테이블`**<br><br>
+**Projectile 데이터 테이블**에서는 해당 Projectile의 크기와 스폰 위치를 세팅해 줄 수 있습니다.<br><br> ![alt text](README_content/ProjectileTable.png "Title Text")<br>  　　　　　　  　　　　　　  **`Projectile 데이터 테이블`**<br><br>
 **Effect 데이터 테이블**에서는 Projectile의 효과음과 Effect를 세팅해 줄 수 있습니다.<br><br> ![alt text](README_content/EffectTable.png "Title Text")<br>  　　　　　　  　　　　　　    　　　**`Effect 데이터 테이블`**<br>
 
 ---
