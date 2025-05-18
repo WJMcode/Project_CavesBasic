@@ -571,12 +571,12 @@ Straight Projectile이 날아가는 동안 Projectile 주변에 몬스터가 있
 
     
        ```cpp
-       /* 현재 Monster의 메시는 Opcity를 수정할 수 없는 메시로 설정되어 있습니다.
+       /* 현재 Monster의 메시는 Opacity를 수정할 수 없는 메시로 설정되어 있습니다.
         * ADefaultMonster 클래스의 BeginPlay 함수에서
-        * 멤버 변수 MaterialInstanceDynamics에 Opcity를 수정할 수 있는 Material을 저장합니다.
+        * 멤버 변수 MaterialInstanceDynamics에 Opacity를 수정할 수 있는 Material을 저장합니다.
         * Monster 사망 시, OnDisappearMesh 함수를 호출하여
         * Monster의 메시를 MaterialInstanceDynamics에 저장된 Material로 교체하고 
-        * Opcity를 조정합니다. 이로써 Monster의 메시가 점점 투명해지도록 연출할 수 있게 됩니다.
+        * Opacity를 조정합니다. 이로써 Monster의 메시가 점점 투명해지도록 연출할 수 있게 됩니다.
         * OnDisappearMesh 함수가 종료되면 OnDisappearMeshEnd 함수를 호출하여 Monster를 Destroy합니다.
         */
 	void ADefaultMonster::BeginPlay()
@@ -587,7 +587,7 @@ Straight Projectile이 날아가는 동안 Projectile 주변에 몬스터가 있
 	
 		USkeletalMeshComponent* SkeletalMeshComponent = GetComponentByClass<USkeletalMeshComponent>();
 	
-		// 1번 인덱스에 있는 Material이 BlendMode가 Translucent로 설정되어, Opcity를 수정할 수 있는 Material이다.
+		// 1번 인덱스에 있는 Material이 BlendMode가 Translucent로 설정되어, Opacity를 수정할 수 있는 Material이다.
 		// MaterialInstanceDynamics는 1번 인덱스에 있는 Material을 가리키는 멤버 변수
 		MaterialInstanceDynamics = SkeletalMeshComponent->CreateAndSetMaterialInstanceDynamic(1);
 		ensureMsgf(MaterialInstanceDynamics->GetBlendMode() == EBlendMode::BLEND_Translucent && MaterialInstanceDynamics, TEXT("1번 인덱스에 존재하는 Material이 없거나, BlendMode가 Translucent가 아닙니다."));
