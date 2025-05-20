@@ -9,7 +9,7 @@
 | **개발자**      | 원재민                            |
 
 ![alt text](README_content/main2.png "Title Text")
-![alt text](README_content/main.png "Title Text") <br></br>
+![alt text](README_content/main.png "Title Text")
 
 ---
 
