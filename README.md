@@ -689,6 +689,35 @@ Straight Projectile이 날아가는 동안 Projectile 주변에 몬스터가 있
 **Projectile 데이터 테이블**에서는 해당 Projectile의 크기와 스폰 위치를 세팅해 줄 수 있습니다.<br><br> ![alt text](README_content/ProjectileTable.png "Title Text")<br>  　　　　　　  　　　　　　  **`Projectile 데이터 테이블`**<br><br>
 **Effect 데이터 테이블**에서는 Projectile의 효과음과 Effect를 세팅해 줄 수 있습니다.<br><br> ![alt text](README_content/EffectTable.png "Title Text")<br>  　　　　　　  　　　　　　    　　　**`Effect 데이터 테이블`**<br>
 
+## 📊 데이터 관리
+
+본 프로젝트는 주요 게임 요소(플레이어, 무기, 스킬, 발사체, 이펙트 등)의 속성과 밸런스를 **코드가 아닌 DataTable**로 관리하여, 빠른 수정과 확장, 유지보수가 가능합니다.
+
+- **Player 데이터 테이블**  
+  플레이어의 주요 능력치, 외형, 무기 장착 정보 등을 관리합니다.  
+  ![Player 데이터 테이블](README_content/pawndata2.png)
+
+- **Weapon 데이터 테이블**  
+  각 무기 외형, 보유 스킬 등 무기 관련 데이터를 관리합니다.  
+  ![Weapon 데이터 테이블](README_content/WeaponTable.png)
+
+- **Skill 데이터 테이블**  
+  스킬의 피해량, 애니메이션(몽타주), 연동 발사체 등 스킬 정보를 설정합니다.  
+  ![Skill 데이터 테이블](README_content/SkillTable.png)
+
+- **Projectile 데이터 테이블**  
+  발사체의 타입, 크기, 스폰 위치, 이동 속도 등 상세 속성을 관리합니다.  
+  ![Projectile 데이터 테이블](README_content/ProjectileTable.png)
+
+- **Effect 데이터 테이블**  
+  각종 이펙트 및 효과음, 데칼 정보 등을 관리합니다.  
+  ![Effect 데이터 테이블](README_content/EffectTable.png)
+
+> **구조적 특징 :**  
+> 각 데이터 테이블은 서로 참조합니다.  
+> 예를 들어, 무기는 스킬을 참조하고, 스킬은 발사체를, 발사체는 이펙트를 참조하는 구조로 설계되었습니다.  
+> 이를 통해 신규 요소 추가, 밸런스 조정, 효과 변경 등을 코드 수정 없이 에디터에서 즉시 반영할 수 있습니다.
+
 ---
 
 ## 📝 참고 사항
