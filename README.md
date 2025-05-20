@@ -683,9 +683,9 @@ Straight Projectile이 날아가는 동안 Projectile 주변에 몬스터가 있
 
 - **Player 데이터 테이블** : 플레이어의 주요 능력치, 외형, 무기 장착 정보 등을 관리합니다.
   
-  | ![Player 데이터 테이블](README_content/pawndata2.png) |
-  |:--:|
-  | `Player 데이터 테이블 예시` |
+   ![Player 데이터 테이블](README_content/pawndata2.png) 
+
+   `Player 데이터 테이블 예시` 
 
 - **Weapon 데이터 테이블** : 각 무기 외형, 보유 스킬 등 무기 관련 데이터를 관리합니다.
 
