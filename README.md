@@ -687,30 +687,35 @@ Straight Projectile이 날아가는 동안 Projectile 주변에 몬스터가 있
   |:--:|
   | `Player 데이터 테이블 예시` |
 <br>
+
 - **Weapon 데이터 테이블** : 각 무기 외형, 보유 스킬 등 무기 관련 데이터를 관리합니다.
 
   | ![Weapon 데이터 테이블](README_content/WeaponTable.png) |
   |:--:|
   | `Weapon 데이터 테이블 예시` |
 <br>
+
 - **Skill 데이터 테이블** : 스킬의 피해량, 애니메이션(몽타주), 연동 발사체 등 스킬 정보를 설정합니다.
     
   | ![Skill 데이터 테이블](README_content/SkillTable.png) |
   |:--:|
   | `Skill 데이터 테이블 예시` |
 <br>
+
 - **Projectile 데이터 테이블** : 발사체의 타입, 크기, 스폰 위치, 이동 속도 등 상세 속성을 관리합니다.
 
   | ![Projectile 데이터 테이블](README_content/ProjectileTable.png) |
   |:--:|
   | `Projectile 데이터 테이블 예시` |
 <br>
+
 - **Effect 데이터 테이블** : 각종 이펙트 및 효과음, 데칼 정보 등을 관리합니다.
 
   |  ![Effect 데이터 테이블](README_content/EffectTable.png) |
   |:--:|
   | `Effect 데이터 테이블 예시` |
 <br>
+
 > **구조적 특징 :**  
 > 각 데이터 테이블은 서로 참조합니다.  
 > 예를 들어, 무기는 스킬을 참조하고, 스킬은 발사체를, 발사체는 이펙트를 참조하는 구조로 설계되었습니다.  
