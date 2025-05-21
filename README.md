@@ -155,7 +155,7 @@ Project_CavesBasic/
 	    }, Duration / 3.f , false);
 	```
 
-> 전체 소스는 [GitHub에서 확인](https://github.com/WJMcode/Project_CavesBasic/blob/main/Source/YourPath/UCharacterMeshEffect.cpp)
+> 전체 소스는 [GitHub에서 확인](https://github.com/WJMcode/Source/CavesBasic/Actors/Effect/CharacterMeshEffect/CharacterMeshEffect.cpp)
 
 ### 2. Projectile
 
