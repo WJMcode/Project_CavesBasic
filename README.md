@@ -10,7 +10,7 @@
 - [⚠️ 트러블슈팅](#️-트러블슈팅)
 - [🔎 세부 구현 (주요 코드/로직)](#-세부-구현-주요-코드로직)
   - [Player](#1-player)
-  - [Skill](#2-skill)
+  - [Projectile](#2-projectile)
   - [Monster](#3-monster)
 - [🖥️ UI](#️-ui)
 - [📊 데이터 관리](#-데이터-관리)
@@ -253,7 +253,7 @@ Project_CavesBasic/
 	```
 	</details><br>
 
-### 2. Skill
+### 2. Projectile
 
   - Projectile이 **Ground Projectile**로 설정된 Skill 사용 시
 <br></br>
