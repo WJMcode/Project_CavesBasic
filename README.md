@@ -130,12 +130,6 @@ Project_CavesBasic/
 <br></br>
 ![blinkCha](https://github.com/user-attachments/assets/394c9701-0187-46b3-941f-3b93eed8dc8f)
 
-      <details>
-        <summary> 피격 시 일정 시간 깜빡임 효과를 주는 핵심 로직 </summary>
-    
-     
-
-    
        ```cpp
 	void UCharacterMeshEffect::ApplyHitMaterial(const float Duration)
 	{
@@ -160,7 +154,7 @@ Project_CavesBasic/
         	// ... (타이머 정지/멤버 초기화 등 생략)
 	    }, Duration / 3.f , false);
 	```
-	</details><br>
+
 > 전체 소스는 [GitHub에서 확인](https://github.com/WJMcode/Project_CavesBasic/blob/main/Source/YourPath/UCharacterMeshEffect.cpp)
 
 ### 2. Projectile
