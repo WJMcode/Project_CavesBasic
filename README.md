@@ -10,7 +10,8 @@
 - [⚠️ 트러블슈팅](#️-트러블슈팅)
 - [🔎 세부 구현 (주요 코드/로직)](#-세부-구현-주요-코드로직)
   - [Player](#1-player)
-  - [Monster](#2-monster)
+  - [Skill](#2-skill)
+  - [Monster](#3-monster)
 - [🖥️ UI](#️-ui)
 - [📊 데이터 관리](#-데이터-관리)
 - [📝 참고 사항](#-참고-사항)
@@ -125,208 +126,6 @@ Project_CavesBasic/
 
 ### 1. Player
 
-  - Projectile이 **Ground Projectile**로 설정된 Skill 사용 시
-<br></br>
-**Ground Projectile**은 Player 앞에 땅이 있어야 생성되는 발사체.<br>
-Player를 중심( 캐릭터의 배꼽 위치 )을 기준으로 전방에 바닥이 존재한다면<br>
-Ground Projectile이 생성되고, 바닥이 없다면 생성되지 않습니다.
-<br></br>
-![groundproject](https://github.com/user-attachments/assets/36e000cf-694d-49c4-94af-ed1080a55919)
-
-      <details>
-        <summary> AGroundProjectile 클래스의 BeginPlay 함수 코드 ( GroundProjectile의 생성 위치를 조정 )</summary>
-    
-     
-
-    
-       ```cpp
-       /* Skill 데이터 테이블에서 Projectile 설정이 GroundProjectile로 설정된 Skill을 사용하면 GroundProjectile 객체가 생성됩니다.
-        * GroundProjectile은 Player의 중심을 기준으로, Skill 데이터 테이블에서 설정한 Transform값을 포함한 위치에 생성됩니다.
-        * GroundProjectile이 생성되면 GroundProjectile 위치 기준, 아래 방향으로 LineTrace를 발사하여 오브젝트를 감지합니다.
-        * Collision이 Floor로 설정된 오브젝트가 감지되었다면 감지된 오브젝트 위로 GroundProjectile을 옮깁니다.
-        * 만약 Collision이 Floor로 설정된 오브젝트가 아닌, 다른 오브젝트가 감지되거나 아무것도 감지되지 않으면
-        * 위쪽 방향으로 LineTrace를 발사하여 오브젝트를 감지합니다.
-        * 마찬가지로 Collision이 Floor로 설정된 오브젝트가 감지되었다면 감지된 오브젝트 위로 GroundProjectile을 옮깁니다.
-        * 이 경우에도 아무것도 감지되지 않으면 GroundProjectile을 Destroy합니다.                     
-        */
-	void AGroundProjectile::BeginPlay()
-	{
-		Super::BeginPlay();
-	
-		// GroundProjectile의 위치 얻어오기
-		FVector GroundProjectileLocation = GetActorLocation();
-		// 아래 방향으로 LineTrace를 발사
-		FHitResult DownHitResult;
-		{
-			TArray<AActor*> IgnoreActors; IgnoreActors.Add(GetOwner());
-	
-			// 해당 Trace는 FloorDetectTraceChannel로 발사되는 Trace이다. 
-			// 발사된 해당 Trace는 Collision이 Floor로 설정된 오브젝트를 감지한다.
-			// Floor로 설정된 오브젝트에만 GroundProjectile 스킬을 스폰시키는 것이 목적.
-			const ETraceTypeQuery TraceTypeQuery = UEngineTypes::ConvertToTraceType(ECollisionChannel::ECC_GameTraceChannel5);
-			const bool bHit = UKismetSystemLibrary::LineTraceSingle(GetWorld(),
-				GetActorLocation(), GetActorLocation() + FVector(0, 0, -350), TraceTypeQuery,
-				false, IgnoreActors, EDrawDebugTrace::ForDuration, DownHitResult, true);
-			// 만약 Hit가 발생했다면 그 위치로 GroundProjectile을 옮김
-			if (bHit)
-			{
-				GroundProjectileLocation.Z = DownHitResult.ImpactPoint.Z;
-				SetActorLocation(GroundProjectileLocation);
-	
-				return;
-			}
-		}
-		// 위쪽 방향으로 LineTrace를 발사
-		FHitResult UpHitResult;
-		{
-			TArray<AActor*> IgnoreActors; IgnoreActors.Add(GetOwner());
-	
-			const ETraceTypeQuery TraceTypeQuery = UEngineTypes::ConvertToTraceType(ECollisionChannel::ECC_GameTraceChannel5);
-			const bool bHit = UKismetSystemLibrary::LineTraceSingle(GetWorld(),
-				GetActorLocation(), GetActorLocation() + FVector(0, 0, 200), TraceTypeQuery,
-				false, IgnoreActors, EDrawDebugTrace::ForDuration, UpHitResult, true);
-	
-			if (bHit)
-			{
-				GroundProjectileLocation.Z = UpHitResult.ImpactPoint.Z;
-				SetActorLocation(GroundProjectileLocation);
-				
-				return;
-			}
-		}
-		
-		// Floor가 감지되지 않으면 GroundProjectile을 그냥 제거한다.
-		Destroy();
-	}
- 	```
-      </details>
-
-      
-  - Projectile이 **Straight Projectile**로 설정된 Skill 사용 시
-<br></br>
-**Straight Projectile**은 Player를 중심으로 일직선으로 발사되는 Projectile.<br>
-Straight Projectile이 날아가는 동안 Projectile 주변에 몬스터가 있는지 감지.<br>
-몬스터가 감지되었다면 해당 몬스터쪽으로 날아갑니다.
-<br></br>
-![stra](https://github.com/user-attachments/assets/fa9d8cb8-2b37-4320-853e-5277b883c955)
-
-      <details>
-        <summary> AStraightProjectile 클래스의 BeginPlay 함수와 DetectDamageTarget 함수 코드 ( Straight Projectile 생성 시, 범위 내 몬스터를 감지 ) </summary>
-    
-     
-
-    
-       ```cpp
-       /* Straight Projectile이 생성되면 AStraightProjectile 클래스의 BeginPlay 함수가 호출됩니다.
-        * BeginPlay 함수는 DetectDamageTarget 함수를 호출하여 반환값을 DetectActor에 저장합니다.
-        * DetectDamageTarget 함수는 감지된 몬스터를 반환하는 함수입니다.
-        * Straight Projectile의 이동 경로 근처에 Collision이 몬스터로 설정된 오브젝트가 있는지 Box Trace를 통해 감지합니다.
-        * 감지되었다면 해당 오브젝트를 가리키는 포인터를 반환하고 DetectDamageTarget 함수를 종료합니다.
-        */
-	void AStraightProjectile::BeginPlay()
-	{
-		Super::BeginPlay();
-	
-		DetectActor = DetectDamageTarget();
-	}
-	
-	AActor* AStraightProjectile::DetectDamageTarget()
-	{
-		FHitResult DetectResult;
-		{
-		TArray<AActor*> IgnoreActors; IgnoreActors.Add(GetOwner());
-	
-			FVector TraceStartLocation = GetActorLocation();  // Trace 시작 위치
-			FVector TraceDirection = GetActorForwardVector();  // 예: 전방 벡터 (정확한 방향은 상황에 따라 다를 수 있음)
-	
-			// 새로운 위치 계산
-			FVector TraceEndLocation = TraceStartLocation + (TraceDirection * Distance);
-	
-			// StraightProjectile의 크기를 얻어와서 
-			FVector Origin;
-			FVector BoxExtent;
-			GetActorBounds(false, Origin, BoxExtent);
-			
-			// Projectile의 자식으로 붙어있는 파티클 시스템의 크기는 빼준다.
-			if (ProjectileMeshEffectComponent)
-			{
-				// 파티클 시스템의 크기 계산
-				FBox ParticleBounds = ProjectileMeshEffectComponent->Bounds.GetBox();
-				FVector ParticleExtent = ParticleBounds.GetExtent();
-	
-				// 파티클 시스템 크기를 반영하지 않으려면 BoxExtent에서 빼기
-				BoxExtent -= ParticleExtent;
-			}
-	
-			// 감지 범위 조절
-			BoxExtent.Y += 50;
-			BoxExtent.Z += 150;
-			FVector DetectRange = BoxExtent;
-	
-		     //해당 Trace는 MonsterDetectTraceChannel로 발사되는 Trace이다. 
-			// 발사된 해당 Trace는 Collision이 Monster로 설정된 오브젝트를 감지한다.
-			const ETraceTypeQuery TraceTypeQuery = UEngineTypes::ConvertToTraceType(ECollisionChannel::ECC_GameTraceChannel8);
-			const bool bHit = UKismetSystemLibrary::BoxTraceSingle(GetWorld(),
-				TraceStartLocation, TraceEndLocation, DetectRange, GetOwner()->GetActorRotation(), TraceTypeQuery,
-				false, IgnoreActors, EDrawDebugTrace::ForDuration, DetectResult, true);	
-	
-			if (bHit)
-			{
-				AActor* TraceDetectActor = DetectResult.GetActor();
-	
-				if (TraceDetectActor)
-				{
-					return TraceDetectActor;
-				}
-			}
-		}
-		return nullptr;
-	}
-	```
-	</details>
-
- 
-      <details>
-        <summary> AStraightProjectile 클래스의 Tick 함수와 FollowDamageTarget 함수 코드 ( Straight Projectile이, 감지한 몬스터 쪽으로 이동 ) </summary>
-    
-     
-
-    
-       ```cpp
-       /* Straight Projectile이 존재하는 동안 AStraightProjectile 클래스의 Tick 함수가 호출됩니다.
-        * Tick 함수에서는 멤버 포인터인 DetectActor가 가리키는 오브젝트가 존재한다면, FollowDamageTarget 함수를 호출합니다.
-        * FollowDamageTarget 함수는 인자로 받은 오브젝트(몬스터)를 Straight Projectile이 따라갈 수 있도록 하는 함수입니다.
-        * FollowDamageTarget 함수가 호출될 때마다 따라가야 하는 오브젝트가 어떤 방향에 존재하는지 계속 체크합니다.
-        * 그리고 Straight Projectile을 해당 방향으로 회전시킵니다.
-        * Straight Projectile은 생성 시 일정한 방향으로 이동하고 속도(Velocity)도 이미 설정되어 있으므로, 
-        * FollowDamageTarget 함수에서 방향만 설정해주어도 발사체가 타겟으로 이동하게 됩니다.
-        */
-	void AStraightProjectile::Tick(float DeltaTime)
-	{
-		Super::Tick(DeltaTime);
-	
-		if (DetectActor)
-		{
-			FollowDamageTarget(DetectActor);
-		}
-	}
-	
-	void AStraightProjectile::FollowDamageTarget(AActor* TargetActor)
-	{
-		// 감지된 Actor를 따라가는 함수
-		// 타겟 방향을 계산.
-		FVector DirectionToTarget = (TargetActor->GetActorLocation() - GetActorLocation()).GetSafeNormal();
-	
-		// 발사체를 타겟 방향으로 회전시킴.
-		FRotator NewRotation = DirectionToTarget.Rotation();
-		SetActorRotation(NewRotation);
-	
-		ProjectileMovementComponent->Velocity = DirectionToTarget * ProjectileData->InitialSpeed;
-	}
-	```
-	</details><br>
-
-      
   - Player 피격 시, Overlay Material의 Opacity 값을 조정하여 깜빡이는 효과 부여 
 <br></br>
 ![blinkCha](https://github.com/user-attachments/assets/394c9701-0187-46b3-941f-3b93eed8dc8f)
@@ -453,11 +252,211 @@ Straight Projectile이 날아가는 동안 Projectile 주변에 몬스터가 있
 	}
 	```
 	</details><br>
+
+### 2. Skill
+
+  - Projectile이 **Ground Projectile**로 설정된 Skill 사용 시
+<br></br>
+**Ground Projectile**은 Player 앞에 땅이 있어야 생성되는 발사체.<br>
+Player를 중심( 캐릭터의 배꼽 위치 )을 기준으로 전방에 바닥이 존재한다면<br>
+Ground Projectile이 생성되고, 바닥이 없다면 생성되지 않습니다.
+<br></br>
+![groundproject](https://github.com/user-attachments/assets/36e000cf-694d-49c4-94af-ed1080a55919)
+
+      <details>
+        <summary> AGroundProjectile 클래스의 BeginPlay 함수 코드 ( GroundProjectile의 생성 위치를 조정 )</summary>
+    
+     
+
+    
+       ```cpp
+       /* Skill 데이터 테이블에서 Projectile 설정이 GroundProjectile로 설정된 Skill을 사용하면 GroundProjectile 객체가 생성됩니다.
+        * GroundProjectile은 Player의 중심을 기준으로, Skill 데이터 테이블에서 설정한 Transform값을 포함한 위치에 생성됩니다.
+        * GroundProjectile이 생성되면 GroundProjectile 위치 기준, 아래 방향으로 LineTrace를 발사하여 오브젝트를 감지합니다.
+        * Collision이 Floor로 설정된 오브젝트가 감지되었다면 감지된 오브젝트 위로 GroundProjectile을 옮깁니다.
+        * 만약 Collision이 Floor로 설정된 오브젝트가 아닌, 다른 오브젝트가 감지되거나 아무것도 감지되지 않으면
+        * 위쪽 방향으로 LineTrace를 발사하여 오브젝트를 감지합니다.
+        * 마찬가지로 Collision이 Floor로 설정된 오브젝트가 감지되었다면 감지된 오브젝트 위로 GroundProjectile을 옮깁니다.
+        * 이 경우에도 아무것도 감지되지 않으면 GroundProjectile을 Destroy합니다.                     
+        */
+	void AGroundProjectile::BeginPlay()
+	{
+		Super::BeginPlay();
+	
+		// GroundProjectile의 위치 얻어오기
+		FVector GroundProjectileLocation = GetActorLocation();
+		// 아래 방향으로 LineTrace를 발사
+		FHitResult DownHitResult;
+		{
+			TArray<AActor*> IgnoreActors; IgnoreActors.Add(GetOwner());
+	
+			// 해당 Trace는 FloorDetectTraceChannel로 발사되는 Trace이다. 
+			// 발사된 해당 Trace는 Collision이 Floor로 설정된 오브젝트를 감지한다.
+			// Floor로 설정된 오브젝트에만 GroundProjectile 스킬을 스폰시키는 것이 목적.
+			const ETraceTypeQuery TraceTypeQuery = UEngineTypes::ConvertToTraceType(ECollisionChannel::ECC_GameTraceChannel5);
+			const bool bHit = UKismetSystemLibrary::LineTraceSingle(GetWorld(),
+				GetActorLocation(), GetActorLocation() + FVector(0, 0, -350), TraceTypeQuery,
+				false, IgnoreActors, EDrawDebugTrace::ForDuration, DownHitResult, true);
+			// 만약 Hit가 발생했다면 그 위치로 GroundProjectile을 옮김
+			if (bHit)
+			{
+				GroundProjectileLocation.Z = DownHitResult.ImpactPoint.Z;
+				SetActorLocation(GroundProjectileLocation);
+	
+				return;
+			}
+		}
+		// 위쪽 방향으로 LineTrace를 발사
+		FHitResult UpHitResult;
+		{
+			TArray<AActor*> IgnoreActors; IgnoreActors.Add(GetOwner());
+	
+			const ETraceTypeQuery TraceTypeQuery = UEngineTypes::ConvertToTraceType(ECollisionChannel::ECC_GameTraceChannel5);
+			const bool bHit = UKismetSystemLibrary::LineTraceSingle(GetWorld(),
+				GetActorLocation(), GetActorLocation() + FVector(0, 0, 200), TraceTypeQuery,
+				false, IgnoreActors, EDrawDebugTrace::ForDuration, UpHitResult, true);
+	
+			if (bHit)
+			{
+				GroundProjectileLocation.Z = UpHitResult.ImpactPoint.Z;
+				SetActorLocation(GroundProjectileLocation);
+				
+				return;
+			}
+		}
+		
+		// Floor가 감지되지 않으면 GroundProjectile을 그냥 제거한다.
+		Destroy();
+	}
+ 	```
+      </details>
+
+      
+  - Projectile이 **Straight Projectile**로 설정된 Skill 사용 시
+<br></br>
+**Straight Projectile**은 Player를 중심으로 일직선으로 발사되는 Projectile.<br>
+Straight Projectile이 날아가는 동안 Projectile 주변에 몬스터가 있는지 감지.<br>
+몬스터가 감지되었다면 해당 몬스터쪽으로 날아갑니다.
+<br></br>
+![stra](https://github.com/user-attachments/assets/fa9d8cb8-2b37-4320-853e-5277b883c955)
+
+      <details>
+        <summary> AStraightProjectile 클래스의 DetectDamageTarget 함수 코드 ( Straight Projectile 생성 시, 범위 내 몬스터를 감지 ) </summary>
+    
+     
+
+    
+       ```cpp
+       /* Straight Projectile이 생성되면 AStraightProjectile 클래스의 BeginPlay 함수가 호출됩니다.
+        * BeginPlay 함수는 DetectDamageTarget 함수를 호출하여 반환값을 DetectActor에 저장합니다.
+        * DetectDamageTarget 함수는 감지된 몬스터를 반환하는 함수입니다.
+        * Straight Projectile의 이동 경로 근처에 Collision이 몬스터로 설정된 오브젝트가 있는지 Box Trace를 통해 감지합니다.
+        * 감지되었다면 해당 오브젝트를 가리키는 포인터를 반환하고 DetectDamageTarget 함수를 종료합니다.
+        */
+	
+	AActor* AStraightProjectile::DetectDamageTarget()
+	{
+		FHitResult DetectResult;
+		{
+		TArray<AActor*> IgnoreActors; IgnoreActors.Add(GetOwner());
+	
+			FVector TraceStartLocation = GetActorLocation();  // Trace 시작 위치
+			FVector TraceDirection = GetActorForwardVector();  // 예: 전방 벡터 (정확한 방향은 상황에 따라 다를 수 있음)
+	
+			// 새로운 위치 계산
+			FVector TraceEndLocation = TraceStartLocation + (TraceDirection * Distance);
+	
+			// StraightProjectile의 크기를 얻어와서 
+			FVector Origin;
+			FVector BoxExtent;
+			GetActorBounds(false, Origin, BoxExtent);
+			
+			// Projectile의 자식으로 붙어있는 파티클 시스템의 크기는 빼준다.
+			if (ProjectileMeshEffectComponent)
+			{
+				// 파티클 시스템의 크기 계산
+				FBox ParticleBounds = ProjectileMeshEffectComponent->Bounds.GetBox();
+				FVector ParticleExtent = ParticleBounds.GetExtent();
+	
+				// 파티클 시스템 크기를 반영하지 않으려면 BoxExtent에서 빼기
+				BoxExtent -= ParticleExtent;
+			}
+	
+			// 감지 범위 조절
+			BoxExtent.Y += 50;
+			BoxExtent.Z += 150;
+			FVector DetectRange = BoxExtent;
+	
+		     //해당 Trace는 MonsterDetectTraceChannel로 발사되는 Trace이다. 
+			// 발사된 해당 Trace는 Collision이 Monster로 설정된 오브젝트를 감지한다.
+			const ETraceTypeQuery TraceTypeQuery = UEngineTypes::ConvertToTraceType(ECollisionChannel::ECC_GameTraceChannel8);
+			const bool bHit = UKismetSystemLibrary::BoxTraceSingle(GetWorld(),
+				TraceStartLocation, TraceEndLocation, DetectRange, GetOwner()->GetActorRotation(), TraceTypeQuery,
+				false, IgnoreActors, EDrawDebugTrace::ForDuration, DetectResult, true);	
+	
+			if (bHit)
+			{
+				AActor* TraceDetectActor = DetectResult.GetActor();
+	
+				if (TraceDetectActor)
+				{
+					return TraceDetectActor;
+				}
+			}
+		}
+		return nullptr;
+	}
+	```
+	</details>
+
+ 
+      <details>
+        <summary> AStraightProjectile 클래스의 Tick 함수와 FollowDamageTarget 함수 코드 ( Straight Projectile이, 감지한 몬스터 쪽으로 이동 ) </summary>
+    
+     
+
+    
+       ```cpp
+       /* Straight Projectile이 존재하는 동안 AStraightProjectile 클래스의 Tick 함수가 호출됩니다.
+        * Tick 함수에서는 멤버 포인터인 DetectActor가 가리키는 오브젝트가 존재한다면, FollowDamageTarget 함수를 호출합니다.
+        * FollowDamageTarget 함수는 인자로 받은 오브젝트(몬스터)를 Straight Projectile이 따라갈 수 있도록 하는 함수입니다.
+        * FollowDamageTarget 함수가 호출될 때마다 따라가야 하는 오브젝트가 어떤 방향에 존재하는지 계속 체크합니다.
+        * 그리고 Straight Projectile을 해당 방향으로 회전시킵니다.
+        * Straight Projectile은 생성 시 일정한 방향으로 이동하고 속도(Velocity)도 이미 설정되어 있으므로, 
+        * FollowDamageTarget 함수에서 방향만 설정해주어도 발사체가 타겟으로 이동하게 됩니다.
+        */
+	void AStraightProjectile::Tick(float DeltaTime)
+	{
+		Super::Tick(DeltaTime);
+	
+		if (DetectActor)
+		{
+			FollowDamageTarget(DetectActor);
+		}
+	}
+	
+	void AStraightProjectile::FollowDamageTarget(AActor* TargetActor)
+	{
+		// 감지된 Actor를 따라가는 함수
+		// 타겟 방향을 계산.
+		FVector DirectionToTarget = (TargetActor->GetActorLocation() - GetActorLocation()).GetSafeNormal();
+	
+		// 발사체를 타겟 방향으로 회전시킴.
+		FRotator NewRotation = DirectionToTarget.Rotation();
+		SetActorRotation(NewRotation);
+	
+		ProjectileMovementComponent->Velocity = DirectionToTarget * ProjectileData->InitialSpeed;
+	}
+	```
+	</details><br>
+
+      
+
                     
 
 
 
-### 2. Monster
+### 3. Monster
   - Monster 사망 시, Material을 교체하고 Opacity 값을 수정
                                 <br><br>
 ![monsteropa](https://github.com/user-attachments/assets/3a84ac96-a652-4355-9202-95e3382456a1)
