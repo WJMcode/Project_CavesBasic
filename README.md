@@ -126,7 +126,7 @@ Project_CavesBasic/
 
 ### 1. Player
 
-  - Player 피격 시, Overlay Material의 Opacity 값을 조정하여 깜빡이는 효과 부여 
+  - Player 피격 시, Overlay 머티리얼의 Opacity 값을 조정하여 깜빡이는 효과 부여 
 <br></br>
 ![blinkCha](https://github.com/user-attachments/assets/394c9701-0187-46b3-941f-3b93eed8dc8f)
 
