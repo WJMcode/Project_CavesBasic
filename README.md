@@ -166,9 +166,9 @@ Project_CavesBasic/
 
 1. **Skill 데이터 테이블**에서 `GroundProjectile`로 설정된 스킬을 사용하면 해당 객체가 생성됩니다.  
 2. 생성 시, **아래 방향**으로 LineTrace를 발사하여 `Floor` 충돌 채널을 가진 바닥을 탐지합니다.  
-3. 바닥이 감지되면 **그 위치 위에 정렬되어 생성**됩니다.  
-4. 아래에서 바닥이 감지되지 않으면 **위 방향으로도 재탐색**합니다.  
-5. **양방향 모두 실패 시**, `GroundProjectile`은 파괴됩니다.
+3. 바닥이 감지되면 **해당 지점 위에 정렬되어 생성**됩니다.  
+4. 아래에서 바닥이 감지되지 않으면 **위 방향으로 한 번 더 탐색**합니다.  
+5. **양쪽 모두에서 감지 실패 시**, `GroundProjectile`은 파괴됩니다.
 <br></br>
 ![groundproject](https://github.com/user-attachments/assets/36e000cf-694d-49c4-94af-ed1080a55919)
 
