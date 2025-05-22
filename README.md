@@ -126,116 +126,87 @@ Project_CavesBasic/
 
 ### 1. Player
 
-  - Player 피격 시, Overlay 머티리얼의 Opacity 값을 조정하여 깜빡이는 효과 부여 
+  - Player 피격 시, Overlay 머티리얼의 Opacity 값을 조정하여 깜빡이는 효과를 부여합니다.
 <br></br>
 ![blinkCha](https://github.com/user-attachments/assets/394c9701-0187-46b3-941f-3b93eed8dc8f)
 
        ```cpp
 	void UCharacterMeshEffect::ApplyHitMaterial(const float Duration)
 	{
-	    // 1. Overlay Material을 가져오기
-	    OriginalOverlayMaterial = TargetMeshComponent->GetOverlayMaterial();
+			// 1. Overlay Material을 가져오기
+			OriginalOverlayMaterial = TargetMeshComponent->GetOverlayMaterial();
 	    
-	    // 2. Overlay Material을 동적 머티리얼 인스턴스로 변환하여 Opacity 조정
-	    UMaterialInstanceDynamic* DynOverlayMaterial = UMaterialInstanceDynamic::Create(OriginalOverlayMaterial, this);
-	    DynOverlayMaterial->SetScalarParameterValue("HitOverlayOpacity", 0.6f);
-	    TargetMeshComponent->SetOverlayMaterial(DynOverlayMaterial);
+			// 2. Overlay Material을 동적 머티리얼 인스턴스로 변환하여 Opacity 조정
+			UMaterialInstanceDynamic* DynOverlayMaterial = UMaterialInstanceDynamic::Create(OriginalOverlayMaterial, this);
+			DynOverlayMaterial->SetScalarParameterValue("HitOverlayOpacity", 0.6f);
+			TargetMeshComponent->SetOverlayMaterial(DynOverlayMaterial);
 	
-	    // 일정 주기로 깜빡임 효과 타이머 실행
-	    GetWorld()->GetTimerManager().SetTimer(BlinkTimerHandle, [this, DynOverlayMaterial]()
-	    {
-	    	BlinkMaterial(DynOverlayMaterial);
-	    }, Duration / 30.f, true);	       
+			// 일정 주기로 깜빡임 효과 타이머 실행
+			GetWorld()->GetTimerManager().SetTimer(BlinkTimerHandle, [this, DynOverlayMaterial]()
+			{
+				BlinkMaterial(DynOverlayMaterial);
+			}, Duration / 30.f, true);	       
 	
-	    // 일정 시간 후 머티리얼 원상 복구
-	    GetWorld()->GetTimerManager().SetTimer(RestoreTimerHandle, [this, DynOverlayMaterial]()
-	    {
-	    	RestoreOriginalMaterial(DynOverlayMaterial);
-        	// ... (타이머 정지/멤버 초기화 등 생략)
-	    }, Duration / 3.f , false);
+			// 일정 시간 후 머티리얼 원상 복구
+			GetWorld()->GetTimerManager().SetTimer(RestoreTimerHandle, [this, DynOverlayMaterial]()
+			{
+				RestoreOriginalMaterial(DynOverlayMaterial);
+				// ... (타이머 정지/멤버 초기화 등 생략)
+			}, Duration / 3.f , false);
+       }
 	```
 
 >  전체 코드는 [GitHub에서 확인](https://github.com/WJMcode/Project_CavesBasic/blob/main/Source/CavesBasic/Actors/Effect/CharacterMeshEffect/CharacterMeshEffect.cpp)하실 수 있습니다.
 
 ### 2. Projectile
 
-  - Projectile이 **Ground Projectile**로 설정된 Skill 사용 시
-<br></br>
-**Ground Projectile**은 Player 앞에 땅이 있어야 생성되는 발사체.<br>
-Player를 중심( 캐릭터의 배꼽 위치 )을 기준으로 전방에 바닥이 존재한다면<br>
-Ground Projectile이 생성되고, 바닥이 없다면 생성되지 않습니다.
+- **Ground Projectile** : 플레이어 전방에 있는 바닥 지형을 자동으로 감지하여, 적절한 위치에 정렬되어 생성되는 발사체입니다.
+	- Skill 데이터 테이블에서 GroundProjectile로 설정된 경우 이 객체가 생성됩니다.
+	- 생성 시, 아래 방향으로 LineTrace를 쏴서 Floor 충돌 채널을 가진 바닥을 탐지합니다.
+	- 바닥이 감지되면 그 위에 정렬되어 위치합니다.
+	- 바닥이 없을 경우 위쪽으로도 LineTrace를 발사하여 Floor를 재탐색합니다.
+	- 위아래 모두 Floor를 감지하지 못하면 파괴됩니다.
 <br></br>
 ![groundproject](https://github.com/user-attachments/assets/36e000cf-694d-49c4-94af-ed1080a55919)
 
-      <details>
-        <summary> AGroundProjectile 클래스의 BeginPlay 함수 코드 ( GroundProjectile의 생성 위치를 조정 )</summary>
-    
-     
-
-    
-       ```cpp
-       /* Skill 데이터 테이블에서 Projectile 설정이 GroundProjectile로 설정된 Skill을 사용하면 GroundProjectile 객체가 생성됩니다.
-        * GroundProjectile은 Player의 중심을 기준으로, Skill 데이터 테이블에서 설정한 Transform값을 포함한 위치에 생성됩니다.
-        * GroundProjectile이 생성되면 GroundProjectile 위치 기준, 아래 방향으로 LineTrace를 발사하여 오브젝트를 감지합니다.
-        * Collision이 Floor로 설정된 오브젝트가 감지되었다면 감지된 오브젝트 위로 GroundProjectile을 옮깁니다.
-        * 만약 Collision이 Floor로 설정된 오브젝트가 아닌, 다른 오브젝트가 감지되거나 아무것도 감지되지 않으면
-        * 위쪽 방향으로 LineTrace를 발사하여 오브젝트를 감지합니다.
-        * 마찬가지로 Collision이 Floor로 설정된 오브젝트가 감지되었다면 감지된 오브젝트 위로 GroundProjectile을 옮깁니다.
-        * 이 경우에도 아무것도 감지되지 않으면 GroundProjectile을 Destroy합니다.                     
-        */
+	```cpp
 	void AGroundProjectile::BeginPlay()
 	{
-		Super::BeginPlay();
-	
-		// GroundProjectile의 위치 얻어오기
-		FVector GroundProjectileLocation = GetActorLocation();
-		// 아래 방향으로 LineTrace를 발사
-		FHitResult DownHitResult;
-		{
-			TArray<AActor*> IgnoreActors; IgnoreActors.Add(GetOwner());
-	
-			// 해당 Trace는 FloorDetectTraceChannel로 발사되는 Trace이다. 
-			// 발사된 해당 Trace는 Collision이 Floor로 설정된 오브젝트를 감지한다.
-			// Floor로 설정된 오브젝트에만 GroundProjectile 스킬을 스폰시키는 것이 목적.
-			const ETraceTypeQuery TraceTypeQuery = UEngineTypes::ConvertToTraceType(ECollisionChannel::ECC_GameTraceChannel5);
-			const bool bHit = UKismetSystemLibrary::LineTraceSingle(GetWorld(),
-				GetActorLocation(), GetActorLocation() + FVector(0, 0, -350), TraceTypeQuery,
-				false, IgnoreActors, EDrawDebugTrace::ForDuration, DownHitResult, true);
-			// 만약 Hit가 발생했다면 그 위치로 GroundProjectile을 옮김
-			if (bHit)
-			{
-				GroundProjectileLocation.Z = DownHitResult.ImpactPoint.Z;
-				SetActorLocation(GroundProjectileLocation);
-	
-				return;
-			}
-		}
-		// 위쪽 방향으로 LineTrace를 발사
-		FHitResult UpHitResult;
-		{
-			TArray<AActor*> IgnoreActors; IgnoreActors.Add(GetOwner());
-	
-			const ETraceTypeQuery TraceTypeQuery = UEngineTypes::ConvertToTraceType(ECollisionChannel::ECC_GameTraceChannel5);
-			const bool bHit = UKismetSystemLibrary::LineTraceSingle(GetWorld(),
-				GetActorLocation(), GetActorLocation() + FVector(0, 0, 200), TraceTypeQuery,
-				false, IgnoreActors, EDrawDebugTrace::ForDuration, UpHitResult, true);
-	
-			if (bHit)
-			{
-				GroundProjectileLocation.Z = UpHitResult.ImpactPoint.Z;
-				SetActorLocation(GroundProjectileLocation);
-				
-				return;
-			}
-		}
+		// 아래 방향으로 라인트레이스
+		const ETraceTypeQuery TraceTypeQuery = UEngineTypes::ConvertToTraceType(ECollisionChannel::ECC_GameTraceChannel5);
+		const bool bDownHit = UKismetSystemLibrary::LineTraceSingle(GetWorld(),
+			GetActorLocation(), GetActorLocation() + FVector(0, 0, -350), TraceTypeQuery,
+			false, IgnoreActors, EDrawDebugTrace::ForDuration, DownHitResult, true);
 		
-		// Floor가 감지되지 않으면 GroundProjectile을 그냥 제거한다.
+		if (bDownHit)
+		{
+		GroundProjectileLocation.Z = DownHitResult.ImpactPoint.Z;
+		SetActorLocation(GroundProjectileLocation);
+	
+		return;
+		}
+
+		// 위 방향으로 라인트레이스
+		const ETraceTypeQuery TraceTypeQuery = UEngineTypes::ConvertToTraceType(ECollisionChannel::ECC_GameTraceChannel5);
+		const bool bUpHit = UKismetSystemLibrary::LineTraceSingle(GetWorld(),
+			GetActorLocation(), GetActorLocation() + FVector(0, 0, 200), TraceTypeQuery,
+			false, IgnoreActors, EDrawDebugTrace::ForDuration, UpHitResult, true);
+	
+		if (bUpHit)
+		{
+		GroundProjectileLocation.Z = UpHitResult.ImpactPoint.Z;
+		SetActorLocation(GroundProjectileLocation);
+					
+		return;
+		}
+  
+		// 둘 다 실패하면 제거
 		Destroy();
 	}
- 	```
-      </details>
+	```
 
-      
+>  전체 코드는 [GitHub에서 확인](https://github.com/WJMcode/Project_CavesBasic/Actors/Projectile/GroundProjectile.cpp)하실 수 있습니다.
+
   - Projectile이 **Straight Projectile**로 설정된 Skill 사용 시
 <br></br>
 **Straight Projectile**은 Player를 중심으로 일직선으로 발사되는 Projectile.<br>
