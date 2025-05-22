@@ -126,33 +126,40 @@ Project_CavesBasic/
 
 ### 1. Player
 
-  - Player 피격 시, Overlay 머티리얼의 Opacity 값을 조정하여 깜빡이는 효과를 부여합니다.
+- **피격 시 시각 효과** : 플레이어가 피격되면 Overlay 머티리얼의 Opacity 값을 조정해 **깜빡이는 효과**를 제공합니다.
+
+- **동작 방식** : 
+
+1. `TargetMeshComponent`에서 현재 `Overlay` 머티리얼을 가져옵니다.
+2. 이를 **동적 머티리얼 인스턴스**로 생성하고, `HitOverlayOpacity` 값을 조절해 **투명도를 변경**합니다.
+3. 일정 주기로 깜빡임을 주기 위한 **타이머를 등록**합니다.
+4. 설정된 시간이 지나면 **원래 머티리얼로 복구**합니다.
 <br></br>
 ![blinkCha](https://github.com/user-attachments/assets/394c9701-0187-46b3-941f-3b93eed8dc8f)
 
-       ```cpp
+	```cpp
 	void UCharacterMeshEffect::ApplyHitMaterial(const float Duration)
 	{
-			// 1. Overlay Material을 가져오기
-			OriginalOverlayMaterial = TargetMeshComponent->GetOverlayMaterial();
+		// 1. Overlay Material을 가져오기
+		OriginalOverlayMaterial = TargetMeshComponent->GetOverlayMaterial();
 	    
-			// 2. Overlay Material을 동적 머티리얼 인스턴스로 변환하여 Opacity 조정
-			UMaterialInstanceDynamic* DynOverlayMaterial = UMaterialInstanceDynamic::Create(OriginalOverlayMaterial, this);
-			DynOverlayMaterial->SetScalarParameterValue("HitOverlayOpacity", 0.6f);
-			TargetMeshComponent->SetOverlayMaterial(DynOverlayMaterial);
+		// 2. Overlay Material을 동적 머티리얼 인스턴스로 변환하여 Opacity 조정
+		UMaterialInstanceDynamic* DynOverlayMaterial = UMaterialInstanceDynamic::Create(OriginalOverlayMaterial, this);
+		DynOverlayMaterial->SetScalarParameterValue("HitOverlayOpacity", 0.6f);
+		TargetMeshComponent->SetOverlayMaterial(DynOverlayMaterial);
 	
-			// 일정 주기로 깜빡임 효과 타이머 실행
-			GetWorld()->GetTimerManager().SetTimer(BlinkTimerHandle, [this, DynOverlayMaterial]()
-			{
-				BlinkMaterial(DynOverlayMaterial);
-			}, Duration / 30.f, true);	       
+		// 일정 주기로 깜빡임 효과 타이머 실행
+		GetWorld()->GetTimerManager().SetTimer(BlinkTimerHandle, [this, DynOverlayMaterial]()
+		{
+			BlinkMaterial(DynOverlayMaterial);
+		}, Duration / 30.f, true);	       
 	
-			// 일정 시간 후 머티리얼 원상 복구
-			GetWorld()->GetTimerManager().SetTimer(RestoreTimerHandle, [this, DynOverlayMaterial]()
-			{
-				RestoreOriginalMaterial(DynOverlayMaterial);
-				// ... (타이머 정지/멤버 초기화 등 생략)
-			}, Duration / 3.f , false);
+		// 일정 시간 후 머티리얼 원상 복구
+		GetWorld()->GetTimerManager().SetTimer(RestoreTimerHandle, [this, DynOverlayMaterial]()
+		{
+			RestoreOriginalMaterial(DynOverlayMaterial);
+			// ... (타이머 정지/멤버 초기화 등 생략)
+		}, Duration / 3.f , false);
        }
 	```
 
