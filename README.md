@@ -156,47 +156,46 @@ Project_CavesBasic/
        }
 	```
 
->  전체 코드는 [GitHub에서 확인](https://github.com/WJMcode/Project_CavesBasic/blob/main/Source/CavesBasic/Actors/Effect/CharacterMeshEffect/CharacterMeshEffect.cpp)하실 수 있습니다.
+>  CharacterMeshEffect의 전체 코드는 [GitHub에서 확인](https://github.com/WJMcode/Project_CavesBasic/blob/main/Source/CavesBasic/Actors/Effect/CharacterMeshEffect/CharacterMeshEffect.cpp)하실 수 있습니다.
 
 ### 2. Projectile
 
-- **Ground Projectile** : 플레이어 전방에 있는 바닥 지형을 자동으로 감지하여, 적절한 위치에 정렬되어 생성되는 발사체입니다.
-	- Skill 데이터 테이블에서 GroundProjectile로 설정된 경우 이 객체가 생성됩니다.
-	- 생성 시, 아래 방향으로 LineTrace를 쏴서 Floor 충돌 채널을 가진 바닥을 탐지합니다.
-	- 바닥이 감지되면 그 위에 정렬되어 위치합니다.
-	- 바닥이 없을 경우 위쪽으로도 LineTrace를 발사하여 Floor를 재탐색합니다.
-	- 위아래 모두 Floor를 감지하지 못하면 파괴됩니다.
-<br></br>
+- **GroundProjectile** : 플레이어 앞의 지형을 자동으로 감지해, 적절한 위치에 정렬되어 생성되는 발사체입니다.
+
+- **동작 방식** : 
+
+1. **Skill 데이터 테이블**에서 `GroundProjectile`로 설정된 스킬을 사용하면 해당 객체가 생성됩니다.  
+2. 생성 시, **아래 방향**으로 LineTrace를 발사하여 `Floor` 충돌 채널을 가진 바닥을 탐지합니다.  
+3. 바닥이 감지되면 **그 위치 위에 정렬되어 생성**됩니다.  
+4. 아래에서 바닥이 감지되지 않으면 **위 방향으로도 재탐색**합니다.  
+5. **양방향 모두 실패 시**, `GroundProjectile`은 파괴됩니다.
+
 ![groundproject](https://github.com/user-attachments/assets/36e000cf-694d-49c4-94af-ed1080a55919)
 
 	```cpp
 	void AGroundProjectile::BeginPlay()
 	{
+ 		const ETraceTypeQuery TraceTypeQuery = UEngineTypes::ConvertToTraceType(ECollisionChannel::ECC_GameTraceChannel5);
+
 		// 아래 방향으로 라인트레이스
-		const ETraceTypeQuery TraceTypeQuery = UEngineTypes::ConvertToTraceType(ECollisionChannel::ECC_GameTraceChannel5);
 		const bool bDownHit = UKismetSystemLibrary::LineTraceSingle(GetWorld(),
 			GetActorLocation(), GetActorLocation() + FVector(0, 0, -350), TraceTypeQuery,
 			false, IgnoreActors, EDrawDebugTrace::ForDuration, DownHitResult, true);
-		
 		if (bDownHit)
 		{
 		GroundProjectileLocation.Z = DownHitResult.ImpactPoint.Z;
 		SetActorLocation(GroundProjectileLocation);
-	
 		return;
 		}
 
 		// 위 방향으로 라인트레이스
-		const ETraceTypeQuery TraceTypeQuery = UEngineTypes::ConvertToTraceType(ECollisionChannel::ECC_GameTraceChannel5);
 		const bool bUpHit = UKismetSystemLibrary::LineTraceSingle(GetWorld(),
 			GetActorLocation(), GetActorLocation() + FVector(0, 0, 200), TraceTypeQuery,
 			false, IgnoreActors, EDrawDebugTrace::ForDuration, UpHitResult, true);
-	
 		if (bUpHit)
 		{
 		GroundProjectileLocation.Z = UpHitResult.ImpactPoint.Z;
 		SetActorLocation(GroundProjectileLocation);
-					
 		return;
 		}
   
@@ -205,7 +204,7 @@ Project_CavesBasic/
 	}
 	```
 
->  전체 코드는 [GitHub에서 확인](https://github.com/WJMcode/Project_CavesBasic/blob/main/Source/CavesBasic/Actors/Projectile/GroundProjectile.cpp)하실 수 있습니다.
+>  GroundProjectile의 전체 코드는 [GitHub에서 확인](https://github.com/WJMcode/Project_CavesBasic/blob/main/Source/CavesBasic/Actors/Projectile/GroundProjectile.cpp)하실 수 있습니다.
 
   - Projectile이 **Straight Projectile**로 설정된 Skill 사용 시
 <br></br>
