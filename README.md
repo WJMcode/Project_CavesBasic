@@ -205,7 +205,7 @@ Project_CavesBasic/
 	}
 	```
 
->  전체 코드는 [GitHub에서 확인](https://github.com/WJMcode/Project_CavesBasic/Actors/Projectile/GroundProjectile.cpp)하실 수 있습니다.
+>  전체 코드는 [GitHub에서 확인](https://github.com/WJMcode/Project_CavesBasic/blob/main/Source/CavesBasic/Actors/Projectile/GroundProjectile.cpp)하실 수 있습니다.
 
   - Projectile이 **Straight Projectile**로 설정된 Skill 사용 시
 <br></br>
