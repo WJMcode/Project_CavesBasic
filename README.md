@@ -128,12 +128,8 @@ Project_CavesBasic/
 
 - **피격 시 시각 효과** : 플레이어가 피격되면 Overlay 머티리얼의 Opacity 값을 조정해 **깜빡이는 효과**를 제공합니다.
 
-- **동작 방식** : 
-
-1. `TargetMeshComponent`에서 현재 `Overlay` 머티리얼을 가져옵니다.
-2. 이를 **동적 머티리얼 인스턴스**로 생성하고, `HitOverlayOpacity` 값을 조절해 **투명도를 변경**합니다.
-3. 일정 주기로 깜빡임을 주기 위한 **타이머를 등록**합니다.
-4. 설정된 시간이 지나면 **원래 머티리얼로 복구**합니다.
+- **핵심 로직** : 피격 시 동적 머티리얼 인스턴스를 생성하여 HitOverlayOpacity 값을 변경하고,  
+  일정 시간 동안 깜빡임 효과를 반복합니다. 이후 타이머가 종료되면 원래 머티리얼로 복원합니다.
 <br></br>
 ![blinkCha](https://github.com/user-attachments/assets/394c9701-0187-46b3-941f-3b93eed8dc8f)
 
@@ -167,15 +163,10 @@ Project_CavesBasic/
 
 ### 2. Projectile
 
-- **GroundProjectile** : 플레이어 앞의 지형을 자동으로 감지해, 적절한 위치에 정렬되어 생성되는 발사체입니다.
+- **GroundProjectile** : 플레이어 앞의 지형을 자동으로 감지해, **바닥 위에 정렬되어 생성되는 발사체**입니다.
 
-- **동작 방식** : 
-
-1. **Skill 데이터 테이블**에서 `GroundProjectile`로 설정된 스킬을 사용하면 해당 객체가 생성됩니다.  
-2. 생성 시, **아래 방향**으로 LineTrace를 발사하여 `Floor` 충돌 채널을 가진 바닥을 탐지합니다.  
-3. 바닥이 감지되면 **해당 지점 위에 정렬되어 생성**됩니다.  
-4. 아래에서 바닥이 감지되지 않으면 **위 방향으로 한 번 더 탐색**합니다.  
-5. **양쪽 모두에서 감지 실패 시**, `GroundProjectile`은 파괴됩니다.
+- **핵심 로직** : 생성 시 아래 → 위 방향으로 순차적으로 `LineTrace`를 발사해 바닥을 감지합니다.  
+  바닥이 감지되면 해당 지점에 정렬되어 생성되며, 실패할 경우 자동 파괴됩니다.
 <br></br>
 ![groundproject](https://github.com/user-attachments/assets/36e000cf-694d-49c4-94af-ed1080a55919)
 
@@ -184,7 +175,7 @@ Project_CavesBasic/
 	{
  		const ETraceTypeQuery TraceTypeQuery = UEngineTypes::ConvertToTraceType(ECollisionChannel::ECC_GameTraceChannel5);
 
-		// 아래 방향으로 라인트레이스
+		// 아래 아래 방향으로 바닥을 감지
 		const bool bDownHit = UKismetSystemLibrary::LineTraceSingle(GetWorld(),
 			GetActorLocation(), GetActorLocation() + FVector(0, 0, -350), TraceTypeQuery,
 			false, IgnoreActors, EDrawDebugTrace::ForDuration, DownHitResult, true);
@@ -195,7 +186,7 @@ Project_CavesBasic/
 		return;
 		}
 
-		// 위 방향으로 라인트레이스
+		// 위 방향으로 바닥을 감지
 		const bool bUpHit = UKismetSystemLibrary::LineTraceSingle(GetWorld(),
 			GetActorLocation(), GetActorLocation() + FVector(0, 0, 200), TraceTypeQuery,
 			false, IgnoreActors, EDrawDebugTrace::ForDuration, UpHitResult, true);
