@@ -133,7 +133,7 @@ Project_CavesBasic/
 
 - **피격 시 시각 효과** : 플레이어가 피격되면 Overlay 머티리얼의 Opacity 값을 조정해 **깜빡이는 효과**를 연출합니다.
 
-- **✍️ 핵심 로직**
+- **핵심 로직**
   - 피격 시 Overlay 머티리얼을 **동적 인스턴스로 생성**하여 `HitOverlayOpacity` 값을 조절합니다.
   - 타이머를 통해 **깜빡임 효과를 반복**하고, 일정 시간이 지나면 **머티리얼을 원래대로 복원**합니다.
   - 사망 상태일 경우, **효과 지속 시간이 더 짧게 설정**됩니다.
@@ -182,7 +182,7 @@ void UCharacterMeshEffect::ApplyHitMaterial(const float Duration)
 
 ### 2. Projectile
 
-  ### 📌 **2.1 GroundProjectile**  
+  ### **2.1 GroundProjectile**  
   - **개요**  
   플레이어 전방의 지형을 자동으로 감지해, **감지한 지형 위에 생성되는 발사체**입니다.  
                          Skill 데이터 테이블에서 `GroundProjectile`로 지정된 Skill을 사용한 경우에 생성되며 `Floor` 충돌 채널이 적용된 지형만 감지합니다.
@@ -193,14 +193,14 @@ void UCharacterMeshEffect::ApplyHitMaterial(const float Duration)
 비정상 위치에 스킬이 사용되지 않도록 필터링하여 **스킬의 신뢰성**과 **사용자 경험 (UX)** 을 크게 향상시킬 수 있습니다.
 <br>
 
-> 📸 아래는 발사체를 GroundProjectile로 지정된 Skill을 사용한 실제 게임 장면입니다.
+> 아래는 발사체를 GroundProjectile로 지정된 Skill을 사용한 실제 게임 장면입니다.
 > <br>
 > <br>
 > ![groundproject](https://github.com/user-attachments/assets/36e000cf-694d-49c4-94af-ed1080a55919)
 
 <br>
 
-> 📄 아래는 GroundProjectile의 핵심 구현 코드입니다.
+> 아래는 GroundProjectile의 핵심 구현 코드입니다.
 ```cpp
 void AGroundProjectile::BeginPlay()
 {
@@ -237,7 +237,7 @@ void AGroundProjectile::BeginPlay()
 
 <br>
 
-  ### 📌 **2.2 StraightProjectile**  
+  ### **2.2 StraightProjectile**  
   - **개요**  
 Player를 중심으로 일직선으로 발사되는 Projectile  
                          Skill 데이터 테이블에서 `GroundProjectile`로 지정된 Skill을 사용한 경우에 생성되며 `Floor` 충돌 채널이 적용된 지형만 감지합니다.
