@@ -143,9 +143,6 @@ Project_CavesBasic/
 > 💡 플레이어 피격 시 깜빡임 효과 (실제 게임 내 모습)
 > <br>
 > <br>
-> <br>
-> <br>
-> <br>
 > ![blinkCha](https://github.com/user-attachments/assets/394c9701-0187-46b3-941f-3b93eed8dc8f)
 
 <br>
