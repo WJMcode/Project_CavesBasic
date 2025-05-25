@@ -187,9 +187,16 @@ void UCharacterMeshEffect::ApplyHitMaterial(const float Duration)
 
 - **이 설계를 통해** 지형 위에 생성되는 **장판형 스킬**, **함정 설치** 등의 기능을 손쉽게 구현할 수 있고  
 비정상 위치에 스킬이 사용되지 않도록 필터링하여 **스킬의 신뢰성**과 **사용자 경험 (UX)** 을 크게 향상시킬 수 있습니다.
-<br></br>
-![groundproject](https://github.com/user-attachments/assets/36e000cf-694d-49c4-94af-ed1080a55919)
+<br>
 
+> 📸 아래는 발사체를 GroundProjectile로 지정된 Skill을 사용한 실제 게임 장면입니다.
+> <br>
+> <br>
+> ![groundproject](https://github.com/user-attachments/assets/36e000cf-694d-49c4-94af-ed1080a55919)
+
+<br>
+
+> 📄 아래는 GroundProjectile의 핵심 구현 코드입니다.
 	```cpp
 	void AGroundProjectile::BeginPlay()
 	{
@@ -222,7 +229,7 @@ void UCharacterMeshEffect::ApplyHitMaterial(const float Duration)
 	}
 	```
 
->  GroundProjectile의 전체 코드는 [GitHub에서 확인하실 수 있습니다.](https://github.com/WJMcode/Project_CavesBasic/blob/main/Source/CavesBasic/Actors/Projectile/GroundProjectile.cpp)
+>  🔗 전체 소스는 [GroundProjectile.cpp][GitHub에서 확인하실 수 있습니다.](https://github.com/WJMcode/Project_CavesBasic/blob/main/Source/CavesBasic/Actors/Projectile/GroundProjectile.cpp)에서 확인하실 수 있습니다.
 
   - Projectile이 **Straight Projectile**로 설정된 Skill 사용 시
 <br></br>
