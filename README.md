@@ -231,7 +231,7 @@ void AGroundProjectile::BeginPlay()
 }
 ```
 
->  🔗 전체 소스는 [GroundProjectile.cpp][GitHub에서 확인하실 수 있습니다.](https://github.com/WJMcode/Project_CavesBasic/blob/main/Source/CavesBasic/Actors/Projectile/GroundProjectile.cpp)에서 확인하실 수 있습니다.
+>  🔗 전체 소스는 [GroundProjectile.cpp](https://github.com/WJMcode/Project_CavesBasic/blob/main/Source/CavesBasic/Actors/Projectile/GroundProjectile.cpp)에서 확인하실 수 있습니다.
 
   - Projectile이 **Straight Projectile**로 설정된 Skill 사용 시
 <br></br>
