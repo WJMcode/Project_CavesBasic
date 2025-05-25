@@ -197,37 +197,37 @@ void UCharacterMeshEffect::ApplyHitMaterial(const float Duration)
 <br>
 
 > 📄 아래는 GroundProjectile의 핵심 구현 코드입니다.
-	```cpp
-	void AGroundProjectile::BeginPlay()
+```cpp
+void AGroundProjectile::BeginPlay()
+{
+	const ETraceTypeQuery TraceTypeQuery = UEngineTypes::ConvertToTraceType(ECollisionChannel::ECC_GameTraceChannel5);
+
+	// 아래 아래 방향으로 바닥을 감지
+	const bool bDownHit = UKismetSystemLibrary::LineTraceSingle(GetWorld(),
+	GetActorLocation(), GetActorLocation() + FVector(0, 0, -350), TraceTypeQuery,
+		false, IgnoreActors, EDrawDebugTrace::ForDuration, DownHitResult, true);
+	if (bDownHit)
 	{
- 		const ETraceTypeQuery TraceTypeQuery = UEngineTypes::ConvertToTraceType(ECollisionChannel::ECC_GameTraceChannel5);
-
-		// 아래 아래 방향으로 바닥을 감지
-		const bool bDownHit = UKismetSystemLibrary::LineTraceSingle(GetWorld(),
-			GetActorLocation(), GetActorLocation() + FVector(0, 0, -350), TraceTypeQuery,
-			false, IgnoreActors, EDrawDebugTrace::ForDuration, DownHitResult, true);
-		if (bDownHit)
-		{
-		GroundProjectileLocation.Z = DownHitResult.ImpactPoint.Z;
-		SetActorLocation(GroundProjectileLocation);
-		return;
-		}
-
-		// 위 방향으로 바닥을 감지
-		const bool bUpHit = UKismetSystemLibrary::LineTraceSingle(GetWorld(),
-			GetActorLocation(), GetActorLocation() + FVector(0, 0, 200), TraceTypeQuery,
-			false, IgnoreActors, EDrawDebugTrace::ForDuration, UpHitResult, true);
-		if (bUpHit)
-		{
-		GroundProjectileLocation.Z = UpHitResult.ImpactPoint.Z;
-		SetActorLocation(GroundProjectileLocation);
-		return;
-		}
-  
-		// 둘 다 실패하면 제거
-		Destroy();
+	GroundProjectileLocation.Z = DownHitResult.ImpactPoint.Z;
+	SetActorLocation(GroundProjectileLocation);
+	return;
 	}
-	```
+
+	// 위 방향으로 바닥을 감지
+	const bool bUpHit = UKismetSystemLibrary::LineTraceSingle(GetWorld(),
+		GetActorLocation(), GetActorLocation() + FVector(0, 0, 200), TraceTypeQuery,
+		false, IgnoreActors, EDrawDebugTrace::ForDuration, UpHitResult, true);
+	if (bUpHit)
+	{
+	GroundProjectileLocation.Z = UpHitResult.ImpactPoint.Z;
+	SetActorLocation(GroundProjectileLocation);
+	return;
+	}
+  
+	// 둘 다 실패하면 제거
+	Destroy();
+}
+```
 
 >  🔗 전체 소스는 [GroundProjectile.cpp][GitHub에서 확인하실 수 있습니다.](https://github.com/WJMcode/Project_CavesBasic/blob/main/Source/CavesBasic/Actors/Projectile/GroundProjectile.cpp)에서 확인하실 수 있습니다.
 
