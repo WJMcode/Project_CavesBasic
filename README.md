@@ -210,9 +210,9 @@ void AGroundProjectile::BeginPlay()
 		false, IgnoreActors, EDrawDebugTrace::ForDuration, DownHitResult, true);
 	if (bDownHit)
 	{
-	GroundProjectileLocation.Z = DownHitResult.ImpactPoint.Z;
-	SetActorLocation(GroundProjectileLocation);
-	return;
+		GroundProjectileLocation.Z = DownHitResult.ImpactPoint.Z;
+		SetActorLocation(GroundProjectileLocation);
+		return;
 	}
 
 	// 위 방향으로 바닥을 감지
@@ -221,9 +221,9 @@ void AGroundProjectile::BeginPlay()
 		false, IgnoreActors, EDrawDebugTrace::ForDuration, UpHitResult, true);
 	if (bUpHit)
 	{
-	GroundProjectileLocation.Z = UpHitResult.ImpactPoint.Z;
-	SetActorLocation(GroundProjectileLocation);
-	return;
+		GroundProjectileLocation.Z = UpHitResult.ImpactPoint.Z;
+		SetActorLocation(GroundProjectileLocation);
+		return;
 	}
   
 	// 둘 다 실패하면 제거
