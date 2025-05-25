@@ -137,9 +137,9 @@ Project_CavesBasic/
 	- 피격 시 Overlay 머티리얼을 **동적 인스턴스로 생성**하여 `HitOverlayOpacity` 값을 조절합니다.
  	- 타이머를 통해 **깜빡임 효과를 반복**하고, 일정 시간이 지나면 **머티리얼을 원래대로 복원**합니다.
   - 사망 상태일 경우, **효과 지속 시간이 더 짧게 설정**됩니다.  
-> 💡 피격 시 깜빡임 효과 예시<br>
-![blinkCha](https://github.com/user-attachments/assets/394c9701-0187-46b3-941f-3b93eed8dc8f)<br>
-▶ C++ 코드: Overlay 머티리얼의 Opacity 값을 조절하여 깜빡임 효과 구현  
+	> 💡 피격 시 깜빡임 효과 예시<br>
+	![blinkCha](https://github.com/user-attachments/assets/394c9701-0187-46b3-941f-3b93eed8dc8f)<br>
+	▶ C++ 코드: Overlay 머티리얼의 Opacity 값을 조절하여 깜빡임 효과 구현  
 	```cpp
 	void UCharacterMeshEffect::ApplyHitMaterial(const float Duration)
 	{
