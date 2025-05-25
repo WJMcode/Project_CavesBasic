@@ -137,9 +137,9 @@ Project_CavesBasic/
 타이머를 통해 **깜빡임 효과를 반복**하고, 일정 시간이 지나면 **머티리얼을 원래대로 복원**합니다.  
 사망 상태일 경우, **효과 지속 시간이 더 짧게 설정**됩니다.  
 
-> 💡 실제 게임 내에서 깜빡이는 피격 효과 예시:
+### 💡 피격 시 깜빡임 효과 예시  
 ![blinkCha](https://github.com/user-attachments/assets/394c9701-0187-46b3-941f-3b93eed8dc8f)
-▶ C++ 코드: Overlay 머티리얼의 Opacity 값을 조절하여 깜빡임 효과 구현
+### ▶ 구현 코드 요약
 	```cpp
 	void UCharacterMeshEffect::ApplyHitMaterial(const float Duration)
 	{
@@ -166,7 +166,7 @@ Project_CavesBasic/
        }
 	```
 
->  CharacterMeshEffect의 전체 코드는 [GitHub에서 확인하실 수 있습니다.](https://github.com/WJMcode/Project_CavesBasic/blob/main/Source/CavesBasic/Actors/Effect/CharacterMeshEffect/CharacterMeshEffect.cpp)
+>  🔗 전체 소스는 [CharacterMeshEffect.cpp](https://github.com/WJMcode/Project_CavesBasic/blob/main/Source/CavesBasic/Actors/Effect/CharacterMeshEffect/CharacterMeshEffect.cpp)에서 확인하실 수 있습니다.
 
 ### 2. Projectile
 
