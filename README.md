@@ -280,6 +280,8 @@ void AStraightProjectile::FollowDamageTarget(AActor* TargetActor)
 }
 ```
 
+>  🔗 전체 소스는 [StraightProjectile.cpp](https://github.com/WJMcode/Project_CavesBasic/blob/main/Source/CavesBasic/Actors/Projectile/StraightProjectile.cpp)에서 확인하실 수 있습니다.
+
 <br>
 
 ### 3. Monster
