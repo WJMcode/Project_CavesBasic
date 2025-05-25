@@ -144,7 +144,7 @@ Project_CavesBasic/
 ![blinkCha](https://github.com/user-attachments/assets/394c9701-0187-46b3-941f-3b93eed8dc8f)
 
 <br>
-
+- 실제 구현 코드 예시:
 ```cpp
 void UCharacterMeshEffect::ApplyHitMaterial(const float Duration)
 {
