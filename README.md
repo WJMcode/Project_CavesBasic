@@ -145,8 +145,7 @@ Project_CavesBasic/
 
 <br>
 
-- **핵심 구현 코드**
-> 💡 플레이어 피격 시 깜빡임 효과 (실제 게임 내 모습)
+> 💡 아래는 핵심 구현 코드입니다.
 ```cpp
 void UCharacterMeshEffect::ApplyHitMaterial(const float Duration)
 {
