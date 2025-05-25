@@ -182,7 +182,8 @@ void UCharacterMeshEffect::ApplyHitMaterial(const float Duration)
 
 ### 2. Projectile
 
-  2.1 **GroundProjectile**  
+  📌 **2-1 GroundProjectile**  
+  - **개요**  
   플레이어 전방의 지형을 자동으로 감지해, **감지한 지형 위에 생성되는 발사체**입니다.  
                          Skill 데이터 테이블에서 `GroundProjectile`로 지정된 Skill을 사용한 경우에 생성되며 `Floor` 충돌 채널이 적용된 지형만 감지합니다.
 - **✍️ 핵심 로직** : 지면을 감지하기 위해 **위/아래 방향으로 LineTrace를 시도**합니다.  
