@@ -178,6 +178,8 @@ void UCharacterMeshEffect::ApplyHitMaterial(const float Duration)
 
 >  🔗 전체 소스는 [CharacterMeshEffect.cpp](https://github.com/WJMcode/Project_CavesBasic/blob/main/Source/CavesBasic/Actors/Effect/CharacterMeshEffect/CharacterMeshEffect.cpp)에서 확인하실 수 있습니다.
 
+<br>
+
 ### 2. Projectile
 
 - **GroundProjectile** : 플레이어 전방의 지형을 자동으로 감지해, **감지한 지형 위에 생성되는 발사체**입니다.  
