@@ -141,7 +141,7 @@ Project_CavesBasic/
 <br>
 
 > 💡 아래는 플레이어가 피격될 때 나타나는 ‘깜빡임’ 효과 예시입니다.
-> ![blinkCha](https://github.com/user-attachments/assets/394c9701-0187-46b3-941f-3b93eed8dc8f)
+<br>> ![blinkCha](https://github.com/user-attachments/assets/394c9701-0187-46b3-941f-3b93eed8dc8f)
 
 <br>
 
