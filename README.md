@@ -233,13 +233,24 @@ void AGroundProjectile::BeginPlay()
 
 >  🔗 전체 소스는 [GroundProjectile.cpp](https://github.com/WJMcode/Project_CavesBasic/blob/main/Source/CavesBasic/Actors/Projectile/GroundProjectile.cpp)에서 확인하실 수 있습니다.
 
-  - Projectile이 **Straight Projectile**로 설정된 Skill 사용 시
-<br></br>
-**Straight Projectile**은 Player를 중심으로 일직선으로 발사되는 Projectile.<br>
-Straight Projectile이 날아가는 동안 Projectile 주변에 몬스터가 있는지 감지.<br>
-몬스터가 감지되었다면 해당 몬스터쪽으로 날아갑니다.
-<br></br>
-![stra](https://github.com/user-attachments/assets/fa9d8cb8-2b37-4320-853e-5277b883c955)
+- **Straight Projectile** : Player를 중심으로 일직선으로 발사되는 Projectile  
+                         Skill 데이터 테이블에서 `GroundProjectile`로 지정된 Skill을 사용한 경우에 생성되며 `Floor` 충돌 채널이 적용된 지형만 감지합니다.
+- **✍️ 핵심 로직** : Straight Projectile이 날아가는 동안 Projectile 주변에 몬스터가 있는지 감지  
+  몬스터가 감지되었다면 해당 몬스터쪽으로 날아갑니다.
+
+- **이 설계를 통해** ㅁㄴㅇ  
+ㅁㄴㅇ
+<br>
+
+> 📸 아래는 발사체를 StraightProjectile로 지정된 Skill을 사용한 실제 게임 장면입니다.
+> <br>
+> <br>
+> ![stra](https://github.com/user-attachments/assets/fa9d8cb8-2b37-4320-853e-5277b883c955)
+
+<br>
+
+> 📄 아래는 StraightProjectile의 핵심 구현 코드입니다.
+
 
       <details>
         <summary> AStraightProjectile 클래스의 DetectDamageTarget 함수 코드 ( Straight Projectile 생성 시, 범위 내 몬스터를 감지 ) </summary>
