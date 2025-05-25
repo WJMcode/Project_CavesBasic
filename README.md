@@ -145,31 +145,31 @@ Project_CavesBasic/
 
 <br>
 
-	```cpp
-	void UCharacterMeshEffect::ApplyHitMaterial(const float Duration)
-	{
-		// 1. Overlay Material을 가져오기
-		OriginalOverlayMaterial = TargetMeshComponent->GetOverlayMaterial();
+```cpp
+void UCharacterMeshEffect::ApplyHitMaterial(const float Duration)
+{
+	// 1. Overlay Material을 가져오기
+	OriginalOverlayMaterial = TargetMeshComponent->GetOverlayMaterial();
 	    
-		// 2. Overlay Material을 동적 머티리얼 인스턴스로 변환하여 Opacity 조정
-		UMaterialInstanceDynamic* DynOverlayMaterial = UMaterialInstanceDynamic::Create(OriginalOverlayMaterial, this);
-		DynOverlayMaterial->SetScalarParameterValue("HitOverlayOpacity", 0.6f);
-		TargetMeshComponent->SetOverlayMaterial(DynOverlayMaterial);
+	// 2. Overlay Material을 동적 머티리얼 인스턴스로 변환하여 Opacity 조정
+	UMaterialInstanceDynamic* DynOverlayMaterial = UMaterialInstanceDynamic::Create(OriginalOverlayMaterial, this);
+	DynOverlayMaterial->SetScalarParameterValue("HitOverlayOpacity", 0.6f);
+	TargetMeshComponent->SetOverlayMaterial(DynOverlayMaterial);
 	
-		// 일정 주기로 깜빡임 효과 타이머 실행
-		GetWorld()->GetTimerManager().SetTimer(BlinkTimerHandle, [this, DynOverlayMaterial]()
-		{
-			BlinkMaterial(DynOverlayMaterial);
-		}, Duration / 30.f, true);	       
+	// 일정 주기로 깜빡임 효과 타이머 실행
+	GetWorld()->GetTimerManager().SetTimer(BlinkTimerHandle, [this, DynOverlayMaterial]()
+	{
+		BlinkMaterial(DynOverlayMaterial);
+	}, Duration / 30.f, true);	       
 	
-		// 일정 시간 후 머티리얼 원상 복구
-		GetWorld()->GetTimerManager().SetTimer(RestoreTimerHandle, [this, DynOverlayMaterial]()
-		{
-			RestoreOriginalMaterial(DynOverlayMaterial);
-			// ... (타이머 정지/멤버 초기화 등 생략)
-		}, Duration / 3.f , false);
-       }
-	```
+	// 일정 시간 후 머티리얼 원상 복구
+	GetWorld()->GetTimerManager().SetTimer(RestoreTimerHandle, [this, DynOverlayMaterial]()
+	{
+		RestoreOriginalMaterial(DynOverlayMaterial);
+		// ... (타이머 정지/멤버 초기화 등 생략)
+	}, Duration / 3.f , false);
+}
+```
 
 >  🔗 전체 소스는 [CharacterMeshEffect.cpp](https://github.com/WJMcode/Project_CavesBasic/blob/main/Source/CavesBasic/Actors/Effect/CharacterMeshEffect/CharacterMeshEffect.cpp)에서 확인하실 수 있습니다.
 
