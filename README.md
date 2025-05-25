@@ -130,7 +130,7 @@ Project_CavesBasic/
 ## 🔎 세부 구현 (주요 코드/로직)
 
 ### 1. Player
-  ### **피격 시 시각 효과**  
+  #### **피격 시 시각 효과**  
   - **개요**  
 플레이어가 피격되면 Overlay 머티리얼의 Opacity 값을 조정해 **깜빡이는 효과**를 연출합니다.
 
@@ -184,13 +184,13 @@ void UCharacterMeshEffect::ApplyHitMaterial(const float Duration)
 
 ### 2. Projectile
 
-  ### **2.1 GroundProjectile**  
+  #### **2.1 GroundProjectile**  
   - **개요**  
   플레이어 전방의 지형을 자동으로 감지해, **감지한 지형 위에 생성되는 발사체**입니다.  
                          Skill 데이터 테이블에서 `GroundProjectile`로 지정된 Skill을 사용한 경우에 생성되며 `Floor` 충돌 채널이 적용된 지형만 감지합니다.
 - **핵심 로직**  
-지면을 감지하기 위해 **위/아래 방향으로 LineTrace를 시도**합니다.  
-  바닥이 감지되면 해당 위치로 이동해 생성되며, 위/아래 모두에서 감지에 실패한 경우 자동으로 제거됩니다.
+  - 지면을 감지하기 위해 **위/아래 방향으로 LineTrace를 시도**합니다.  
+  - 바닥이 감지되면 해당 위치로 이동해 생성되며, 위/아래 모두에서 감지에 실패한 경우 자동으로 제거됩니다.
 
 - **설계 장점**  
 지형 위에 생성되는 **장판형 스킬**, **함정 설치** 등의 기능을 손쉽게 구현할 수 있고,  
@@ -241,13 +241,13 @@ void AGroundProjectile::BeginPlay()
 
 <br>
 
-  ### **2.2 StraightProjectile**  
+  #### **2.2 StraightProjectile**  
   - **개요**  
 Player를 중심으로 일직선으로 발사되는 Projectile  
-                         Skill 데이터 테이블에서 `GroundProjectile`로 지정된 Skill을 사용한 경우에 생성되며 `Floor` 충돌 채널이 적용된 지형만 감지합니다.
+Skill 데이터 테이블에서 `GroundProjectile`로 지정된 Skill을 사용한 경우에 생성되며 `Floor` 충돌 채널이 적용된 지형만 감지합니다.
 - **핵심 로직**  
-Straight Projectile이 날아가는 동안 Projectile 주변에 몬스터가 있는지 감지  
-몬스터가 감지되었다면 해당 몬스터쪽으로 날아갑니다.
+  - Straight Projectile이 날아가는 동안 Projectile 주변에 몬스터가 있는지 감지  
+  - 몬스터가 감지되었다면 해당 몬스터쪽으로 날아갑니다.
 
 - **설계 장점**  
 ㅁㄴㅇ
