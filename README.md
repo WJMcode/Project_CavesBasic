@@ -140,8 +140,8 @@ Project_CavesBasic/
   - 사망 상태일 경우, **효과 지속 시간이 더 짧게 설정**됩니다.
 
 - **설계 장점**  
-피격 시 시각 효과가 명확하게 표현되어 플레이어는 **위험 상황을 직관적으로 알 수 있으며**,  
-사망 시에는 깜빡임 효과가 짧아져 **게임의 몰입감을 높일 수 있습니다.**
+ - 피격 시 시각 효과가 명확하게 표현되어 플레이어는 **위험 상황을 직관적으로 알 수 있습니다.**
+ - 사망 시에는 깜빡임 효과가 짧아져 **게임의 몰입감을 높일 수 있습니다.**
 <br>
 
 > 📸 아래는 플레이어 피격 시 깜빡임 효과가 적용된 실제 게임 장면입니다.
@@ -285,90 +285,45 @@ void AStraightProjectile::FollowDamageTarget(AActor* TargetActor)
 <br>
 
 ### 3. Monster
-  - Monster 사망 시, Material을 교체하고 Opacity 값을 수정
-                                <br><br>
-![monsteropa](https://github.com/user-attachments/assets/3a84ac96-a652-4355-9202-95e3382456a1)
 
-      <details>
-        <summary> ADefaultMonster 클래스의 BeginPlay와 OnDisappearMesh, OnDisappearMeshEnd 함수 코드 </summary>
-    
-     
+  #### **사망 시 시각 효과**  
+  - **개요**  
+몬스터가 사망하면 메시의 머티리얼을 투명도 조절 가능한 머티리얼로 교체하고,  
+시간에 따라 서서히 사라지는 연출을 구현합니다.
 
-    
-       ```cpp
-       /* 현재 Monster의 메시는 Opacity를 수정할 수 없는 메시로 설정되어 있습니다.
-        * ADefaultMonster 클래스의 BeginPlay 함수에서
-        * 멤버 변수 MaterialInstanceDynamics에 Opacity를 수정할 수 있는 Material을 저장합니다.
-        * Monster 사망 시, OnDisappearMesh 함수를 호출하여
-        * Monster의 메시를 MaterialInstanceDynamics에 저장된 Material로 교체하고 
-        * Opacity를 조정합니다. 이로써 Monster의 메시가 점점 투명해지도록 연출할 수 있게 됩니다.
-        * OnDisappearMesh 함수가 종료되면 OnDisappearMeshEnd 함수를 호출하여 Monster를 Destroy합니다.
-        */
-	void ADefaultMonster::BeginPlay()
-	{
-		Super::BeginPlay();
-		
-		SetData(DataTableRowHandle);
-	
-		USkeletalMeshComponent* SkeletalMeshComponent = GetComponentByClass<USkeletalMeshComponent>();
-	
-		// 1번 인덱스에 있는 Material이 BlendMode가 Translucent로 설정되어, Opacity를 수정할 수 있는 Material이다.
-		// MaterialInstanceDynamics는 1번 인덱스에 있는 Material을 가리키는 멤버 변수
-		MaterialInstanceDynamics = SkeletalMeshComponent->CreateAndSetMaterialInstanceDynamic(1);
-		ensureMsgf(MaterialInstanceDynamics->GetBlendMode() == EBlendMode::BLEND_Translucent && MaterialInstanceDynamics, TEXT("1번 인덱스에 존재하는 Material이 없거나, BlendMode가 Translucent가 아닙니다."));
-	
-		if (DisappearCurve)	// DisappearCurve 값 세팅
-		{
-			// 몬스터 사망 모션은 하나로 함
-			float DieMontagePlayLength = MonsterData->DieMontage->GetPlayLength();
-			
-			// 키프레임 추가
-			FKeyHandle KeyHandle1 = DisappearCurve->FloatCurve.AddKey(0.0f, 1.0f);  // 시간 0에서 값 1
-			// 값이 점점 증가하는 Curve
-			FKeyHandle KeyHandle3 = DisappearCurve->FloatCurve.AddKey(DieMontagePlayLength, DieMontagePlayLength);  // 시간 DieMontagePlayLength에서 값 DieMontagePlayLength
-	
-			DisappearCurve->FloatCurve.SetKeyInterpMode(KeyHandle1, RCIM_Cubic);  // 선형 보간
-			DisappearCurve->FloatCurve.SetKeyInterpMode(KeyHandle3, RCIM_Cubic);
-		}
-		FOnTimelineFloat Delegate;
-		Delegate.BindDynamic(this, &ThisClass::OnDisappearMesh);
-		// Delegate와 연동된, 즉 OnDisappearMesh 함수가 호출될 때 DisappearCurve를 인자로 넘긴다.
-		DisappearTimelineComponent->AddInterpFloat(DisappearCurve, Delegate);
-	
-		FOnTimelineEvent EndDelegate;
-		EndDelegate.BindDynamic(this, &ThisClass::OnDisappearMeshEnd);
-		DisappearTimelineComponent->SetTimelineFinishedFunc(EndDelegate);
-	
-		...
-	}
+- **핵심 로직**  
+ - **Translucent 머티리얼을 MaterialInstanceDynamic 형태로 생성**합니다.
+ - 몬스터가 사망하면 `OnDisappearMesh` 함수에서 **Opacity** 를 점차 줄입니다.
+ - **Timeline**과 **Curve**를 통해 시간에 따른 투명도 조절을 구현합니다.
+ - 사라지는 연출이 완료되면 `OnDisappearMeshEnd`에서 Actor를 제거합니다.
 
-	void ADefaultMonster::OnDisappearMesh(float InDissolve)
-	{
-		if (MaterialInstanceDynamics)
-		{
-			USkeletalMeshComponent* SkeletalMeshComponent = GetComponentByClass<USkeletalMeshComponent>();
-			// MaterialInstanceDynamics가 가리키고 있는, BlendMode가 Translucent로 설정된
-			// Material을 Monster의 0번 Material로 설정해 준다.
-			SkeletalMeshComponent->SetMaterial(0, MaterialInstanceDynamics);
-	
-			// CurrentTransparency의 초깃값은 1이다.
-			float CurrentTransparency;
-			MaterialInstanceDynamics->GetScalarParameterValue(FName("Opacity"), CurrentTransparency);
-	
-			float SpeedMultiplier = 0.005f; // 낮을수록 투명도 감소 속도를 더 천천히 만듭니다.
-			
-			// CurrentTransparency의 값을 점점 감소시켜 몬스터가 점점 투명해지도록 한다.
-			float NewTransparency = FMath::Max(CurrentTransparency - InDissolve * SpeedMultiplier, 0.0f); // Max 함수는 첫 번째 인자의 값이 음수가 나오면 0.0f을 반환해 준다.
-			MaterialInstanceDynamics->SetScalarParameterValue(FName("Opacity"), NewTransparency);
-		}
-	}
-	
-	void ADefaultMonster::OnDisappearMeshEnd()
-	{
-		Destroy();
-	}
-	```
-	</details>
+- **설계 장점**  
+ - 몬스터가 사망할 때 **서서히 투명해지는 연출**로, 플레이어에게 **명확한 피드백과 몰입감을 제공**합니다.  
+ - **Timeline 컴포넌트를 이용해 부드럽고 자연스러운 투명도 변화**를 제어하며, 애니메이션과 **동기화하기 쉽습니다.**
+
+<br>
+
+> 📸 아래는 플레이어 피격 시 깜빡임 효과가 적용된 실제 게임 장면입니다.
+> <br>
+> <br>
+> ![monsteropa](https://github.com/user-attachments/assets/3a84ac96-a652-4355-9202-95e3382456a1)
+
+<br>
+
+> 📄 아래는 플레이어 피격 시 깜빡임 효과의 핵심 구현 코드입니다.
+```cpp
+// BeginPlay에서 MaterialInstanceDynamic 초기화
+MaterialInstanceDynamics = SkeletalMesh->CreateAndSetMaterialInstanceDynamic(1);
+
+// OnDisappearMesh : Opacity를 줄여 몬스터가 점점 사라지게 함
+float NewTransparency = FMath::Max(CurrentTransparency - InDissolve * SpeedMultiplier, 0.0f);
+MaterialInstanceDynamics->SetScalarParameterValue(FName("Opacity"), NewTransparency);
+
+// Timeline이 끝나면 Destroy
+void ADefaultMonster::OnDisappearMeshEnd() { Destroy(); }
+```
+
+>  🔗 전체 소스는 [DefaultMonster.cpp](https://github.com/WJMcode/Project_CavesBasic/blob/main/Source/CavesBasic/Actors/Monster/DefaultMonster/DefaultMonster.cpp)에서 확인하실 수 있습니다.
 
 ---
 
