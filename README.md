@@ -243,14 +243,14 @@ void AGroundProjectile::BeginPlay()
 
   #### **2.2 StraightProjectile**  
   - **개요**  
-Player를 중심으로 일직선으로 발사되는 Projectile  
-Skill 데이터 테이블에서 `GroundProjectile`로 지정된 Skill을 사용한 경우에 생성되며 `Floor` 충돌 채널이 적용된 지형만 감지합니다.
+감지된 몬스터를 향해 **지속적으로 회전하며 추적하는 발사체**입니다.  
 - **핵심 로직**  
-  - Straight Projectile이 날아가는 동안 Projectile 주변에 몬스터가 있는지 감지  
-  - 몬스터가 감지되었다면 해당 몬스터쪽으로 날아갑니다.
+ - 발사체가 타겟(몬스터)의 위치를 지속적으로 확인합니다.
+ - 타겟의 방향을 계산하여 발사체를 해당 방향으로 회전시킵니다.
+ - 발사체 이동 속도를 타겟 방향으로 갱신하여 목표물을 향해 이동하도록 만듭니다.
 
 - **설계 장점**  
-ㅁㄴㅇ
+발사체가 단순 직진이 아닌 목표물을 향해 추적하는 동작을 구현함으로써, 스킬 사용 시 시각적·전략적 재미를 더해줍니다.
 <br>
 
 > 📸 아래는 발사체를 StraightProjectile로 지정된 Skill을 사용한 실제 게임 장면입니다.
@@ -261,123 +261,22 @@ Skill 데이터 테이블에서 `GroundProjectile`로 지정된 Skill을 사용�
 <br>
 
 > 📄 아래는 StraightProjectile의 핵심 구현 코드입니다.
+```cpp
+void AStraightProjectile::FollowDamageTarget(AActor* TargetActor)
+{
+	// 감지된 Actor를 따라가는 함수
+	// 타겟 방향을 계산.
+	FVector DirectionToTarget = (TargetActor->GetActorLocation() - GetActorLocation()).GetSafeNormal();
+	
+	// 발사체를 타겟 방향으로 회전시킴.
+	FRotator NewRotation = DirectionToTarget.Rotation();
+	SetActorRotation(NewRotation);
+	
+	ProjectileMovementComponent->Velocity = DirectionToTarget * ProjectileData->InitialSpeed;
+}
+```
 
-
-      <details>
-        <summary> AStraightProjectile 클래스의 DetectDamageTarget 함수 코드 ( Straight Projectile 생성 시, 범위 내 몬스터를 감지 ) </summary>
-    
-     
-
-    
-       ```cpp
-       /* Straight Projectile이 생성되면 AStraightProjectile 클래스의 BeginPlay 함수가 호출됩니다.
-        * BeginPlay 함수는 DetectDamageTarget 함수를 호출하여 반환값을 DetectActor에 저장합니다.
-        * DetectDamageTarget 함수는 감지된 몬스터를 반환하는 함수입니다.
-        * Straight Projectile의 이동 경로 근처에 Collision이 몬스터로 설정된 오브젝트가 있는지 Box Trace를 통해 감지합니다.
-        * 감지되었다면 해당 오브젝트를 가리키는 포인터를 반환하고 DetectDamageTarget 함수를 종료합니다.
-        */
-	
-	AActor* AStraightProjectile::DetectDamageTarget()
-	{
-		FHitResult DetectResult;
-		{
-		TArray<AActor*> IgnoreActors; IgnoreActors.Add(GetOwner());
-	
-			FVector TraceStartLocation = GetActorLocation();  // Trace 시작 위치
-			FVector TraceDirection = GetActorForwardVector();  // 예: 전방 벡터 (정확한 방향은 상황에 따라 다를 수 있음)
-	
-			// 새로운 위치 계산
-			FVector TraceEndLocation = TraceStartLocation + (TraceDirection * Distance);
-	
-			// StraightProjectile의 크기를 얻어와서 
-			FVector Origin;
-			FVector BoxExtent;
-			GetActorBounds(false, Origin, BoxExtent);
-			
-			// Projectile의 자식으로 붙어있는 파티클 시스템의 크기는 빼준다.
-			if (ProjectileMeshEffectComponent)
-			{
-				// 파티클 시스템의 크기 계산
-				FBox ParticleBounds = ProjectileMeshEffectComponent->Bounds.GetBox();
-				FVector ParticleExtent = ParticleBounds.GetExtent();
-	
-				// 파티클 시스템 크기를 반영하지 않으려면 BoxExtent에서 빼기
-				BoxExtent -= ParticleExtent;
-			}
-	
-			// 감지 범위 조절
-			BoxExtent.Y += 50;
-			BoxExtent.Z += 150;
-			FVector DetectRange = BoxExtent;
-	
-		     //해당 Trace는 MonsterDetectTraceChannel로 발사되는 Trace이다. 
-			// 발사된 해당 Trace는 Collision이 Monster로 설정된 오브젝트를 감지한다.
-			const ETraceTypeQuery TraceTypeQuery = UEngineTypes::ConvertToTraceType(ECollisionChannel::ECC_GameTraceChannel8);
-			const bool bHit = UKismetSystemLibrary::BoxTraceSingle(GetWorld(),
-				TraceStartLocation, TraceEndLocation, DetectRange, GetOwner()->GetActorRotation(), TraceTypeQuery,
-				false, IgnoreActors, EDrawDebugTrace::ForDuration, DetectResult, true);	
-	
-			if (bHit)
-			{
-				AActor* TraceDetectActor = DetectResult.GetActor();
-	
-				if (TraceDetectActor)
-				{
-					return TraceDetectActor;
-				}
-			}
-		}
-		return nullptr;
-	}
-	```
-	</details>
-
- 
-      <details>
-        <summary> AStraightProjectile 클래스의 Tick 함수와 FollowDamageTarget 함수 코드 ( Straight Projectile이, 감지한 몬스터 쪽으로 이동 ) </summary>
-    
-     
-
-    
-       ```cpp
-       /* Straight Projectile이 존재하는 동안 AStraightProjectile 클래스의 Tick 함수가 호출됩니다.
-        * Tick 함수에서는 멤버 포인터인 DetectActor가 가리키는 오브젝트가 존재한다면, FollowDamageTarget 함수를 호출합니다.
-        * FollowDamageTarget 함수는 인자로 받은 오브젝트(몬스터)를 Straight Projectile이 따라갈 수 있도록 하는 함수입니다.
-        * FollowDamageTarget 함수가 호출될 때마다 따라가야 하는 오브젝트가 어떤 방향에 존재하는지 계속 체크합니다.
-        * 그리고 Straight Projectile을 해당 방향으로 회전시킵니다.
-        * Straight Projectile은 생성 시 일정한 방향으로 이동하고 속도(Velocity)도 이미 설정되어 있으므로, 
-        * FollowDamageTarget 함수에서 방향만 설정해주어도 발사체가 타겟으로 이동하게 됩니다.
-        */
-	void AStraightProjectile::Tick(float DeltaTime)
-	{
-		Super::Tick(DeltaTime);
-	
-		if (DetectActor)
-		{
-			FollowDamageTarget(DetectActor);
-		}
-	}
-	
-	void AStraightProjectile::FollowDamageTarget(AActor* TargetActor)
-	{
-		// 감지된 Actor를 따라가는 함수
-		// 타겟 방향을 계산.
-		FVector DirectionToTarget = (TargetActor->GetActorLocation() - GetActorLocation()).GetSafeNormal();
-	
-		// 발사체를 타겟 방향으로 회전시킴.
-		FRotator NewRotation = DirectionToTarget.Rotation();
-		SetActorRotation(NewRotation);
-	
-		ProjectileMovementComponent->Velocity = DirectionToTarget * ProjectileData->InitialSpeed;
-	}
-	```
-	</details><br>
-
-      
-
-                    
-
-
+<br>
 
 ### 3. Monster
   - Monster 사망 시, Material을 교체하고 Opacity 값을 수정
