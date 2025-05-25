@@ -49,18 +49,19 @@
    - Visual Studio 2022
    - Windows 10/11 64bit
 
-2. **프로젝트 복제(clone)**
+2. **프로젝트 클론**
     ```bash
     git clone https://github.com/WJMcode/Project_CavesBasic.git
     ```
 
 3. **프로젝트 열기**
-   - `CavesBasic.uproject` 더블클릭 또는 언리얼 에디터에서 직접 열기
+   - `CavesBasic.uproject` 파일을 더블 클릭하거나, 언리얼 에디터에서 직접 열기
 
-4. **빌드**
-   - `CavesBasic.uproject` 우클릭 → `Generate Visual Studio Project files` 후, Visual Studio에서 빌드
+4. **Visual Studio 프로젝트 생성 및 빌드**
+   - `CavesBasic.uproject` 파일 우클릭 → `Generate Visual Studio project files`
+   - 생성된 `.sln` 파일을 Visual Studio에서 열고 빌드 실행 (`Ctrl + Shift + B`)
 
-5. **실행**
+5. **게임 실행**
    - 언리얼 에디터에서 `Play` 클릭
 
 ---
@@ -134,20 +135,8 @@ Project_CavesBasic/
 
 
 
-- **✍️ 핵심 로직** : 피격 시, 머티리얼을 동적 인스턴스로 변환한 뒤 'HitOverlayOpacity' 값을 조절하여 깜빡임 효과를 연출합니다.  
+- **✍️ 핵심 로직** : 피격 시, 머티리얼을 동적 인스턴스로 변환한 뒤 `HitOverlayOpacity` 값을 조절하여 깜빡임 효과를 연출합니다.  
   타이머를 이용해 짧은 시간 동안 반복적으로 깜빡이며, 종료 후 원래 상태로 복원됩니다.
-  LineTrace 로직 요약
-
-        위 방향
-        ↑
-        |     ← 실패하면
-플레이어 위치
-        |
-        ↓
-        아래 방향
-
-→ 바닥 감지 성공 시 해당 Z좌표로 이동
-→ 실패 시 Destroy()
 <br></br>
 ![blinkCha](https://github.com/user-attachments/assets/394c9701-0187-46b3-941f-3b93eed8dc8f)
 
