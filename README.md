@@ -303,14 +303,14 @@ void AStraightProjectile::FollowDamageTarget(AActor* TargetActor)
 
 <br>
 
-> 📸 아래는 플레이어 피격 시 깜빡임 효과가 적용된 실제 게임 장면입니다.
+> 📸 아래는 몬스터 사망 시 투명해지는 효과가 적용된 실제 게임 장면입니다.
 > <br>
 > <br>
 > ![monsteropa](https://github.com/user-attachments/assets/3a84ac96-a652-4355-9202-95e3382456a1)
 
 <br>
 
-> 📄 아래는 플레이어 피격 시 깜빡임 효과의 핵심 구현 코드입니다.
+> 📄 아래는 몬스터 사망 시 투명해지는 효과의 핵심 구현 코드입니다.
 ```cpp
 // BeginPlay에서 MaterialInstanceDynamic 초기화
 MaterialInstanceDynamics = SkeletalMesh->CreateAndSetMaterialInstanceDynamic(1);
