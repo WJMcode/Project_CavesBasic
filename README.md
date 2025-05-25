@@ -233,6 +233,8 @@ void AGroundProjectile::BeginPlay()
 
 >  🔗 전체 소스는 [GroundProjectile.cpp](https://github.com/WJMcode/Project_CavesBasic/blob/main/Source/CavesBasic/Actors/Projectile/GroundProjectile.cpp)에서 확인하실 수 있습니다.
 
+<br>
+
 - **Straight Projectile** : Player를 중심으로 일직선으로 발사되는 Projectile  
                          Skill 데이터 테이블에서 `GroundProjectile`로 지정된 Skill을 사용한 경우에 생성되며 `Floor` 충돌 채널이 적용된 지형만 감지합니다.
 - **✍️ 핵심 로직** : Straight Projectile이 날아가는 동안 Projectile 주변에 몬스터가 있는지 감지  
