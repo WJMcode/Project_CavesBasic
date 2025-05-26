@@ -289,7 +289,7 @@ void AStraightProjectile::FollowDamageTarget(AActor* TargetActor)
   #### **사망 시 시각 효과**  
   - **개요**  
 몬스터가 사망하면 메시의 머티리얼을 **투명도 조절 가능한 머티리얼로 교체**하고,  
-**시간에 따라 서서히 사라지는 연출**을 구현합니다.
+**시간에 따라 서서히 사라지집니다.**
 
 - **핵심 로직**  
 	- **Translucent 머티리얼을 MaterialInstanceDynamic 형태로 생성**합니다.
