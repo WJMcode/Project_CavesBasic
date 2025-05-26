@@ -299,7 +299,6 @@ void AStraightProjectile::FollowDamageTarget(AActor* TargetActor)
 
 - **설계 장점**  
  	- 몬스터가 사망할 때 **서서히 투명해지는 연출**로, 플레이어에게 **명확한 피드백과 몰입감을 제공**합니다.  
- 	- **Timeline 컴포넌트를 이용해 부드럽고 자연스러운 투명도 변화**를 제어하며, 애니메이션과 **동기화하기 쉽습니다.**
 
 <br>
 
