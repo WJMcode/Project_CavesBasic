@@ -349,19 +349,19 @@ void ADefaultMonster::OnDisappearMeshEnd() { Destroy(); }
    ![Weapon 데이터 테이블](README_content/WeaponTable.png) 
 
 
-- **Skill 데이터 테이블**
+- **Skill 데이터 테이블**  
 스킬의 피해량, 애니메이션(몽타주), 연동 발사체 등 스킬 정보를 설정합니다.
     
    ![Skill 데이터 테이블](README_content/SkillTable.png) 
 
 
-- **Projectile 데이터 테이블**
+- **Projectile 데이터 테이블**  
 발사체의 타입, 크기, 스폰 위치, 이동 속도 등 상세 속성을 관리합니다.
 
    ![Projectile 데이터 테이블](README_content/ProjectileTable.png) 
 
 
-- **Effect 데이터 테이블**
+- **Effect 데이터 테이블**  
 각종 이펙트 및 효과음, 데칼 정보 등을 관리합니다.
 
     ![Effect 데이터 테이블](README_content/EffectTable.png) 
