@@ -99,15 +99,15 @@
 
 ```text
 Project_CavesBasic/
-├── Source/CavesBasic/
+├── Source/
+│   └── CavesBasic/
 │   ├── Actors/         # 플레이어, 몬스터 등 주요 액터
 │   ├── Components/     # 플레이어 상태 등 기능별 컴포넌트
 │   ├── UI/             # 위젯, HUD
-│   └── GameFrameWork/  # GameMode 등
-├── Config/
-├── Content/
-├── CavesBasic.uproject
-└── README.md
+│   ├── GameframeWork/  # GameMode 등
+│   └── ...
+├── Content/            # 언리얼 에셋
+└── ...
 ```
 ---
 
