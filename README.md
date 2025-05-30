@@ -155,26 +155,26 @@ Project_CavesBasic/
 ```cpp
 void UCharacterMeshEffect::ApplyHitMaterial(const float Duration)
 {
-	// 1. Overlay Material을 가져오기
-	OriginalOverlayMaterial = TargetMeshComponent->GetOverlayMaterial();
+  // 1. Overlay Material을 가져오기
+  OriginalOverlayMaterial = TargetMeshComponent->GetOverlayMaterial();
 	    
-	// 2. Overlay Material을 동적 머티리얼 인스턴스로 변환하여 Opacity 조정
-	UMaterialInstanceDynamic* DynOverlayMaterial = UMaterialInstanceDynamic::Create(OriginalOverlayMaterial, this);
-	DynOverlayMaterial->SetScalarParameterValue("HitOverlayOpacity", 0.6f);
-	TargetMeshComponent->SetOverlayMaterial(DynOverlayMaterial);
+  // 2. Overlay Material을 동적 머티리얼 인스턴스로 변환하여 Opacity 조정
+  UMaterialInstanceDynamic* DynOverlayMaterial = UMaterialInstanceDynamic::Create(OriginalOverlayMaterial, this);
+  DynOverlayMaterial->SetScalarParameterValue("HitOverlayOpacity", 0.6f);
+  TargetMeshComponent->SetOverlayMaterial(DynOverlayMaterial);
 	
-	// 일정 주기로 깜빡임 효과 타이머 실행
-	GetWorld()->GetTimerManager().SetTimer(BlinkTimerHandle, [this, DynOverlayMaterial]()
-	{
-		BlinkMaterial(DynOverlayMaterial);
-	}, Duration / 30.f, true);	       
+  // 일정 주기로 깜빡임 효과 타이머 실행
+  GetWorld()->GetTimerManager().SetTimer(BlinkTimerHandle, [this, DynOverlayMaterial]()
+  {
+    BlinkMaterial(DynOverlayMaterial);
+  }, Duration / 30.f, true);	       
 	
-	// 일정 시간 후 머티리얼 원상 복구
-	GetWorld()->GetTimerManager().SetTimer(RestoreTimerHandle, [this, DynOverlayMaterial]()
-	{
-		RestoreOriginalMaterial(DynOverlayMaterial);
-		// ... (타이머 정지/멤버 초기화 등 생략)
-	}, Duration / 3.f , false);
+  // 일정 시간 후 머티리얼 원상 복구
+  GetWorld()->GetTimerManager().SetTimer(RestoreTimerHandle, [this, DynOverlayMaterial]()
+  {
+    RestoreOriginalMaterial(DynOverlayMaterial);
+    // ... (타이머 정지/멤버 초기화 등 생략)
+  }, Duration / 3.f , false);
 }
 ```
 
@@ -208,32 +208,32 @@ void UCharacterMeshEffect::ApplyHitMaterial(const float Duration)
 ```cpp
 void AGroundProjectile::BeginPlay()
 {
-	const ETraceTypeQuery TraceTypeQuery = UEngineTypes::ConvertToTraceType(ECollisionChannel::ECC_GameTraceChannel5);
+  const ETraceTypeQuery TraceTypeQuery = UEngineTypes::ConvertToTraceType(ECollisionChannel::ECC_GameTraceChannel5);
 
-	// 아래 아래 방향으로 바닥을 감지
-	const bool bDownHit = UKismetSystemLibrary::LineTraceSingle(GetWorld(),
-	GetActorLocation(), GetActorLocation() + FVector(0, 0, -350), TraceTypeQuery,
-		false, IgnoreActors, EDrawDebugTrace::ForDuration, DownHitResult, true);
-	if (bDownHit)
-	{
-		GroundProjectileLocation.Z = DownHitResult.ImpactPoint.Z;
-		SetActorLocation(GroundProjectileLocation);
-		return;
-	}
+  // 아래 아래 방향으로 바닥을 감지
+  const bool bDownHit = UKismetSystemLibrary::LineTraceSingle(GetWorld(),
+        GetActorLocation(), GetActorLocation() + FVector(0, 0, -350), TraceTypeQuery,
+        false, IgnoreActors, EDrawDebugTrace::ForDuration, DownHitResult, true);
+  if (bDownHit)
+  {
+    GroundProjectileLocation.Z = DownHitResult.ImpactPoint.Z;
+    SetActorLocation(GroundProjectileLocation);
+    return;
+  }
 
-	// 위 방향으로 바닥을 감지
-	const bool bUpHit = UKismetSystemLibrary::LineTraceSingle(GetWorld(),
-		GetActorLocation(), GetActorLocation() + FVector(0, 0, 200), TraceTypeQuery,
-		false, IgnoreActors, EDrawDebugTrace::ForDuration, UpHitResult, true);
-	if (bUpHit)
-	{
-		GroundProjectileLocation.Z = UpHitResult.ImpactPoint.Z;
-		SetActorLocation(GroundProjectileLocation);
-		return;
-	}
+  // 위 방향으로 바닥을 감지
+  const bool bUpHit = UKismetSystemLibrary::LineTraceSingle(GetWorld(),
+        GetActorLocation(), GetActorLocation() + FVector(0, 0, 200), TraceTypeQuery,
+        false, IgnoreActors, EDrawDebugTrace::ForDuration, UpHitResult, true);
+  if (bUpHit)
+  {
+    GroundProjectileLocation.Z = UpHitResult.ImpactPoint.Z;
+    SetActorLocation(GroundProjectileLocation);
+    return;
+  }
   
-	// 둘 다 실패하면 제거
-	Destroy();
+  // 둘 다 실패하면 제거
+  Destroy();
 }
 ```
 
@@ -268,15 +268,15 @@ void AGroundProjectile::BeginPlay()
 ```cpp
 void AStraightProjectile::FollowDamageTarget(AActor* TargetActor)
 {
-	// 감지된 Actor를 따라가는 함수
-	// 타겟 방향을 계산.
-	FVector DirectionToTarget = (TargetActor->GetActorLocation() - GetActorLocation()).GetSafeNormal();
+  // 감지된 Actor를 따라가는 함수
+  // 타겟 방향을 계산.
+  FVector DirectionToTarget = (TargetActor->GetActorLocation() - GetActorLocation()).GetSafeNormal();
 	
-	// 발사체를 타겟 방향으로 회전시킴.
-	FRotator NewRotation = DirectionToTarget.Rotation();
-	SetActorRotation(NewRotation);
+  // 발사체를 타겟 방향으로 회전시킴.
+  FRotator NewRotation = DirectionToTarget.Rotation();
+  SetActorRotation(NewRotation);
 	
-	ProjectileMovementComponent->Velocity = DirectionToTarget * ProjectileData->InitialSpeed;
+  ProjectileMovementComponent->Velocity = DirectionToTarget * ProjectileData->InitialSpeed;
 }
 ```
 
