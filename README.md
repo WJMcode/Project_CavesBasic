@@ -178,7 +178,7 @@ void UCharacterMeshEffect::ApplyHitMaterial(const float Duration)
 }
 ```
 
->  🔗 전체 소스는 [CharacterMeshEffect.cpp](https://github.com/WJMcode/Project_CavesBasic/blob/main/Source/CavesBasic/Actors/Effect/CharacterMeshEffect/CharacterMeshEffect.cpp)에서 확인하실 수 있습니다.
+>  🔗 전체 코드는 [CharacterMeshEffect.cpp](https://github.com/WJMcode/Project_CavesBasic/blob/main/Source/CavesBasic/Actors/Effect/CharacterMeshEffect/CharacterMeshEffect.cpp)에서 확인하실 수 있습니다.
 
 <br>
 
@@ -237,7 +237,7 @@ void AGroundProjectile::BeginPlay()
 }
 ```
 
->  🔗 전체 소스는 [GroundProjectile.cpp](https://github.com/WJMcode/Project_CavesBasic/blob/main/Source/CavesBasic/Actors/Projectile/GroundProjectile.cpp)에서 확인하실 수 있습니다.
+>  🔗 전체 코드는 [GroundProjectile.cpp](https://github.com/WJMcode/Project_CavesBasic/blob/main/Source/CavesBasic/Actors/Projectile/GroundProjectile.cpp)에서 확인하실 수 있습니다.
 
 <br>
 
@@ -280,7 +280,7 @@ void AStraightProjectile::FollowDamageTarget(AActor* TargetActor)
 }
 ```
 
->  🔗 전체 소스는 [StraightProjectile.cpp](https://github.com/WJMcode/Project_CavesBasic/blob/main/Source/CavesBasic/Actors/Projectile/StraightProjectile.cpp)에서 확인하실 수 있습니다.
+>  🔗 전체 코드는 [StraightProjectile.cpp](https://github.com/WJMcode/Project_CavesBasic/blob/main/Source/CavesBasic/Actors/Projectile/StraightProjectile.cpp)에서 확인하실 수 있습니다.
 
 <br>
 
@@ -322,7 +322,7 @@ MaterialInstanceDynamics->SetScalarParameterValue(FName("Opacity"), NewTranspare
 void ADefaultMonster::OnDisappearMeshEnd() { Destroy(); }
 ```
 
->  🔗 전체 소스는 [DefaultMonster.cpp](https://github.com/WJMcode/Project_CavesBasic/blob/main/Source/CavesBasic/Actors/Monster/DefaultMonster/DefaultMonster.cpp)에서 확인하실 수 있습니다.
+>  🔗 전체 코드는 [DefaultMonster.cpp](https://github.com/WJMcode/Project_CavesBasic/blob/main/Source/CavesBasic/Actors/Monster/DefaultMonster/DefaultMonster.cpp)에서 확인하실 수 있습니다.
 
 ---
 
