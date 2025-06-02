@@ -399,7 +399,7 @@ void ADefaultMonster::OnDisappearMeshEnd() { Destroy(); }
 
 ### ✉️ Contact
 
-- 이메일 : uoipoip@gmail.com
+- Email : uoipoip@gmail.com
 - GitHub : [WJMcode/Project_CavesBasic](https://github.com/WJMcode/Project_CavesBasic)
 
 ---
