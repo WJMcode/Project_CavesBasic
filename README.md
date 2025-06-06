@@ -129,7 +129,6 @@ Project_CavesBasic/
 
 - **핵심 로직**  
 ```mermaid
-```mermaid
 flowchart TD
     A[ApplyHitMaterial 호출] --> B{OwningPlayer 또는 MeshComponent null?}
     B -- 예 --> Z1[로그 출력 후 종료]
