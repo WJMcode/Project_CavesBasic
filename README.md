@@ -130,30 +130,13 @@ Project_CavesBasic/
 - **핵심 로직**  
 ```mermaid
 flowchart TD
-    A[ApplyHitMaterial 호출] --> B{OwningPlayer 또는 MeshComponent null?}
-    B -- 예 --> Z1[로그 출력 후 종료]
-    B -- 아니오 --> C[OriginalOverlayMaterial 가져오기]
-    C --> D{OriginalOverlayMaterial null?}
-    D -- 예 --> Z2[로그 출력 후 종료]
-    D -- 아니오 --> E[동적 머티리얼 생성]
-    E --> F[HitOverlayOpacity 값을 0.6으로 설정]
-    F --> G[SetOverlayMaterial 적용]
-
-    G --> H{BlinkTimer 작동 중인가?}
-    H -- 예 --> I[스킵]
-    H -- 아니오 --> J[BlinkMaterial 타이머 시작]
-
-    G --> K{RestoreTimer 작동 중인가?}
-    K -- 예 --> L[스킵]
-    K -- 아니오 --> M{사망 상태인가?}
-
-    M -- 예 --> N[짧은 시간 후 복원 타이머 설정]
-    M -- 아니오 --> O[일반 시간 후 복원 타이머 설정]
-
-    N --> P[RestoreOriginalMaterial 호출]
-    O --> P
-
-    P --> Q[타이머 종료 및 멤버 초기화]
+    A([피격 발생]) --> B[Overlay 머티리얼을<br>동적 인스턴스로 생성,<br>HitOverlayOpacity 조절]
+    B --> C[타이머로 깜빡임 효과 반복]
+    C --> D{사망 상태인가?}
+    D -- 예 --> E[효과 지속 시간<br>더 짧게 설정]
+    D -- 아니오 --> F[기본 지속 시간 유지]
+    E --> G[일정 시간 후<br>머티리얼 원래대로 복원]
+    F --> G
 ```
 
   - 피격 시 Overlay 머티리얼을 **동적 인스턴스로 생성**하여 `HitOverlayOpacity` 값을 조절합니다.
