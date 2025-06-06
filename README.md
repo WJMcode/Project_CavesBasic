@@ -129,6 +129,7 @@ Project_CavesBasic/
 
 - **핵심 로직**  
 ```mermaid
+```mermaid
 flowchart TD
     A[ApplyHitMaterial 호출] --> B{OwningPlayer 또는 MeshComponent null?}
     B -- 예 --> Z1[로그 출력 후 종료]
@@ -136,19 +137,19 @@ flowchart TD
     C --> D{OriginalOverlayMaterial null?}
     D -- 예 --> Z2[로그 출력 후 종료]
     D -- 아니오 --> E[동적 머티리얼 생성]
-    E --> F[HitOverlayOpacity 0.6로 설정]
+    E --> F[HitOverlayOpacity 값을 0.6으로 설정]
     F --> G[SetOverlayMaterial 적용]
 
-    G --> H{BlinkTimer 작동 중?}
+    G --> H{BlinkTimer 작동 중인가?}
     H -- 예 --> I[스킵]
-    H -- 아니오 --> J[BlinkMaterial 타이머 시작 (Duration / 30)]
+    H -- 아니오 --> J[BlinkMaterial 타이머 시작]
 
-    G --> K{RestoreTimer 작동 중?}
+    G --> K{RestoreTimer 작동 중인가?}
     K -- 예 --> L[스킵]
     K -- 아니오 --> M{사망 상태인가?}
 
-    M -- 예 --> N[Duration / 3 후 복원]
-    M -- 아니오 --> O[Duration 후 복원]
+    M -- 예 --> N[짧은 시간 후 복원 타이머 설정]
+    M -- 아니오 --> O[일반 시간 후 복원 타이머 설정]
 
     N --> P[RestoreOriginalMaterial 호출]
     O --> P
