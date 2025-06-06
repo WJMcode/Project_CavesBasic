@@ -318,10 +318,19 @@ void AStraightProjectile::FollowDamageTarget(AActor* TargetActor)
 **시간에 따라 서서히 사라지집니다.**
 
 - **핵심 로직**  
-	- **Translucent 머티리얼을 MaterialInstanceDynamic 형태로 생성**합니다.
- 	- 몬스터가 사망하면 `OnDisappearMesh` 함수에서 **Opacity** 를 점차 줄입니다.
-	- **Timeline**과 **Curve**를 통해 시간에 따른 투명도 조절을 구현합니다.
- 	- 사라지는 연출이 완료되면 `OnDisappearMeshEnd`에서 Actor를 제거합니다.
+```mermaid
+flowchart TD
+    A[몬스터 사망 판정] --> B[사망 애니메이션 재생]
+    B --> C[Timeline/Curve 실행]
+    C --> D[OnDisappearMesh: Opacity 점차 감소]
+    D --> E{Timeline 종료?}
+    E -- 예 --> F[OnDisappearMeshEnd: 몬스터 제거]
+    E -- 아니오 --> D
+```
+　　　⚬ **Translucent 머티리얼을 MaterialInstanceDynamic 형태로 생성**합니다.
+　　　⚬ 몬스터가 사망하면 `OnDisappearMesh` 함수에서 **Opacity** 를 점차 줄입니다.
+　　　⚬ **Timeline**과 **Curve**를 통해 시간에 따른 투명도 조절을 구현합니다.
+　　　⚬ 사라지는 연출이 완료되면 `OnDisappearMeshEnd`에서 Actor를 제거합니다.
 
 - **설계 장점**  
  	- 몬스터가 사망할 때 **서서히 투명해지는 연출**로, 플레이어에게 **명확한 피드백과 몰입감을 제공**합니다.  
