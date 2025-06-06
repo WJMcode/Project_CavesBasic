@@ -130,26 +130,27 @@ Project_CavesBasic/
 - **핵심 로직**  
 ```mermaid
 flowchart TD
-    A[함수 시작: ApplyHitMaterial(Duration)] --> B{OwningPlayer 또는 TargetMeshComponent가 nullptr인가?}
+    A[ApplyHitMaterial(Duration) 호출] --> B{OwningPlayer 또는 TargetMeshComponent<br>가 nullptr인가?}
     B -- 예 --> C[경고 로그 출력 및 return]
-    B -- 아니오 --> D[OriginalOverlayMaterial = TargetMeshComponent에서 Overlay Material 가져오기]
-    
-    D --> E{OriginalOverlayMaterial이 nullptr인가?}
+    B -- 아니오 --> D[OriginalOverlayMaterial<br>= TargetMeshComponent에서<br>Overlay Material 가져오기]
+    D --> E{OriginalOverlayMaterial이<br>nullptr인가?}
     E -- 예 --> F[경고 로그 출력 및 return]
-    E -- 아니오 --> G[DynOverlayMaterial = OriginalOverlayMaterial을 동적 머티리얼 인스턴스로 생성]
-    
-    G --> H{DynOverlayMaterial이 생성됐는가?}
-    H -- 예 --> I[DynOverlayMaterial에 HitOverlayOpacity=0.6 적용 후, TargetMeshComponent에 세팅]
-    I --> J{BlinkTimerHandle 타이머가 작동중인가?}
-    J -- 아니오 --> K[BlinkTimerHandle로 BlinkMaterial 주기적 호출 (Duration/30초마다)]
-    J -- 예 --> L
-    
-    I --> M{RestoreTimerHandle 타이머가 작동중인가?}
-    M -- 아니오 --> N{OwningPlayer가 사망상태인가? (IsDie())}
-    N -- 예 --> O[RestoreTimerHandle로 RestoreOriginalMaterial 호출 (Duration/3초 후)]
-    N -- 아니오 --> P[RestoreTimerHandle로 RestoreOriginalMaterial 호출 (Duration초 후)]
-    
-    O & P --> Q[RestoreOriginalMaterial 호출 후 타이머 모두 정지 및 멤버 초기화]
+    E -- 아니오 --> G[DynOverlayMaterial<br>= OriginalOverlayMaterial을<br>동적 머티리얼 인스턴스로 생성]
+    G --> H{DynOverlayMaterial<br>생성 성공?}
+    H -- 아니오 --> I[종료]
+    H -- 예 --> J[HitOverlayOpacity=0.6 적용<br>TargetMeshComponent에 세팅]
+    J --> K{BlinkTimerHandle<br>타이머 작동 중?}
+    K -- 아니오 --> L[BlinkTimerHandle로<br>BlinkMaterial 주기적 호출<br>(Duration/30초마다)]
+    K -- 예 --> M[다음 단계 진행]
+    L --> N[다음 단계 진행]
+    M --> N
+    N --> O{RestoreTimerHandle<br>타이머 작동 중?}
+    O -- 아니오 --> P{OwningPlayer가<br>사망 상태? (IsDie())}
+    O -- 예 --> Q[종료]
+    P -- 예 --> R[RestoreTimerHandle로<br>RestoreOriginalMaterial<br>(Duration/3초 후)]
+    P -- 아니오 --> S[RestoreTimerHandle로<br>RestoreOriginalMaterial<br>(Duration초 후)]
+    R --> T[RestoreOriginalMaterial<br>호출 후 타이머 모두 정지 및<br>멤버 초기화]
+    S --> T
 ```
 
   - 피격 시 Overlay 머티리얼을 **동적 인스턴스로 생성**하여 `HitOverlayOpacity` 값을 조절합니다.
