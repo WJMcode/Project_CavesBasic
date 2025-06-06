@@ -273,9 +273,9 @@ flowchart TD
     E --> H[수명 종료 시 제거]
 ```
 
-　　　⚬ 생성 직후 일정 거리 내에서 몬스터를 감지하고, 타겟으로 설정합니다.
-　　　⚬ 매 프레임마다 타겟 위치를 기준으로 **방향 벡터를 계산**합니다.
-　　　⚬ 해당 방향으로 발사체를 회전시켜 타겟을 추적합니다.
+　　　⚬ 생성 직후 일정 거리 내에서 몬스터를 감지하고, 타겟으로 설정합니다.  
+　　　⚬ 매 프레임마다 타겟 위치를 기준으로 **방향 벡터를 계산**합니다.  
+　　　⚬ 해당 방향으로 발사체를 회전시켜 타겟을 추적합니다.  
 　　　⚬ ProjectileMovementComponent의 Velocity를 갱신해, **타겟을 향해 정확히 이동**합니다.
 
 - **설계 장점**
@@ -327,9 +327,9 @@ flowchart TD
     E -- 예 --> F[OnDisappearMeshEnd: 몬스터 제거]
     E -- 아니오 --> D
 ```
-　　　⚬ **Translucent 머티리얼을 MaterialInstanceDynamic 형태로 생성**합니다.
-　　　⚬ 몬스터가 사망하면 `OnDisappearMesh` 함수에서 **Opacity** 를 점차 줄입니다.
-　　　⚬ **Timeline**과 **Curve**를 통해 시간에 따른 투명도 조절을 구현합니다.
+　　　⚬ **Translucent 머티리얼을 MaterialInstanceDynamic 형태로 생성**합니다.  
+　　　⚬ 몬스터가 사망하면 `OnDisappearMesh` 함수에서 **Opacity** 를 점차 줄입니다.  
+　　　⚬ **Timeline**과 **Curve**를 통해 시간에 따른 투명도 조절을 구현합니다.  
 　　　⚬ 사라지는 연출이 완료되면 `OnDisappearMeshEnd`에서 Actor를 제거합니다.
 
 - **설계 장점**  
