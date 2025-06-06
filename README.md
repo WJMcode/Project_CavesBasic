@@ -128,6 +128,30 @@ Project_CavesBasic/
 플레이어가 피격되면 Overlay 머티리얼의 Opacity 값을 조정해 **깜빡이는 효과**를 연출합니다.
 
 - **핵심 로직**  
+```mermaid
+flowchart TD
+    A[함수 시작: ApplyHitMaterial(Duration)] --> B{OwningPlayer 또는 TargetMeshComponent가 nullptr인가?}
+    B -- 예 --> C[경고 로그 출력 및 return]
+    B -- 아니오 --> D[OriginalOverlayMaterial = TargetMeshComponent에서 Overlay Material 가져오기]
+    
+    D --> E{OriginalOverlayMaterial이 nullptr인가?}
+    E -- 예 --> F[경고 로그 출력 및 return]
+    E -- 아니오 --> G[DynOverlayMaterial = OriginalOverlayMaterial을 동적 머티리얼 인스턴스로 생성]
+    
+    G --> H{DynOverlayMaterial이 생성됐는가?}
+    H -- 예 --> I[DynOverlayMaterial에 HitOverlayOpacity=0.6 적용 후, TargetMeshComponent에 세팅]
+    I --> J{BlinkTimerHandle 타이머가 작동중인가?}
+    J -- 아니오 --> K[BlinkTimerHandle로 BlinkMaterial 주기적 호출 (Duration/30초마다)]
+    J -- 예 --> L
+    
+    I --> M{RestoreTimerHandle 타이머가 작동중인가?}
+    M -- 아니오 --> N{OwningPlayer가 사망상태인가? (IsDie())}
+    N -- 예 --> O[RestoreTimerHandle로 RestoreOriginalMaterial 호출 (Duration/3초 후)]
+    N -- 아니오 --> P[RestoreTimerHandle로 RestoreOriginalMaterial 호출 (Duration초 후)]
+    
+    O & P --> Q[RestoreOriginalMaterial 호출 후 타이머 모두 정지 및 멤버 초기화]
+```
+
   - 피격 시 Overlay 머티리얼을 **동적 인스턴스로 생성**하여 `HitOverlayOpacity` 값을 조절합니다.
   - 타이머를 통해 **깜빡임 효과를 반복**하고, 일정 시간이 지나면 **머티리얼을 원래대로 복원**합니다.
   - 사망 상태일 경우, **효과 지속 시간이 더 짧게 설정**됩니다.
