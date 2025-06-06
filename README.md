@@ -320,13 +320,13 @@ void AStraightProjectile::FollowDamageTarget(AActor* TargetActor)
 - **핵심 로직**  
 ```mermaid
 graph TD
-    A[몬스터 사망] --> B[OnDisappearMesh 호출]
-    B --> C[MaterialInstanceDynamic 생성]
-    C --> D[Timeline 시작]
-    D --> E[Opacity 감소 (Curve)]
-    E --> F[Timeline 종료 시]
-    F --> G[OnDisappearMeshEnd 호출]
-    G --> H[Actor 제거 (Destroy)]
+    A[Monster Dies] --> B[OnDisappearMesh Called]
+    B --> C[Create Dynamic Material]
+    C --> D[Start Timeline]
+    D --> E[Opacity Decreases via Curve]
+    E --> F[Timeline Ends]
+    F --> G[OnDisappearMeshEnd Called]
+    G --> H[Destroy Actor]
 ```
 　　　⚬ **Translucent 머티리얼을 MaterialInstanceDynamic 형태로 생성**합니다.  
 　　　⚬ 몬스터가 사망하면 `OnDisappearMesh` 함수에서 **Opacity** 를 점차 줄입니다.  
