@@ -318,9 +318,9 @@ void AStraightProjectile::FollowDamageTarget(AActor* TargetActor)
 **시간에 따라 서서히 사라지집니다.**
 
 - **핵심 로직**  
-  - **Translucent 머티리얼을 MaterialInstanceDynamic 형태로 생성**합니다.  
-　- 몬스터가 사망하면 `OnDisappearMesh` 함수에서 **Opacity** 를 점차 줄입니다.  
-　- **Timeline**과 **Curve**를 통해 시간에 따른 투명도 조절을 구현합니다.  
+  - **Translucent 머티리얼을 MaterialInstanceDynamic 형태로 생성**합니다.
+　- 몬스터가 사망하면 `OnDisappearMesh` 함수에서 **Opacity** 를 점차 줄입니다.
+　- **Timeline**과 **Curve**를 통해 시간에 따른 투명도 조절을 구현합니다.
 　- 사라지는 연출이 완료되면 `OnDisappearMeshEnd`에서 Actor를 제거합니다.
 
 - **설계 장점**  
