@@ -130,26 +130,30 @@ Project_CavesBasic/
 - **핵심 로직**  
 ```mermaid
 flowchart TD
-    A([ApplyHitMaterial(Duration) 호출]) --> B{OwningPlayer 또는<br>TargetMeshComponent<br>가 nullptr인가?}
-    B -- 예(Yes) --> C[경고 로그 출력<br>return]
-    B -- 아니오(No) --> D[OriginalOverlayMaterial<br>= TargetMeshComponent에서<br>Overlay Material 가져오기]
-    D --> E{OriginalOverlayMaterial<br>이 nullptr인가?}
-    E -- 예(Yes) --> F[경고 로그 출력<br>return]
-    E -- 아니오(No) --> G[DynOverlayMaterial<br>= 동적 머티리얼 인스턴스 생성]
-    G --> H{DynOverlayMaterial<br>생성 성공?}
-    H -- 아니오(No) --> Z1([종료])
-    H -- 예(Yes) --> I[HitOverlayOpacity=0.6<br>적용 및 TargetMeshComponent에 세팅]
-    I --> J{BlinkTimerHandle<br>타이머 동작 중?}
-    J -- 예(Yes) --> K1([다음 단계 진행])
-    J -- 아니오(No) --> K[BlinkTimerHandle로<br>BlinkMaterial 주기적 호출<br>(Duration/30초마다)]
-    K --> K1
-    K1 --> L{RestoreTimerHandle<br>타이머 동작 중?}
-    L -- 예(Yes) --> M([종료])
-    L -- 아니오(No) --> N{OwningPlayer가<br>사망 상태? (IsDie())}
-    N -- 예(Yes) --> O[RestoreTimerHandle로<br>RestoreOriginalMaterial 호출<br>(Duration/3초 후)]
-    N -- 아니오(No) --> P[RestoreTimerHandle로<br>RestoreOriginalMaterial 호출<br>(Duration초 후)]
-    O --> Q[RestoreOriginalMaterial 호출 후<br>타이머 모두 정지 및 멤버 초기화]
-    P --> Q
+    A[ApplyHitMaterial 호출] --> B{OwningPlayer 또는 MeshComponent null?}
+    B -- 예 --> Z1[로그 출력 후 종료]
+    B -- 아니오 --> C[OriginalOverlayMaterial 가져오기]
+    C --> D{OriginalOverlayMaterial null?}
+    D -- 예 --> Z2[로그 출력 후 종료]
+    D -- 아니오 --> E[동적 머티리얼 생성]
+    E --> F[HitOverlayOpacity 0.6로 설정]
+    F --> G[SetOverlayMaterial 적용]
+
+    G --> H{BlinkTimer 작동 중?}
+    H -- 예 --> I[스킵]
+    H -- 아니오 --> J[BlinkMaterial 타이머 시작 (Duration / 30)]
+
+    G --> K{RestoreTimer 작동 중?}
+    K -- 예 --> L[스킵]
+    K -- 아니오 --> M{사망 상태인가?}
+
+    M -- 예 --> N[Duration / 3 후 복원]
+    M -- 아니오 --> O[Duration 후 복원]
+
+    N --> P[RestoreOriginalMaterial 호출]
+    O --> P
+
+    P --> Q[타이머 종료 및 멤버 초기화]
 ```
 
   - 피격 시 Overlay 머티리얼을 **동적 인스턴스로 생성**하여 `HitOverlayOpacity` 값을 조절합니다.
