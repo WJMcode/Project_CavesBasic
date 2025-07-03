@@ -1,3 +1,66 @@
+```mermaid
+classDiagram
+    %% --- 클래스 선언 ---
+    class AGroundProjectile
+    class ACharacter
+    class UCharacterMovementComponent
+    class USkeletalMeshComponent
+    class AEffectWithDecal
+    class ABasicPlayer
+    class FProjectileTableRow
+    class FEffectDecalTableRow
+    class FSkillTableRow
+
+    %% --- 관계 ---
+    AGroundProjectile --|> AActor
+
+    AGroundProjectile --> ACharacter : Owner
+    AGroundProjectile --> UCharacterMovementComponent : 참조
+    AGroundProjectile --> USkeletalMeshComponent : 참조
+    AGroundProjectile --> AEffectWithDecal : 스폰
+    AGroundProjectile --> ABasicPlayer : Owner(Cast)
+    AGroundProjectile --> FProjectileTableRow : DataTableRowHandle
+    AGroundProjectile --> FEffectDecalTableRow : EffectTableRowHandle
+    AGroundProjectile --> FSkillTableRow : SkillTableRow
+    AGroundProjectile --> AActor : DetectDamageTarget() (타겟)
+
+    %% --- 주요 메서드/역할 요약 ---
+    class AGroundProjectile{
+        <<AActor>>
+        +SetAdjustLocation()
+        +BeginPlay()
+        +DetectDamageTarget()
+        +OnBeginOverlap()
+    }
+
+    class ACharacter{
+        +GetComponentByClass()
+        +GetActorRotation()
+        +GetActorLocation()
+        +GetController()
+    }
+
+    class UCharacterMovementComponent{
+        +GetActorFeetLocation()
+    }
+
+    class USkeletalMeshComponent{
+        +GetSkeletalMeshAsset()
+        +GetSocketLocation()
+        +GetSocketByName()
+    }
+
+    class AEffectWithDecal{
+        +SetData()
+        +FinishSpawning()
+        +Play()
+    }
+
+    class ABasicPlayer{
+        +GetSkillTableRow()
+    }
+```
+
 # CavesBasic 개인 프로젝트
 
 ## 📑 목차
