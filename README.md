@@ -1,36 +1,19 @@
 ```mermaid
-classDiagram
-    class AGroundProjectile
+flowchart TD
+    A[Spawn GroundProjectile] --> B{Floor 감지?}
+    B -- DownHit --> C[위치 Z를 DownHit.Z로 이동]
+    B -- UpHit --> D[위치 Z를 UpHit.Z로 이동]
+    B -- NoHit --> E[Destroy Projectile]
 
-    %% --- 실제 구현에서 직접적으로 사용하는 주요 객체 ---
-    class ACharacter
-    class UCharacterMovementComponent
-    class USkeletalMeshComponent
-    class AEffectWithDecal
-    class ABasicPlayer
-    class FProjectileTableRow
-    class FEffectDecalTableRow
-    class FSkillTableRow
-    class AActor
-
-    %% --- 직접적인 함수/데이터 연계 ---
-    AGroundProjectile --> ACharacter : Owner 참조
-    AGroundProjectile --> UCharacterMovementComponent : 발 위치 참조
-    AGroundProjectile --> USkeletalMeshComponent : 소켓 위치 참조
-    AGroundProjectile --> AEffectWithDecal : 이펙트 스폰
-    AGroundProjectile --> ABasicPlayer : Owner(Cast)
-    AGroundProjectile --> FProjectileTableRow : 이펙트 정보 조회
-    AGroundProjectile --> FEffectDecalTableRow : 데칼 정보 조회
-    AGroundProjectile --> FSkillTableRow : 스킬 데미지
-    AGroundProjectile --> AActor : DetectDamageTarget()로 타겟 감지
-
-    %% --- 함수, 구현 위주 요약 ---
-    class AGroundProjectile{
-        +SetAdjustLocation()
-        +BeginPlay()
-        +DetectDamageTarget()
-        +OnBeginOverlap()
-    }
+    C --> F[Overlapping 발생]
+    D --> F
+    F --> G[이펙트 생성/출력]
+    G --> H[Owner로부터 SkillData 조회]
+    H --> I{Damage Target 감지?}
+    I -- Yes --> J[ApplyDamage (데미지 적용)]
+    I -- No --> K[종료]
+    J --> K
+    E --> K
 ```
 
 # CavesBasic 개인 프로젝트
