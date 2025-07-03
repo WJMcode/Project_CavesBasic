@@ -1,7 +1,8 @@
 ```mermaid
 classDiagram
-    %% --- 클래스 선언 ---
     class AGroundProjectile
+
+    %% --- 실제 구현에서 직접적으로 사용하는 주요 객체 ---
     class ACharacter
     class UCharacterMovementComponent
     class USkeletalMeshComponent
@@ -10,54 +11,25 @@ classDiagram
     class FProjectileTableRow
     class FEffectDecalTableRow
     class FSkillTableRow
+    class AActor
 
-    %% --- 관계 ---
-    AGroundProjectile --|> AActor
-
-    AGroundProjectile --> ACharacter : Owner
-    AGroundProjectile --> UCharacterMovementComponent : 참조
-    AGroundProjectile --> USkeletalMeshComponent : 참조
-    AGroundProjectile --> AEffectWithDecal : 스폰
+    %% --- 직접적인 함수/데이터 연계 ---
+    AGroundProjectile --> ACharacter : Owner 참조
+    AGroundProjectile --> UCharacterMovementComponent : 발 위치 참조
+    AGroundProjectile --> USkeletalMeshComponent : 소켓 위치 참조
+    AGroundProjectile --> AEffectWithDecal : 이펙트 스폰
     AGroundProjectile --> ABasicPlayer : Owner(Cast)
-    AGroundProjectile --> FProjectileTableRow : DataTableRowHandle
-    AGroundProjectile --> FEffectDecalTableRow : EffectTableRowHandle
-    AGroundProjectile --> FSkillTableRow : SkillTableRow
-    AGroundProjectile --> AActor : DetectDamageTarget() (타겟)
+    AGroundProjectile --> FProjectileTableRow : 이펙트 정보 조회
+    AGroundProjectile --> FEffectDecalTableRow : 데칼 정보 조회
+    AGroundProjectile --> FSkillTableRow : 스킬 데미지
+    AGroundProjectile --> AActor : DetectDamageTarget()로 타겟 감지
 
-    %% --- 주요 메서드/역할 요약 ---
+    %% --- 함수, 구현 위주 요약 ---
     class AGroundProjectile{
-        <<AActor>>
         +SetAdjustLocation()
         +BeginPlay()
         +DetectDamageTarget()
         +OnBeginOverlap()
-    }
-
-    class ACharacter{
-        +GetComponentByClass()
-        +GetActorRotation()
-        +GetActorLocation()
-        +GetController()
-    }
-
-    class UCharacterMovementComponent{
-        +GetActorFeetLocation()
-    }
-
-    class USkeletalMeshComponent{
-        +GetSkeletalMeshAsset()
-        +GetSocketLocation()
-        +GetSocketByName()
-    }
-
-    class AEffectWithDecal{
-        +SetData()
-        +FinishSpawning()
-        +Play()
-    }
-
-    class ABasicPlayer{
-        +GetSkillTableRow()
     }
 ```
 
