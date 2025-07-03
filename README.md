@@ -1,21 +1,3 @@
-```mermaid
-flowchart TD
-    A[Spawn GroundProjectile] --> B{Floor 감지?}
-    B -- DownHit --> C[위치 Z를 DownHit.Z로 이동]
-    B -- UpHit --> D[위치 Z를 UpHit.Z로 이동]
-    B -- NoHit --> E[Destroy Projectile]
-
-    C --> F[Overlapping 발생]
-    D --> F
-    F --> G[이펙트 생성/출력]
-    G --> H[Owner로부터 SkillData 조회]
-    H --> I{Damage Target 감지?}
-    I -- Yes --> J[ApplyDamage (데미지 적용)]
-    I -- No --> K[종료]
-    J --> K
-    E --> K
-```
-
 # CavesBasic 개인 프로젝트
 
 ## 📑 목차
