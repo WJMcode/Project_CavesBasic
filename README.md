@@ -1,3 +1,38 @@
+```mermaid
+classDiagram
+    %% 클래스 상속 및 연관 관계 정의
+    ATileGridManager --|> AActor
+    ATileGridManager ..> UTileDataAsset : holds
+    ATileGridManager ..> ATile : spawns
+
+    %% ATileGridManager 클래스 정의
+    class ATileGridManager {
+      +ATileGridManager()  
+      +BeginPlay() : void  
+      -SpawnGroundTiles() : void  
+      -SpawnResourceTiles() : void  
+      -SpawnStructuresTile() : void  
+      -SpawnTiles(TileClass : TSubclassOf<ATile>, 
+                  SpawnProbability : float, 
+                  ZOffset : float, 
+                  InTileSize : float, 
+                  InRotator : FRotator = ZeroRotator, 
+                  bUseRandomRotation : bool = true) : void  
+      -TileDataAsset : UTileDataAsset* = nullptr  
+    }
+
+    %% 참고 클래스(간략)
+    class UTileDataAsset {
+      <<DataAsset>>
+      --각종 타일 설정 데이터--
+    }
+
+    class ATile {
+      <<Actor>>
+      --타일 액터 공통 기능--
+    }
+```
+
 # CavesBasic 개인 프로젝트
 
 ## 📑 목차
