@@ -5,9 +5,9 @@ classDiagram
         +SpawnTiles()
     }
     class TileDataAsset {
-        +GroundTileInfo
-        +ResourceTileInfo
-        +StructuresTileInfo
+        +GroundTileData
+        +ResourceTileData
+        +StructuresTileData
     }
     class Tile {
         -TileMesh
