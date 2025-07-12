@@ -1,5 +1,10 @@
 ```mermaid
 classDiagram
+
+
+    classDef important fill:#FFD700,stroke:#333,stroke-width:2px;
+    class TileGridManager important
+
     class TileGridManager {
         +TileDataAsset
         +SpawnTiles()
@@ -25,8 +30,6 @@ classDiagram
     Tile <|-- ResourceTile
     Tile <|-- StructuresTile
 
-    classDef important fill:#FFD700,stroke:#333,stroke-width:2px;
-    class TileGridManager important
 ```
 
 # CavesBasic 개인 프로젝트
