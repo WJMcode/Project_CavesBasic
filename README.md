@@ -13,11 +13,13 @@ class TileGridManager {
     - TileDataAsset
     + SpawnTiles()
 }
+
 class TileDataAsset {
     + GroundTileData: 클래스 / 머티리얼
     + ResourceTileData: 클래스 / 자원타입 / 머티리얼 세트
     + StructuresTileData: 클래스 / 구조물타입 / 머티리얼
 }
+
 class Tile {
     - TileMesh
     + SetTileScale()
@@ -25,18 +27,25 @@ class Tile {
     + SetRandomTileMaterial()
 }
 
-%% Place these three explicitly after Tile in the code to ensure vertical layout
 class GroundTile
 class ResourceTile
 class StructuresTile
 
+%% Inheritance
 GroundTile --|> Tile
 ResourceTile --|> Tile
 StructuresTile --|> Tile
 
+%% Associations
 TileGridManager --> TileDataAsset
 TileDataAsset ..> Tile
 TileGridManager ..> Tile
+
+%% Dummy connector to force vertical alignment
+class _ForceVertical
+_ForceVertical --> GroundTile
+_ForceVertical --> ResourceTile
+_ForceVertical --> StructuresTile
 ```
 
 # CavesBasic 개인 프로젝트
