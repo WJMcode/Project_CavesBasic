@@ -1,55 +1,30 @@
 ```mermaid
-# 클래스 다이어그램
-
-아래는 이미지 ![image1 diagram shows the relationships and responsibilities of several key](image1) 기반으로 components:
-
-1. **TileGridManager** (topmost box)
-   - Manages the grid of tiles.
-   - Has Mermaid로 표현한 클래스 다이어그램입니다.
-
-```mermaid
 classDiagram
-    a reference to a `TileDataAsset`.
-   - Contains a method called `SpawnTiles class TileGridManager {
+    class TileGridManager {
         +TileDataAsset
         +SpawnTiles()
     }
-
     class TileDataAsset {
-        +GroundTileData(...)`.
-
-2. **TileDataAsset** (: 클래스 / 머티리얼
-        +ResourceTileData: 클래스 / 자원타입middle box)
-   - Stores data for different types of tiles.
-   - Contains three main data types with descriptions (written in both / 머티리얼 세트
-        +StructuresTileData: 클래스 / 구조물타입 / 머티리얼
+        +GroundTileData : 클래스 / 머티리얼
+        +ResourceTileData : 클래스 / 자원타입 / 머티리얼 세트
+        +StructuresTileData : 클래스 / 구조물타입 / 머티리얼
     }
-
     class Tile {
         -TileMesh
-        +SetTileScale English and Korean):
-     - **GroundTileData**:()
+        +SetTileScale()
         +SetTileMaterial()
         +SetRandomTileMaterial()
     }
-
     class GroundTile
     class ResourceTile
     class StructuresTile
 
-    TileGridManager --> TileDataAsset
-    TileDataAsset --> Tile
+    TileGridManager --> TileDataAsset : 참조
+    TileGridManager --> Tile : 생성
+    TileDataAsset --> Tile : 데이터 제공
     Tile <|-- GroundTile
     Tile <|-- ResourceTile
     Tile <|-- StructuresTile
-```
-
-> 참고: 이 클래스 다이어그램은 이미지 ![image1](image1)을 참고하여 주요 클래스와 관계를 Mermaid 문법으로 재구성한 것입니다.
-```` Class and Material.
-     - **ResourceTileData**: Class, Resource Type, and Material Set.
-     - **StructuresTileData**: Class, Structure Type, and Material.
-
-3. **Tile** (
 ```
 
 # CavesBasic 개인 프로젝트
