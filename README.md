@@ -19,7 +19,7 @@ classDiagram
     class ResourceTile
     class StructuresTile
 
-    TileGridManager --> TileDataAsset : 참조
+    TileGridManager ..> TileDataAsset
     TileGridManager --> Tile : 생성
     TileDataAsset --> Tile : 데이터 제공
     Tile <|-- GroundTile
