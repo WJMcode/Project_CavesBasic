@@ -24,11 +24,6 @@ classDiagram
     Tile <|-- GroundTile
     Tile <|-- ResourceTile
     Tile <|-- StructuresTile
-
-    %% 스타일 정의와 적용은 클래스/관계 정의 **아래**에 작성
-    classDef important fill:#FFD700,stroke:#333,stroke-width:2px;
-    class TileGridManager important
-
 ```
 
 # CavesBasic 개인 프로젝트
