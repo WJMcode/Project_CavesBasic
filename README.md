@@ -1,36 +1,36 @@
 ```mermaid
 classDiagram
-    %% 클래스 상속 및 연관 관계 정의
-    ATileGridManager --|> AActor
-    ATileGridManager ..> UTileDataAsset : holds
-    ATileGridManager ..> ATile : spawns
-
-    %% ATileGridManager 클래스 정의
-    class ATileGridManager {
-      +ATileGridManager()  
-      +BeginPlay() : void  
-      -SpawnGroundTiles() : void  
-      -SpawnResourceTiles() : void  
-      -SpawnStructuresTile() : void  
-      -SpawnTiles(TileClass : TSubclassOf<ATile>, 
-                  SpawnProbability : float, 
-                  ZOffset : float, 
-                  InTileSize : float, 
-                  InRotator : FRotator = ZeroRotator, 
-                  bUseRandomRotation : bool = true) : void  
-      -TileDataAsset : UTileDataAsset* = nullptr  
+    %% 클래스 정의
+    class TileGridManager {
+        - TileDataAsset
+        + SpawnTiles()
     }
 
-    %% 참고 클래스(간략)
-    class UTileDataAsset {
-      <<DataAsset>>
-      --각종 타일 설정 데이터--
+    class TileDataAsset {
+        + GroundTileData: 클래스 / 머티리얼
+        + ResourceTileData: 클래스 / 자원타입 / 머티리얼 세트
+        + StructuresTileData: 클래스 / 구조물타입 / 머티리얼
     }
 
-    class ATile {
-      <<Actor>>
-      --타일 액터 공통 기능--
+    class Tile {
+        - TileMesh
+        + SetTileScale()
+        + SetTileMaterial()
+        + SetRandomTileMaterial()
     }
+
+    class GroundTile
+    class ResourceTile
+    class StructuresTile
+
+    %% 상속 관계
+    GroundTile --|> Tile
+    ResourceTile --|> Tile
+    StructuresTile --|> Tile
+
+    %% 연관 관계
+    TileGridManager --> TileDataAsset
+    TileDataAsset --> Tile
 ```
 
 # CavesBasic 개인 프로젝트
