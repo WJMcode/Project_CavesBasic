@@ -1,51 +1,55 @@
 ```mermaid
----
-config:
-  class:
-    hideEmptyMembersBox: false
-  theme: mc
-  look: classic
----
+# 클래스 다이어그램
+
+아래는 이미지 ![image1 diagram shows the relationships and responsibilities of several key](image1) 기반으로 components:
+
+1. **TileGridManager** (topmost box)
+   - Manages the grid of tiles.
+   - Has Mermaid로 표현한 클래스 다이어그램입니다.
+
+```mermaid
 classDiagram
-direction TB
+    a reference to a `TileDataAsset`.
+   - Contains a method called `SpawnTiles class TileGridManager {
+        +TileDataAsset
+        +SpawnTiles()
+    }
 
-class TileGridManager {
-    - TileDataAsset
-    + SpawnTiles()
-}
+    class TileDataAsset {
+        +GroundTileData(...)`.
 
-class TileDataAsset {
-    + GroundTileData: 클래스 / 머티리얼
-    + ResourceTileData: 클래스 / 자원타입 / 머티리얼 세트
-    + StructuresTileData: 클래스 / 구조물타입 / 머티리얼
-}
+2. **TileDataAsset** (: 클래스 / 머티리얼
+        +ResourceTileData: 클래스 / 자원타입middle box)
+   - Stores data for different types of tiles.
+   - Contains three main data types with descriptions (written in both / 머티리얼 세트
+        +StructuresTileData: 클래스 / 구조물타입 / 머티리얼
+    }
 
-class Tile {
-    - TileMesh
-    + SetTileScale()
-    + SetTileMaterial()
-    + SetRandomTileMaterial()
-}
+    class Tile {
+        -TileMesh
+        +SetTileScale English and Korean):
+     - **GroundTileData**:()
+        +SetTileMaterial()
+        +SetRandomTileMaterial()
+    }
 
-class GroundTile
-class ResourceTile
-class StructuresTile
+    class GroundTile
+    class ResourceTile
+    class StructuresTile
 
-%% Inheritance
-GroundTile --|> Tile
-ResourceTile --|> Tile
-StructuresTile --|> Tile
+    TileGridManager --> TileDataAsset
+    TileDataAsset --> Tile
+    Tile <|-- GroundTile
+    Tile <|-- ResourceTile
+    Tile <|-- StructuresTile
+```
 
-%% Associations
-TileGridManager --> TileDataAsset
-TileDataAsset ..> Tile
-TileGridManager ..> Tile
+> 참고: 이 클래스 다이어그램은 이미지 ![image1](image1)을 참고하여 주요 클래스와 관계를 Mermaid 문법으로 재구성한 것입니다.
+```` Class and Material.
+     - **ResourceTileData**: Class, Resource Type, and Material Set.
+     - **StructuresTileData**: Class, Structure Type, and Material.
 
-%% Dummy connector to force vertical alignment
-class _ForceVertical
-_ForceVertical --> GroundTile
-_ForceVertical --> ResourceTile
-_ForceVertical --> StructuresTile
+3. **Tile** (
 ```
 
 # CavesBasic 개인 프로젝트
