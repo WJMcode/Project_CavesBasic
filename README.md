@@ -5,9 +5,9 @@ classDiagram
         +SpawnTiles()
     }
     class TileDataAsset {
-        +GroundTileData : 클래스 / 머티리얼
-        +ResourceTileData : 클래스 / 자원타입 / 머티리얼 세트
-        +StructuresTileData : 클래스 / 구조물타입 / 머티리얼
+        +GroundTileInfo
+        +ResourceTileInfo
+        +StructuresTileInfo
     }
     class Tile {
         -TileMesh
@@ -19,9 +19,8 @@ classDiagram
     class ResourceTile
     class StructuresTile
 
-    TileGridManager ..> TileDataAsset
+    TileGridManager ..> TileDataAsset : 참조
     TileGridManager --> Tile : 생성
-    TileDataAsset --> Tile : 데이터 제공
     Tile <|-- GroundTile
     Tile <|-- ResourceTile
     Tile <|-- StructuresTile
