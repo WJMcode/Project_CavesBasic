@@ -1,46 +1,42 @@
 ```mermaid
+---
+config:
+  class:
+    hideEmptyMembersBox: false
+  theme: mc
+  look: classic
+---
 classDiagram
-    %% 클래스 정의
-    class TileGridManager {
-        - TileDataAsset
-        + SpawnTiles()
-    }
+direction TB
 
-    class TileDataAsset {
-        + GroundTileData: 클래스 / 머티리얼
-        + ResourceTileData: 클래스 / 자원타입 / 머티리얼 세트
-        + StructuresTileData: 클래스 / 구조물타입 / 머티리얼
-    }
+class TileGridManager {
+    - TileDataAsset
+    + SpawnTiles()
+}
+class TileDataAsset {
+    + GroundTileData: 클래스 / 머티리얼
+    + ResourceTileData: 클래스 / 자원타입 / 머티리얼 세트
+    + StructuresTileData: 클래스 / 구조물타입 / 머티리얼
+}
+class Tile {
+    - TileMesh
+    + SetTileScale()
+    + SetTileMaterial()
+    + SetRandomTileMaterial()
+}
 
-    class Tile {
-        - TileMesh
-        + SetTileScale()
-        + SetTileMaterial()
-        + SetRandomTileMaterial()
-    }
+%% Place these three explicitly after Tile in the code to ensure vertical layout
+class GroundTile
+class ResourceTile
+class StructuresTile
 
-    class GroundTile
-    class ResourceTile
-    class StructuresTile
+GroundTile --|> Tile
+ResourceTile --|> Tile
+StructuresTile --|> Tile
 
-    %% 상속 관계
-    GroundTile --|> Tile
-    ResourceTile --|> Tile
-    StructuresTile --|> Tile
-
-    %% 연관 관계
-    TileGridManager --> TileDataAsset
-    TileDataAsset --> Tile
-
-%% 스타일 정의
-classDef manager fill:#e6e6f0,stroke:#333,stroke-width:1px;
-classDef dataAsset fill:#ddeeff,stroke:#333,stroke-width:1px;
-classDef tileBase fill:#f8f8f8,stroke:#444,stroke-width:1px;
-
-%% 스타일 적용
-class TileGridManager manager
-class TileDataAsset dataAsset
-class Tile tileBase
+TileGridManager --> TileDataAsset
+TileDataAsset ..> Tile
+TileGridManager ..> Tile
 ```
 
 # CavesBasic 개인 프로젝트
