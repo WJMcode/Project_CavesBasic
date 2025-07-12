@@ -31,6 +31,16 @@ classDiagram
     %% 연관 관계
     TileGridManager --> TileDataAsset
     TileDataAsset --> Tile
+
+    %% 스타일 정의 예시
+    classDef manager fill:#e6e6f0,stroke:#333,stroke-width:1px;
+    classDef dataAsset fill:#ddeeff,stroke:#333,stroke-width:1px;
+    classDef tileBase fill:#f8f8f8,stroke:#444,stroke-width:1px;
+
+    %% 스타일 적용
+    class TileGridManager manager
+    class TileDataAsset dataAsset
+    class Tile,tileBase
 ```
 
 # CavesBasic 개인 프로젝트
