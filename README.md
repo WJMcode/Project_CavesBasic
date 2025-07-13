@@ -1,8 +1,8 @@
 ```mermaid
 classDiagram
     class TileGridManager {
-        -TileDataAsset
-        -SpawnTiles()
+        - TileDataAsset
+        - SpawnTiles()
     }
     class TileDataAsset {
         + GroundTileData
@@ -10,10 +10,10 @@ classDiagram
         + StructuresTileData
     }
     class Tile {
-        #TileMesh
-        +SetTileScale()
-        +SetTileMaterial()
-        +SetRandomTileMaterial()
+        # TileMesh
+        + SetTileScale()
+        + SetTileMaterial()
+        + SetRandomTileMaterial()
     }
     class GroundTile
     class ResourceTile
