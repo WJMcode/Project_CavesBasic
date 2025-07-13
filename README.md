@@ -1,29 +1,5 @@
 ```mermaid
-classDiagram
-    class TileGridManager {
-        - TileDataAsset
-        - SpawnTiles()
-    }
-    class TileDataAsset {
-        + GroundTileData
-        + ResourceTileData
-        + StructuresTileData
-    }
-    class Tile {
-        # TileMesh
-        + SetTileScale()
-        + SetTileMaterial()
-        + SetRandomTileMaterial()
-    }
-    class GroundTile
-    class ResourceTile
-    class StructuresTile
 
-    TileGridManager ..> TileDataAsset : 데이터 참조
-    TileGridManager --> Tile : 생성
-    Tile <|-- GroundTile
-    Tile <|-- ResourceTile
-    Tile <|-- StructuresTile
 ```
 
 # CavesBasic 개인 프로젝트
