@@ -10,7 +10,7 @@ classDiagram
         +StructuresTileData
     }
     class Tile {
-        -TileMesh
+        #TileMesh
         +SetTileScale()
         +SetTileMaterial()
         +SetRandomTileMaterial()
