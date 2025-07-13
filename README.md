@@ -1,13 +1,13 @@
 ```mermaid
 classDiagram
     class TileGridManager {
-        - TileDataAsset
-        - SpawnTiles()
+        -TileDataAsset
+        -SpawnTiles()
     }
     class TileDataAsset {
-        +GroundTileData
-        +ResourceTileData
-        +StructuresTileData
+        + GroundTileData
+        + ResourceTileData
+        + StructuresTileData
     }
     class Tile {
         #TileMesh
