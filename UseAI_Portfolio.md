@@ -29,7 +29,7 @@ AI의 도움을 받아 **Dynamic Material Instance**와 **Timeline 컴포넌트*
 
 AI에게 다음과 같은 질문을 던졌습니다.
 
-> “언리얼 엔진 C++에서 타임라인을 사용해서, Dynamic Material Instance의 스칼라 파라미터 값을 조절하는 방법 알려줘.
+> “언리얼 엔진 C++에서 타임라인을 사용해서, Dynamic Material Instance의 스칼라 파라미터 값을 조절하는 방법 알려줘.  
 > 몬스터가 죽을 때 서서히 투명해지는 효과를 만들고 싶어.”
 
 AI는 단순한 코드 예시뿐 아니라,
